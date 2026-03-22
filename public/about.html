@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us | New Level Consultants — Healthcare & Business Consulting</title>
+    <meta name="description" content="Learn about New Level Consultants — our mission, team expertise, and 15+ years of healthcare and business consulting experience serving 200+ organizations." />
+    <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <style>
+      .page-hero { padding: 10rem 6rem 5rem; text-align: center; position: relative; overflow: hidden; }
+      .page-hero::before { content: ''; position: absolute; top: -50%; left: -30%; width: 800px; height: 800px; background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%); pointer-events: none; }
+      .page-hero h1 { margin-bottom: 1.2rem; }
+      .page-hero p { max-width: 60ch; margin: 0 auto; color: var(--text-dim); font-size: 1.05rem; line-height: 1.8; }
+
+      .mission-section { padding: 5rem 6rem; display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+      .mission-values { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .value-card { background: var(--bg-glass); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; transition: all 0.3s; }
+      .value-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+      .value-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+      .value-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; }
+      .value-desc { font-size: 0.75rem; color: var(--text-dim); line-height: 1.5; }
+
+      .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+      .team-card { background: var(--bg-glass); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; text-align: center; transition: all 0.3s; }
+      .team-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(201,168,76,0.1); }
+      .team-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), var(--gold-dark)); display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 1.5rem; font-weight: 600; color: var(--bg); font-family: var(--font-display); }
+      .team-name { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.2rem; }
+      .team-role { font-size: 0.75rem; color: var(--gold); font-family: var(--font-mono); letter-spacing: 0.06em; margin-bottom: 0.8rem; }
+      .team-bio { font-size: 0.78rem; color: var(--text-dim); line-height: 1.6; }
+
+      .timeline { position: relative; max-width: 700px; margin: 3rem auto 0; padding-left: 2rem; }
+      .timeline::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, var(--gold), var(--gold-dark), transparent); }
+      .timeline-item { position: relative; padding: 0 0 2.5rem 2rem; }
+      .timeline-item::before { content: ''; position: absolute; left: -5px; top: 0.4rem; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); border: 2px solid var(--bg); }
+      .timeline-year { font-family: var(--font-mono); font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+      .timeline-title { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+      .timeline-desc { font-size: 0.82rem; color: var(--text-dim); line-height: 1.6; }
+
+      @media (max-width: 960px) {
+        .page-hero { padding: 8rem 1.5rem 3rem; }
+        .mission-section { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 2rem; }
+        .team-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+
+<!-- NAV -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="New Level Consultants Home">
+    <img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants" width="180" height="40">
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#plans">Plans</a></li>
+    <li><a href="/#products">Instant Tools</a></li>
+    <li><a href="/about.html" style="color:var(--gold)">About</a></li>
+    <li><a href="/case-studies.html">Results</a></li>
+    <li><a href="/resources.html">Resources</a></li>
+    <li><a href="tel:+18005551234" class="nav-phone" aria-label="Call us">📞 (800) 555-1234</a></li>
+    <li><a href="#" class="nav-cta" onclick="openModal('consult');return false;">Get Started Free</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="/#services" onclick="toggleDrawer()">Services</a>
+  <a href="/#plans" onclick="toggleDrawer()">Plans</a>
+  <a href="/about.html" onclick="toggleDrawer()">About</a>
+  <a href="/case-studies.html" onclick="toggleDrawer()">Results</a>
+  <a href="/resources.html" onclick="toggleDrawer()">Resources</a>
+  <a href="#" onclick="openModal('consult');toggleDrawer();return false;" class="nav-cta">Get Started Free →</a>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="eyebrow" style="justify-content:center">About New Level Consultants</div>
+  <h1>We Help Organizations Reach Their <em>Next Level</em></h1>
+  <p>For over 15 years, we've partnered with healthcare organizations, nonprofits, and businesses to solve their most complex challenges — from HIPAA compliance to AI automation — with measurable results and no corporate overhead.</p>
+</section>
+
+<!-- MISSION & VALUES -->
+<section class="mission-section section-dark">
+  <div class="anim">
+    <div class="section-tag">Our Mission</div>
+    <h2 class="section-title">Democratizing <em>Expert Consulting</em></h2>
+    <p class="section-body">We believe every organization — regardless of size — deserves access to world-class consulting. That's why we combine retainer partnerships with affordable, automated tools that deliver expert-level insights at a fraction of the cost.</p>
+    <p class="section-body">Our team has collectively served over 200 organizations, maintained a 98% client retention rate, and generated millions in cost savings across healthcare, nonprofit, legal, and technology sectors.</p>
+  </div>
+  <div class="anim">
+    <div class="mission-values">
+      <div class="value-card"><div class="value-icon">🎯</div><div class="value-name">Results-First</div><div class="value-desc">Every engagement starts with measurable goals and ends with documented outcomes.</div></div>
+      <div class="value-card"><div class="value-icon">🤝</div><div class="value-name">Radical Transparency</div><div class="value-desc">Upfront pricing, honest assessments, and no surprise fees — ever.</div></div>
+      <div class="value-card"><div class="value-icon">⚡</div><div class="value-name">Speed to Value</div><div class="value-desc">From free instant tools to 3-day onboarding, we eliminate gatekeeping.</div></div>
+      <div class="value-card"><div class="value-icon">🛡️</div><div class="value-name">Compliance DNA</div><div class="value-desc">Built by compliance professionals who understand regulatory nuance deeply.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section">
+  <div class="section-header anim" style="text-align:center">
+    <div class="section-tag section-tag-center">Leadership Team</div>
+    <h2 class="section-title section-title-center">Meet the <em>Experts</em> Behind NLC</h2>
+    <p class="section-body" style="margin:0 auto">Every client gets direct access to senior consultants — not junior associates learning on your dime.</p>
+  </div>
+  <div class="team-grid anim">
+    <div class="team-card">
+      <div class="team-avatar">JR</div>
+      <div class="team-name">Jordan Richardson</div>
+      <div class="team-role">Founder & CEO</div>
+      <div class="team-bio">15+ years in healthcare consulting. Former compliance director for a 12-site health system. Led 100+ HIPAA compliance programs.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">AK</div>
+      <div class="team-name">Dr. Aisha Khalid</div>
+      <div class="team-role">VP, Healthcare Strategy</div>
+      <div class="team-bio">Board-certified healthcare administrator with expertise in Ryan White reporting, EHE programs, and community health center operations.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">MT</div>
+      <div class="team-name">Marcus Thompson</div>
+      <div class="team-role">Director, Technology & AI</div>
+      <div class="team-bio">Former CTO at a health-tech startup. Specializes in AI automation, cybersecurity, and digital transformation for healthcare.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">SC</div>
+      <div class="team-name">Sarah Chen</div>
+      <div class="team-role">Director, Operations</div>
+      <div class="team-bio">Lean Six Sigma Black Belt. Has redesigned workflows for 50+ organizations, consistently delivering 30-40% efficiency gains.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">DW</div>
+      <div class="team-name">David Williams</div>
+      <div class="team-role">Lead, Compliance & Risk</div>
+      <div class="team-bio">Certified in Healthcare Compliance (CHC) and HIPAA. 10+ years managing compliance programs for multi-site health organizations.</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">RP</div>
+      <div class="team-name">Rebecca Park</div>
+      <div class="team-role">Head of Client Success</div>
+      <div class="team-bio">Ensures every client gets measurable value. Responsible for NLC's 98% retention rate and post-engagement satisfaction scores.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section section-warm">
+  <div class="section-header anim" style="text-align:center">
+    <div class="section-tag section-tag-center">Our Journey</div>
+    <h2 class="section-title section-title-center">Milestones That <em>Define Us</em></h2>
+  </div>
+  <div class="timeline anim">
+    <div class="timeline-item"><div class="timeline-year">2011</div><div class="timeline-title">Founded</div><div class="timeline-desc">NLC launched as a solo HIPAA consulting practice focused on community health centers in the Southeast.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2014</div><div class="timeline-title">50 Clients Served</div><div class="timeline-desc">Expanded into operations consulting and hired our first full-time team member. Added compliance auditing services.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2018</div><div class="timeline-title">Retainer Model Launched</div><div class="timeline-desc">Introduced the 3-tier retainer model that now serves as the foundation of our consulting practice.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2021</div><div class="timeline-title">AI & Automation Division</div><div class="timeline-desc">Marcus Thompson joined to lead our Technology & AI practice. Launched AI billing automation for healthcare clients.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2024</div><div class="timeline-title">200+ Organizations</div><div class="timeline-desc">Crossed the 200-client milestone. Launched instant-access tools and the enterprise partnership tier.</div></div>
+    <div class="timeline-item"><div class="timeline-year">2026</div><div class="timeline-title">Industry-Leading Platform</div><div class="timeline-desc">Introduced the client portal, AI-powered tools, and expanded to serve legal, tech, and government sectors.</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-tag section-tag-center">Ready to Meet the Team?</div>
+  <h2 class="section-title section-title-center">Your First Call Is <em>Always Free</em></h2>
+  <p>20 minutes with a senior consultant — no sales pressure, just clarity on your best path forward.</p>
+  <div class="cta-btns">
+    <button class="btn btn-dark" onclick="openModal('consult')">Book Free Discovery Call</button>
+    <a href="/" class="btn btn-outline">Back to Home</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand"><img src="/assets/images/logo-dark-bg.png" alt="NLC" width="120" height="28"></div>
+      <p class="footer-tagline">Healthcare and business consulting for organizations that refuse to stay at the same level.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Services</div>
+      <ul class="footer-links">
+        <li><a href="/#services">Healthcare Consulting</a></li>
+        <li><a href="/#services">Compliance & Risk</a></li>
+        <li><a href="/#services">Technology & AI</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="/about.html">About NLC</a></li>
+        <li><a href="/case-studies.html">Case Studies</a></li>
+        <li><a href="/resources.html">Resources</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Get Started</div>
+      <ul class="footer-links">
+        <li><a href="/#plans">Retainer Plans</a></li>
+        <li><a href="/#products">Instant Tools</a></li>
+        <li><a href="tel:+18005551234">📞 (800) 555-1234</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 New Level Consultants. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Service · HIPAA Notice</span>
+  </div>
+</footer>
+
+<!-- MODAL (shared) -->
+<div class="modal-overlay" id="modal" onclick="closeModalOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()" aria-label="Close modal">&times;</button>
+    <div class="modal-title" id="modal-title">Get Started</div>
+    <p class="modal-sub" id="modal-sub">Fill out the form below and we'll be in touch within 1 business day.</p>
+    <div class="step-indicators" id="step-indicators"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+    <div class="form-step active" id="form-step-1">
+      <div class="form-row"><div class="form-field"><label for="f-first">First Name</label><input type="text" placeholder="Jane" id="f-first" required></div><div class="form-field"><label for="f-last">Last Name</label><input type="text" placeholder="Smith" id="f-last" required></div></div>
+      <div class="form-field"><label for="f-email">Email Address</label><input type="email" placeholder="jane@yourorg.com" id="f-email" required></div>
+      <button class="btn btn-gold full-width" onclick="nextStep(2)">Continue →</button>
+    </div>
+    <div class="form-step" id="form-step-2">
+      <div class="form-field"><label for="f-org">Organization</label><input type="text" placeholder="Your organization name" id="f-org"></div>
+      <div class="form-field"><label for="f-size">Organization Size</label><select id="f-size"><option value="">Select...</option><option>1-10 employees</option><option>11-50 employees</option><option>51-200 employees</option><option>200+ employees</option></select></div>
+      <div class="form-field"><label for="f-industry">Industry</label><select id="f-industry"><option value="">Select...</option><option>Healthcare</option><option>Nonprofit</option><option>Legal</option><option>Technology</option><option>Other</option></select></div>
+      <div class="form-nav"><button class="btn btn-outline form-nav-back" onclick="nextStep(1)">← Back</button><button class="btn btn-gold form-nav-next" onclick="nextStep(3)">Continue →</button></div>
+    </div>
+    <div class="form-step" id="form-step-3">
+      <div class="form-field"><label for="f-msg">How can we help?</label><textarea placeholder="Describe your challenge or what you're looking for..." id="f-msg"></textarea></div>
+      <div class="form-field"><label for="f-contact">Preferred Contact Method</label><select id="f-contact"><option>Email</option><option>Phone</option><option>Either works</option></select></div>
+      <div class="form-nav"><button class="btn btn-outline form-nav-back" onclick="nextStep(2)">← Back</button><button class="btn btn-gold form-nav-next" onclick="submitModal()">Submit Request →</button></div>
+    </div>
+    <p class="form-note">We respond within 1 business day. No spam, ever.</p>
+  </div>
+</div>
+
+<script src="/assets/js/main.js" defer></script>
+</body>
+</html>

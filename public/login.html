@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — New Level Consultants</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body class="login-page">
+  <div class="login-container">
+    <div class="login-card">
+      <div class="login-logo">
+        <img src="/assets/images/logo-stacked.png" alt="New Level Consultants" width="80" height="80">
+      </div>
+      <h1 class="login-title">Admin Dashboard</h1>
+      <p class="login-sub">Sign in to manage leads and submissions</p>
+
+      <div id="login-error" class="login-error" hidden></div>
+
+      <form id="login-form">
+        <div class="form-field">
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" name="email" placeholder="pierre@nlcfirm.com" required autocomplete="email">
+        </div>
+        <div class="form-field">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" name="password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn btn-gold full-width" id="login-btn">Sign In</button>
+      </form>
+
+      <p class="login-footer">
+        <a href="/">← Back to NLCFirm.com</a>
+      </p>
+    </div>
+  </div>
+
+
+
+  <script>
+    (function() {
+      console.log('[DEBUG] Login script initializing...');
+
+      function safeGetStorage(key) {
+        try {
+          return sessionStorage.getItem(key);
+        } catch (e) {
+          console.warn('[DEBUG] SessionStorage access blocked:', e.message);
+          return null;
+        }
+      }
+
+      function init() {
+        console.log('[DEBUG] Init function running');
+        
+        // 1. Storage Check
+        const token = safeGetStorage('nlc_token');
+        if (token) {
+          console.log('[DEBUG] Token found, redirecting to admin...');
+          window.location.href = '/admin.html';
+          return;
+        }
+
+        // 2. Attach Listener
+        const form = document.getElementById('login-form');
+        if (form) {
+          console.log('[DEBUG] Form found, attaching listener...');
+          form.onsubmit = async function(e) {
+            console.log('[DEBUG] Login attempt started (onsubmit)');
+            e.preventDefault();
+
+            const btn = document.getElementById('login-btn');
+            const errorEl = document.getElementById('login-error');
+            errorEl.hidden = true;
+
+            const emailInput = document.getElementById('login-email');
+            const passInput = document.getElementById('login-password');
+            if (!emailInput || !passInput) {
+              console.error('[DEBUG] Form inputs not found!');
+              return;
+            }
+
+            const email = emailInput.value.trim();
+            const password = passInput.value;
+
+            btn.textContent = 'Signing in...';
+            btn.disabled = true;
+
+            try {
+              console.log('[DEBUG] Calling /auth/login...');
+              const res = await fetch('/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+              });
+
+              console.log('[DEBUG] Response received:', res.status);
+              const data = await res.json();
+
+              if (res.ok) {
+                console.log('[DEBUG] Login success, storing token.');
+                try {
+                  sessionStorage.setItem('nlc_token', data.token);
+                  sessionStorage.setItem('nlc_user', JSON.stringify(data.user));
+                  window.location.href = '/admin.html';
+                } catch (e) {
+                  console.error('[DEBUG] Failed to save to sessionStorage. Are you in Private/Incognito mode?', e);
+                  errorEl.textContent = 'Auth error: Storage permission denied. Please disable high-security extensions or Private Mode.';
+                  errorEl.hidden = false;
+                  btn.textContent = 'Sign In';
+                  btn.disabled = false;
+                }
+              } else {
+                console.warn('[DEBUG] Login failed:', data.error);
+                errorEl.textContent = data.error || data.errors?.[0]?.msg || 'Login failed';
+                errorEl.hidden = false;
+                btn.textContent = 'Sign In';
+                btn.disabled = false;
+              }
+            } catch (err) {
+              console.error('[DEBUG] Fetch error:', err);
+              errorEl.textContent = 'Connection error or Blocked by browser extension.';
+              errorEl.hidden = false;
+              btn.textContent = 'Sign In';
+              btn.disabled = false;
+            }
+          };
+          console.log('[DEBUG] Listener attached successfully.');
+        } else {
+          console.error('[DEBUG] Login form not found!');
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
+    })();
+  </script>
+</body>
+</html>

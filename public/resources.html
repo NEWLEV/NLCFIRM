@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resources | New Level Consultants — Free Guides, Tools & Insights</title>
+    <meta name="description" content="Free healthcare consulting resources: HIPAA compliance guides, AI automation primers, operational checklists, and expert insights from New Level Consultants." />
+    <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <style>
+      .page-hero { padding: 10rem 6rem 5rem; text-align: center; position: relative; overflow: hidden; }
+      .page-hero::before { content: ''; position: absolute; top: -50%; left: -30%; width: 800px; height: 800px; background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%); pointer-events: none; }
+      .page-hero h1 { margin-bottom: 1.2rem; }
+      .page-hero p { max-width: 60ch; margin: 0 auto; color: var(--text-dim); font-size: 1.05rem; line-height: 1.8; }
+
+      .resource-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+      .resource-card { background: var(--bg-glass); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.3s; display: flex; flex-direction: column; }
+      .resource-card:hover { border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(201,168,76,0.1); }
+      .resource-thumb { height: 180px; background: linear-gradient(135deg, var(--surface), var(--bg-card)); display: flex; align-items: center; justify-content: center; font-size: 3.5rem; border-bottom: 1px solid var(--border); }
+      .resource-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+      .resource-type { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+      .resource-title { font-family: var(--font-display); font-size: 1.15rem; margin-bottom: 0.6rem; }
+      .resource-desc { font-size: 0.82rem; color: var(--text-dim); line-height: 1.7; flex: 1; }
+      .resource-meta { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+      .resource-meta-tag { font-size: 0.68rem; color: var(--text-muted); }
+      .resource-cta { font-size: 0.78rem; color: var(--gold); text-decoration: none; font-weight: 600; }
+      .resource-cta:hover { color: var(--gold-light); }
+
+      .resource-featured { grid-column: span 3; display: grid; grid-template-columns: 1fr 1fr; background: var(--bg-glass); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: all 0.3s; }
+      .resource-featured:hover { border-color: var(--gold); box-shadow: 0 12px 40px rgba(201,168,76,0.1); }
+      .featured-thumb { background: linear-gradient(135deg, rgba(201,168,76,0.15), var(--surface)); display: flex; align-items: center; justify-content: center; font-size: 5rem; }
+      .featured-body { padding: 3rem; display: flex; flex-direction: column; justify-content: center; }
+      .featured-body .resource-title { font-size: 1.6rem; }
+      .featured-body .resource-desc { font-size: 0.92rem; }
+
+      .tools-promo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1rem; }
+      .tool-promo-card { background: var(--bg-glass); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+      .tool-promo-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+      .tool-promo-icon { font-size: 2rem; margin-bottom: 0.6rem; }
+      .tool-promo-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.2rem; }
+      .tool-promo-price { font-size: 0.75rem; color: var(--gold); font-weight: 600; }
+      .tool-promo-desc { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.3rem; }
+
+      @media (max-width: 960px) {
+        .page-hero { padding: 8rem 1.5rem 3rem; }
+        .resource-grid { grid-template-columns: 1fr; }
+        .resource-featured { grid-column: span 1; grid-template-columns: 1fr; }
+        .featured-thumb { height: 200px; }
+        .featured-body { padding: 1.5rem; }
+        .tools-promo { grid-template-columns: 1fr 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+
+<!-- NAV -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="New Level Consultants Home">
+    <img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants" width="180" height="40">
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#plans">Plans</a></li>
+    <li><a href="/#products">Instant Tools</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/case-studies.html">Results</a></li>
+    <li><a href="/resources.html" style="color:var(--gold)">Resources</a></li>
+    <li><a href="tel:+18005551234" class="nav-phone" aria-label="Call us">📞 (800) 555-1234</a></li>
+    <li><a href="#" class="nav-cta" onclick="openModal('consult');return false;">Get Started Free</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="/#services" onclick="toggleDrawer()">Services</a>
+  <a href="/#plans" onclick="toggleDrawer()">Plans</a>
+  <a href="/about.html" onclick="toggleDrawer()">About</a>
+  <a href="/case-studies.html" onclick="toggleDrawer()">Results</a>
+  <a href="/resources.html" onclick="toggleDrawer()">Resources</a>
+  <a href="#" onclick="openModal('consult');toggleDrawer();return false;" class="nav-cta">Get Started Free →</a>
+</div>
+
+<section class="page-hero">
+  <div class="eyebrow" style="justify-content:center">Knowledge Hub</div>
+  <h1>Free Resources for <em>Smart Leaders</em></h1>
+  <p>Expert guides, compliance checklists, industry insights, and practical tools — all free. Because educating our community is how we earn trust.</p>
+</section>
+
+<!-- FEATURED RESOURCE -->
+<section class="section">
+  <div class="resource-grid">
+    <div class="resource-featured anim">
+      <div class="featured-thumb">📘</div>
+      <div class="featured-body">
+        <div class="resource-type">Featured Guide</div>
+        <div class="resource-title">The Complete HIPAA Compliance Primer for 2026</div>
+        <div class="resource-desc">Everything you need to know about HIPAA in one place: Privacy Rule, Security Rule, Breach Notification, Business Associates, state laws, and enforcement trends. Written for non-lawyers by compliance professionals with 15+ years of experience.</div>
+        <div class="resource-meta">
+          <span class="resource-meta-tag">45-page guide · Updated March 2026</span>
+          <a href="#" class="resource-cta" onclick="openModal('consult');return false;">Download Free →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESOURCE CARDS -->
+    <div class="resource-card anim">
+      <div class="resource-thumb">🤖</div>
+      <div class="resource-body">
+        <div class="resource-type">Guide</div>
+        <div class="resource-title">AI in Healthcare: A Practical Guide for Decision Makers</div>
+        <div class="resource-desc">Not hype — practical applications. Learn where AI actually delivers ROI in healthcare operations, billing, compliance, and patient engagement.</div>
+        <div class="resource-meta">
+          <span class="resource-meta-tag">22 pages · Feb 2026</span>
+          <a href="#" class="resource-cta" onclick="openModal('consult');return false;">Download Free →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-card anim">
+      <div class="resource-thumb">📋</div>
+      <div class="resource-body">
+        <div class="resource-type">Checklist</div>
+        <div class="resource-title">HIPAA Risk Assessment Self-Check: 50 Questions</div>
+        <div class="resource-desc">A free, self-guided risk assessment covering administrative, physical, and technical safeguards. Score your organization and identify gaps.</div>
+        <div class="resource-meta">
+          <span class="resource-meta-tag">Interactive checklist</span>
+          <a href="#" class="resource-cta" onclick="openModal('consult');return false;">Get Checklist →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-card anim">
+      <div class="resource-thumb">📊</div>
+      <div class="resource-body">
+        <div class="resource-type">Report</div>
+        <div class="resource-title">2026 Healthcare Compliance Trends Report</div>
+        <div class="resource-desc">Our annual analysis of enforcement actions, emerging regulations, and the technologies reshaping healthcare compliance.</div>
+        <div class="resource-meta">
+          <span class="resource-meta-tag">Annual report · 2026</span>
+          <a href="#" class="resource-cta" onclick="openModal('consult');return false;">Download Free →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-card anim">
+      <div class="resource-thumb">⚡</div>
+      <div class="resource-body">
+        <div class="resource-type">Playbook</div>
+        <div class="resource-title">The Nonprofit Operations Playbook</div>
+        <div class="resource-desc">A practical guide for executive directors: streamlining operations, improving grant reporting, and building sustainable organizational capacity.</div>
+        <div class="resource-meta">
+          <span class="resource-meta-tag">30 pages · Jan 2026</span>
+          <a href="#" class="resource-cta" onclick="openModal('consult');return false;">Download Free →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-card anim">
+      <div class="resource-thumb">🔒</div>
+      <div class="resource-body">
+        <div class="resource-type">Guide</div>
+        <div class="resource-title">Cybersecurity for Small Healthcare Practices</div>
+        <div class="resource-desc">You don't need a CISO to be secure. This guide covers the 20 most impactful security controls for practices under 50 employees.</div>
+        <div class="resource-meta">
+          <span class="resource-meta-tag">18 pages · Dec 2025</span>
+          <a href="#" class="resource-cta" onclick="openModal('consult');return false;">Download Free →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="resource-card anim">
+      <div class="resource-thumb">📈</div>
+      <div class="resource-body">
+        <div class="resource-type">Template</div>
+        <div class="resource-title">ROI Calculator Template for Consulting Services</div>
+        <div class="resource-desc">Justify your consulting investment with hard numbers. Downloadable spreadsheet template with instructions and example scenarios.</div>
+        <div class="resource-meta">
+          <span class="resource-meta-tag">Excel template</span>
+          <a href="#" class="resource-cta" onclick="openModal('consult');return false;">Download Free →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTANT TOOLS PROMO -->
+<section class="section section-warm">
+  <div class="section-header anim" style="text-align:center">
+    <div class="section-tag section-tag-center">Premium Tools</div>
+    <h2 class="section-title section-title-center">Need More Than Free? <em>Start for Under $100</em></h2>
+    <p class="section-body" style="margin:0 auto">Our productized tools deliver consultant-grade deliverables at a fraction of the cost — with instant or 24-hour delivery. No call required.</p>
+  </div>
+  <div class="tools-promo anim">
+    <a href="/#products" class="tool-promo-card">
+      <div class="tool-promo-icon">📊</div>
+      <div class="tool-promo-name">Business Health Assessment</div>
+      <div class="tool-promo-price">$97</div>
+      <div class="tool-promo-desc">Scored assessment with branded PDF report</div>
+    </a>
+    <a href="/#products" class="tool-promo-card">
+      <div class="tool-promo-icon">🔒</div>
+      <div class="tool-promo-name">HIPAA Compliance Checklist</div>
+      <div class="tool-promo-price">$67</div>
+      <div class="tool-promo-desc">120+ action items with templates</div>
+    </a>
+    <a href="/#products" class="tool-promo-card">
+      <div class="tool-promo-icon">📋</div>
+      <div class="tool-promo-name">SOP Template Bundle</div>
+      <div class="tool-promo-price">$97</div>
+      <div class="tool-promo-desc">15 ready-to-use templates (Word/Docs)</div>
+    </a>
+    <a href="/#products" class="tool-promo-card">
+      <div class="tool-promo-icon">🌐</div>
+      <div class="tool-promo-name">SEO Audit Report</div>
+      <div class="tool-promo-price">$147</div>
+      <div class="tool-promo-desc">Technical SEO + competitor analysis</div>
+    </a>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="section" id="newsletter">
+  <div class="newsletter-container anim">
+    <div class="newsletter-content">
+      <div class="section-tag">Stay Informed</div>
+      <h2 class="section-title">Subscribe for <em>Weekly Insights</em></h2>
+      <p class="section-body">Compliance updates, AI trends, operational tips, and exclusive resources delivered to 2,000+ healthcare leaders every week.</p>
+      <div class="newsletter-form" id="newsletter-form">
+        <input type="email" placeholder="Enter your email address" id="newsletter-email" aria-label="Email for newsletter">
+        <button class="btn btn-gold" onclick="submitNewsletter()">Subscribe Free →</button>
+      </div>
+      <div class="newsletter-proof">📬 Join Dr. Sarah K., Marcus T., and 2,000+ subscribers</div>
+    </div>
+    <div class="newsletter-perks">
+      <div class="perk"><span class="perk-icon">📊</span><span>Weekly compliance alerts</span></div>
+      <div class="perk"><span class="perk-icon">🤖</span><span>AI & automation insights</span></div>
+      <div class="perk"><span class="perk-icon">📋</span><span>Free templates & checklists</span></div>
+      <div class="perk"><span class="perk-icon">🎓</span><span>Early access to webinars</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-tag section-tag-center">Need Expert Help?</div>
+  <h2 class="section-title section-title-center">Let's Talk About <em>Your Challenges</em></h2>
+  <p>Every conversation starts free. Tell us what you're facing and we'll recommend the fastest path to results.</p>
+  <div class="cta-btns">
+    <button class="btn btn-dark" onclick="openModal('consult')">Book Free Discovery Call</button>
+    <a href="/" class="btn btn-outline">Back to Home</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand"><img src="/assets/images/logo-dark-bg.png" alt="NLC" width="120" height="28"></div>
+      <p class="footer-tagline">Healthcare and business consulting for organizations that refuse to stay at the same level.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Services</div>
+      <ul class="footer-links">
+        <li><a href="/#services">Healthcare Consulting</a></li>
+        <li><a href="/#services">Compliance & Risk</a></li>
+        <li><a href="/#services">Technology & AI</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="/about.html">About NLC</a></li>
+        <li><a href="/case-studies.html">Case Studies</a></li>
+        <li><a href="/resources.html">Resources</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Get Started</div>
+      <ul class="footer-links">
+        <li><a href="/#plans">Retainer Plans</a></li>
+        <li><a href="/#products">Instant Tools</a></li>
+        <li><a href="tel:+18005551234">📞 (800) 555-1234</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 New Level Consultants. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Service · HIPAA Notice</span>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModalOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()" aria-label="Close modal">&times;</button>
+    <div class="modal-title" id="modal-title">Get Started</div>
+    <p class="modal-sub" id="modal-sub">Fill out the form below and we'll be in touch within 1 business day.</p>
+    <div class="step-indicators" id="step-indicators"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+    <div class="form-step active" id="form-step-1">
+      <div class="form-row"><div class="form-field"><label for="f-first">First Name</label><input type="text" placeholder="Jane" id="f-first" required></div><div class="form-field"><label for="f-last">Last Name</label><input type="text" placeholder="Smith" id="f-last" required></div></div>
+      <div class="form-field"><label for="f-email">Email Address</label><input type="email" placeholder="jane@yourorg.com" id="f-email" required></div>
+      <button class="btn btn-gold full-width" onclick="nextStep(2)">Continue →</button>
+    </div>
+    <div class="form-step" id="form-step-2">
+      <div class="form-field"><label for="f-org">Organization</label><input type="text" placeholder="Your organization name" id="f-org"></div>
+      <div class="form-field"><label for="f-size">Organization Size</label><select id="f-size"><option value="">Select...</option><option>1-10 employees</option><option>11-50 employees</option><option>51-200 employees</option><option>200+ employees</option></select></div>
+      <div class="form-field"><label for="f-industry">Industry</label><select id="f-industry"><option value="">Select...</option><option>Healthcare</option><option>Nonprofit</option><option>Legal</option><option>Technology</option><option>Other</option></select></div>
+      <div class="form-nav"><button class="btn btn-outline form-nav-back" onclick="nextStep(1)">← Back</button><button class="btn btn-gold form-nav-next" onclick="nextStep(3)">Continue →</button></div>
+    </div>
+    <div class="form-step" id="form-step-3">
+      <div class="form-field"><label for="f-msg">How can we help?</label><textarea placeholder="Describe your challenge or what you're looking for..." id="f-msg"></textarea></div>
+      <div class="form-field"><label for="f-contact">Preferred Contact Method</label><select id="f-contact"><option>Email</option><option>Phone</option><option>Either works</option></select></div>
+      <div class="form-nav"><button class="btn btn-outline form-nav-back" onclick="nextStep(2)">← Back</button><button class="btn btn-gold form-nav-next" onclick="submitModal()">Submit Request →</button></div>
+    </div>
+    <p class="form-note">We respond within 1 business day. No spam, ever.</p>
+  </div>
+</div>
+
+<script src="/assets/js/main.js" defer></script>
+</body>
+</html>

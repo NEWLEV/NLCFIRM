@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Case Studies | New Level Consultants — Proven Results</title>
+    <meta name="description" content="See real results from NLC clients: zero HIPAA audit findings, $127K annual savings from AI automation, 40% efficiency gains, and more. Documented outcomes, not hypotheticals." />
+    <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <style>
+      .page-hero { padding: 10rem 6rem 5rem; text-align: center; position: relative; overflow: hidden; }
+      .page-hero::before { content: ''; position: absolute; top: -50%; left: -30%; width: 800px; height: 800px; background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%); pointer-events: none; }
+      .page-hero h1 { margin-bottom: 1.2rem; }
+      .page-hero p { max-width: 60ch; margin: 0 auto; color: var(--text-dim); font-size: 1.05rem; line-height: 1.8; }
+
+      .stats-banner { display: flex; justify-content: center; gap: 4rem; padding: 2.5rem 3rem; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+      .stat-block { text-align: center; }
+      .stat-block .stat-big { font-family: var(--font-display); font-size: 2.8rem; color: var(--gold); }
+      .stat-block .stat-label { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.3rem; }
+
+      .cs-detail { padding: 5rem 6rem; border-bottom: 1px solid var(--border); }
+      .cs-detail:nth-child(even) { background: var(--bg-card); }
+      .cs-header { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; }
+      .cs-badge { background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: var(--bg); padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; }
+      .cs-detail h2 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.5rem; }
+      .cs-detail .cs-subtitle { color: var(--text-dim); font-size: 0.95rem; }
+
+      .cs-body { display: grid; grid-template-columns: 1.5fr 1fr; gap: 4rem; }
+      .cs-narrative h3 { font-size: 1.1rem; color: var(--gold); margin: 2rem 0 0.8rem; font-family: var(--font-display); }
+      .cs-narrative h3:first-child { margin-top: 0; }
+      .cs-narrative p { font-size: 0.88rem; color: var(--text-dim); line-height: 1.8; }
+      .cs-narrative ul { padding-left: 1.2rem; }
+      .cs-narrative li { font-size: 0.88rem; color: var(--text-dim); line-height: 1.8; margin-bottom: 0.3rem; }
+
+      .cs-results-panel { background: var(--bg-glass); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; height: fit-content; position: sticky; top: 6rem; }
+      .cs-results-panel h4 { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; }
+      .result-row { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 0; border-bottom: 1px solid var(--border); }
+      .result-row:last-of-type { border-bottom: none; }
+      .result-label { font-size: 0.8rem; color: var(--text-dim); }
+      .result-value { font-family: var(--font-display); font-size: 1.3rem; color: var(--gold); font-weight: 600; }
+      .result-before { font-size: 0.8rem; color: var(--text-muted); text-decoration: line-through; margin-right: 0.5rem; }
+
+      .cs-quote-block { background: rgba(201,168,76,0.06); border-left: 3px solid var(--gold); padding: 1.2rem 1.5rem; margin-top: 2rem; border-radius: 0 var(--radius) var(--radius) 0; }
+      .cs-quote-block q { font-family: var(--font-display); font-style: italic; font-size: 0.95rem; color: rgba(240,236,227,0.85); display: block; margin-bottom: 0.5rem; }
+      .cs-quote-block .q-author { font-size: 0.72rem; color: var(--text-muted); }
+
+      @media (max-width: 960px) {
+        .page-hero { padding: 8rem 1.5rem 3rem; }
+        .stats-banner { flex-wrap: wrap; gap: 2rem; padding: 2rem 1.5rem; }
+        .cs-detail { padding: 3rem 1.5rem; }
+        .cs-body { grid-template-columns: 1fr; gap: 2rem; }
+        .cs-results-panel { position: static; }
+      }
+    </style>
+  </head>
+  <body>
+
+<!-- NAV -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="New Level Consultants Home">
+    <img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants" width="180" height="40">
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#plans">Plans</a></li>
+    <li><a href="/#products">Instant Tools</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/case-studies.html" style="color:var(--gold)">Results</a></li>
+    <li><a href="/resources.html">Resources</a></li>
+    <li><a href="tel:+18005551234" class="nav-phone" aria-label="Call us">📞 (800) 555-1234</a></li>
+    <li><a href="#" class="nav-cta" onclick="openModal('consult');return false;">Get Started Free</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="/#services" onclick="toggleDrawer()">Services</a>
+  <a href="/#plans" onclick="toggleDrawer()">Plans</a>
+  <a href="/about.html" onclick="toggleDrawer()">About</a>
+  <a href="/case-studies.html" onclick="toggleDrawer()">Results</a>
+  <a href="/resources.html" onclick="toggleDrawer()">Resources</a>
+  <a href="#" onclick="openModal('consult');toggleDrawer();return false;" class="nav-cta">Get Started Free →</a>
+</div>
+
+<section class="page-hero">
+  <div class="eyebrow" style="justify-content:center">Documented Outcomes</div>
+  <h1>Real Organizations. <em>Real Results.</em></h1>
+  <p>These aren't hypothetical case studies written by marketing teams. These are documented outcomes from organizations who trusted us with their biggest challenges.</p>
+</section>
+
+<!-- STATS BANNER -->
+<div class="stats-banner">
+  <div class="stat-block"><div class="stat-big">200+</div><div class="stat-label">Organizations Served</div></div>
+  <div class="stat-block"><div class="stat-big">98%</div><div class="stat-label">Client Retention</div></div>
+  <div class="stat-block"><div class="stat-big">$4.2M+</div><div class="stat-label">Client Savings Generated</div></div>
+  <div class="stat-block"><div class="stat-big">0</div><div class="stat-label">Avg. Audit Findings After NLC</div></div>
+</div>
+
+<!-- CASE STUDY 1 -->
+<div class="cs-detail">
+  <div class="cs-header"><div class="cs-badge">🏥 Healthcare</div></div>
+  <h2>Community Health Center Achieves Zero HIPAA Audit Findings</h2>
+  <div class="cs-subtitle">Multi-site community health center · Growth Retainer · 18-month engagement</div>
+  <div class="cs-body" style="margin-top:2rem">
+    <div class="cs-narrative">
+      <h3>The Challenge</h3>
+      <p>A 4-site community health center had failed two consecutive external HIPAA audits with 32% of items flagged as non-compliant. Staff were overwhelmed, policies were outdated, and there was no formal risk assessment or breach notification process. The organization faced potential penalties of up to $1.5M.</p>
+
+      <h3>Our Approach</h3>
+      <ul>
+        <li>Comprehensive HIPAA gap analysis across all 4 sites</li>
+        <li>Rebuilt all 47 policies and procedures from scratch</li>
+        <li>Implemented a formal risk assessment methodology</li>
+        <li>Trained 120+ staff members on HIPAA fundamentals</li>
+        <li>Deployed NLC monitoring dashboard for ongoing compliance tracking</li>
+        <li>Established breach notification SOPs and incident response protocols</li>
+      </ul>
+
+      <h3>The Outcome</h3>
+      <p>Within 12 months, the organization passed its first external HIPAA audit with <strong>zero findings</strong> — a result they had never achieved in their 20-year history. The compliance program is now self-sustaining with NLC providing quarterly reviews.</p>
+
+      <div class="cs-quote-block">
+        <q>"Zero findings on our first external audit — that had never happened before. NLC didn't just fix our compliance, they built a program that sustains itself."</q>
+        <div class="q-author">— Rachel M., COO</div>
+      </div>
+    </div>
+    <div class="cs-results-panel">
+      <h4>Documented Results</h4>
+      <div class="result-row"><span class="result-label">Audit Findings</span><span><span class="result-before">32%</span> <span class="result-value">0</span></span></div>
+      <div class="result-row"><span class="result-label">Policies Updated</span><span class="result-value">47</span></div>
+      <div class="result-row"><span class="result-label">Staff Trained</span><span class="result-value">120+</span></div>
+      <div class="result-row"><span class="result-label">Penalty Risk Avoided</span><span class="result-value">$1.5M</span></div>
+      <div class="result-row"><span class="result-label">Time to Zero Findings</span><span class="result-value">12 mo</span></div>
+      <div class="result-row"><span class="result-label">Plan Used</span><span class="result-value">Growth</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE STUDY 2 -->
+<div class="cs-detail">
+  <div class="cs-header"><div class="cs-badge">💻 Telehealth</div></div>
+  <h2>AI Billing Automation Saves $127K Annually</h2>
+  <div class="cs-subtitle">Telehealth practice · Growth Retainer + AI Project · 8-month engagement</div>
+  <div class="cs-body" style="margin-top:2rem">
+    <div class="cs-narrative">
+      <h3>The Challenge</h3>
+      <p>A growing telehealth practice with 15 providers was spending 40+ hours per week on manual billing tasks. Claim denial rates were at 18% (industry average: 5-10%), and the billing team of 3 was struggling to keep up with volume that had tripled during the post-pandemic telehealth boom.</p>
+
+      <h3>Our Approach</h3>
+      <ul>
+        <li>Audited the full revenue cycle from scheduling to payment</li>
+        <li>Identified 23 specific automation opportunities</li>
+        <li>Deployed AI-powered claims scrubbing before submission</li>
+        <li>Automated patient eligibility verification</li>
+        <li>Built custom reporting dashboard for real-time revenue metrics</li>
+        <li>Re-trained billing staff on exception-based workflows</li>
+      </ul>
+
+      <h3>The Outcome</h3>
+      <p>The practice saved 30+ hours per month in manual billing work, reduced claim denials from 18% to 3.2%, and achieved <strong>$127K in annual savings</strong> through reduced labor costs and improved first-pass resolution rates. The ROI from the first quarter alone justified the entire year's retainer.</p>
+
+      <div class="cs-quote-block">
+        <q>"The ROI in the first quarter justified the entire year's retainer. Our billing team went from firefighting to strategic oversight."</q>
+        <div class="q-author">— Dr. David T., Founder</div>
+      </div>
+    </div>
+    <div class="cs-results-panel">
+      <h4>Documented Results</h4>
+      <div class="result-row"><span class="result-label">Hours Saved/Month</span><span class="result-value">30+</span></div>
+      <div class="result-row"><span class="result-label">Annual Savings</span><span class="result-value">$127K</span></div>
+      <div class="result-row"><span class="result-label">Claim Denial Rate</span><span><span class="result-before">18%</span> <span class="result-value">3.2%</span></span></div>
+      <div class="result-row"><span class="result-label">Automations Deployed</span><span class="result-value">23</span></div>
+      <div class="result-row"><span class="result-label">ROI Timeline</span><span class="result-value">90 days</span></div>
+      <div class="result-row"><span class="result-label">Plan Used</span><span class="result-value">Growth + AI</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE STUDY 3 -->
+<div class="cs-detail">
+  <div class="cs-header"><div class="cs-badge">🤝 Nonprofit</div></div>
+  <h2>Nonprofit Secures $2.1M in Grant Funding After Restructuring</h2>
+  <div class="cs-subtitle">501(c)(3) nonprofit · Enterprise Partnership · 24-month engagement</div>
+  <div class="cs-body" style="margin-top:2rem">
+    <div class="cs-narrative">
+      <h3>The Challenge</h3>
+      <p>A community-based nonprofit was struggling with outdated operations, inconsistent grant reporting, and declining funding. Their executive director was carrying both strategic and administrative burdens, and the board was considering scaling back programs.</p>
+
+      <h3>Our Approach</h3>
+      <ul>
+        <li>Conducted a full organizational assessment using our Business Health Assessment tool</li>
+        <li>Redesigned reporting workflows for 4 major federal grants</li>
+        <li>Built a compliance-ready data infrastructure</li>
+        <li>Created a KPI dashboard for board and funder presentations</li>
+        <li>Wrote and submitted 6 new grant applications</li>
+        <li>Implemented staff development program and succession plan</li>
+      </ul>
+
+      <h3>The Outcome</h3>
+      <p>Within 24 months, the organization secured <strong>$2.1M in new grant funding</strong>, saw a 40% increase in operational efficiency, and transitioned from survival mode to strategic growth. The executive director now spends 70% of time on mission work instead of back-office tasks.</p>
+
+      <div class="cs-quote-block">
+        <q>"NLC helped us restructure and secure funding we didn't think was possible. They became a true extension of our leadership team."</q>
+        <div class="q-author">— Sandra J., Executive Director</div>
+      </div>
+    </div>
+    <div class="cs-results-panel">
+      <h4>Documented Results</h4>
+      <div class="result-row"><span class="result-label">Grant Funding Secured</span><span class="result-value">$2.1M</span></div>
+      <div class="result-row"><span class="result-label">Efficiency Increase</span><span class="result-value">40%</span></div>
+      <div class="result-row"><span class="result-label">Grants Written</span><span class="result-value">6</span></div>
+      <div class="result-row"><span class="result-label">ED Strategic Time</span><span><span class="result-before">30%</span> <span class="result-value">70%</span></span></div>
+      <div class="result-row"><span class="result-label">Programs Expanded</span><span class="result-value">3</span></div>
+      <div class="result-row"><span class="result-label">Plan Used</span><span class="result-value">Enterprise</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-tag section-tag-center">Your Story Could Be Next</div>
+  <h2 class="section-title section-title-center">Let's Build <em>Your Case Study</em></h2>
+  <p>Every engagement starts with a free, no-pressure discovery call. Let's explore what measurable results look like for your organization.</p>
+  <div class="cta-btns">
+    <button class="btn btn-dark" onclick="openModal('consult')">Book Free Discovery Call</button>
+    <a href="/" class="btn btn-outline">Back to Home</a>
+  </div>
+</section>
+
+<!-- FOOTER (same as about) -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand"><img src="/assets/images/logo-dark-bg.png" alt="NLC" width="120" height="28"></div>
+      <p class="footer-tagline">Healthcare and business consulting for organizations that refuse to stay at the same level.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Services</div>
+      <ul class="footer-links">
+        <li><a href="/#services">Healthcare Consulting</a></li>
+        <li><a href="/#services">Compliance & Risk</a></li>
+        <li><a href="/#services">Technology & AI</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="/about.html">About NLC</a></li>
+        <li><a href="/case-studies.html">Case Studies</a></li>
+        <li><a href="/resources.html">Resources</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Get Started</div>
+      <ul class="footer-links">
+        <li><a href="/#plans">Retainer Plans</a></li>
+        <li><a href="/#products">Instant Tools</a></li>
+        <li><a href="tel:+18005551234">📞 (800) 555-1234</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 New Level Consultants. All rights reserved.</span>
+    <span>Privacy Policy · Terms of Service · HIPAA Notice</span>
+  </div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModalOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()" aria-label="Close modal">&times;</button>
+    <div class="modal-title" id="modal-title">Get Started</div>
+    <p class="modal-sub" id="modal-sub">Fill out the form below and we'll be in touch within 1 business day.</p>
+    <div class="step-indicators" id="step-indicators"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+    <div class="form-step active" id="form-step-1">
+      <div class="form-row"><div class="form-field"><label for="f-first">First Name</label><input type="text" placeholder="Jane" id="f-first" required></div><div class="form-field"><label for="f-last">Last Name</label><input type="text" placeholder="Smith" id="f-last" required></div></div>
+      <div class="form-field"><label for="f-email">Email Address</label><input type="email" placeholder="jane@yourorg.com" id="f-email" required></div>
+      <button class="btn btn-gold full-width" onclick="nextStep(2)">Continue →</button>
+    </div>
+    <div class="form-step" id="form-step-2">
+      <div class="form-field"><label for="f-org">Organization</label><input type="text" placeholder="Your organization name" id="f-org"></div>
+      <div class="form-field"><label for="f-size">Organization Size</label><select id="f-size"><option value="">Select...</option><option>1-10 employees</option><option>11-50 employees</option><option>51-200 employees</option><option>200+ employees</option></select></div>
+      <div class="form-field"><label for="f-industry">Industry</label><select id="f-industry"><option value="">Select...</option><option>Healthcare</option><option>Nonprofit</option><option>Legal</option><option>Technology</option><option>Other</option></select></div>
+      <div class="form-nav"><button class="btn btn-outline form-nav-back" onclick="nextStep(1)">← Back</button><button class="btn btn-gold form-nav-next" onclick="nextStep(3)">Continue →</button></div>
+    </div>
+    <div class="form-step" id="form-step-3">
+      <div class="form-field"><label for="f-msg">How can we help?</label><textarea placeholder="Describe your challenge or what you're looking for..." id="f-msg"></textarea></div>
+      <div class="form-field"><label for="f-contact">Preferred Contact Method</label><select id="f-contact"><option>Email</option><option>Phone</option><option>Either works</option></select></div>
+      <div class="form-nav"><button class="btn btn-outline form-nav-back" onclick="nextStep(2)">← Back</button><button class="btn btn-gold form-nav-next" onclick="submitModal()">Submit Request →</button></div>
+    </div>
+    <p class="form-note">We respond within 1 business day. No spam, ever.</p>
+  </div>
+</div>
+
+<script src="/assets/js/main.js" defer></script>
+</body>
+</html>

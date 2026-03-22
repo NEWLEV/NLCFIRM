@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — New Level Consultants</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+</head>
+<body class="admin-page">
+
+  <!-- HEADER -->
+  <header class="admin-header">
+    <div class="admin-header-left">
+      <a href="/"><img src="/assets/images/logo-dark-bg.png" alt="NLC" height="28"></a>
+      <h1>Admin Dashboard</h1>
+    </div>
+    <div class="admin-header-right">
+      <span class="admin-role-badge" id="admin-role-badge"></span>
+      <span class="admin-user" id="admin-email"></span>
+      <button class="btn btn-outline btn-sm">Sign Out</button>
+    </div>
+  </header>
+
+  <!-- SIDEBAR + MAIN LAYOUT -->
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="admin-sidebar">
+      <nav class="sidebar-nav">
+        <button class="sidebar-link active" data-tab="dashboard">
+          <span class="sidebar-icon">📊</span> Dashboard
+        </button>
+        <button class="sidebar-link" data-tab="submissions">
+          <span class="sidebar-icon">📋</span> Submissions
+        </button>
+        <button class="sidebar-link" data-tab="exit-leads">
+          <span class="sidebar-icon">📧</span> Exit Leads
+        </button>
+        <button class="sidebar-link" data-tab="services">
+          <span class="sidebar-icon">🏷️</span> Services
+        </button>
+        <button class="sidebar-link" data-tab="testimonials">
+          <span class="sidebar-icon">⭐</span> Testimonials
+        </button>
+        <button class="sidebar-link" data-tab="faq">
+          <span class="sidebar-icon">❓</span> FAQ
+        </button>
+        <button class="sidebar-link" data-tab="site-settings">
+          <span class="sidebar-icon">⚙️</span> Site Settings
+        </button>
+        <button class="sidebar-link" data-tab="chat-logs">
+          <span class="sidebar-icon">💬</span> Chat Logs
+        </button>
+        <button class="sidebar-link" data-tab="clients">
+          <span class="sidebar-icon">🤝</span> Clients
+        </button>
+        <div class="sidebar-divider"></div>
+        <button class="sidebar-link" data-tab="users" id="nav-users" style="display:none">
+          <span class="sidebar-icon">👥</span> Users
+        </button>
+        <button class="sidebar-link" data-tab="audit-log" id="nav-audit" style="display:none">
+          <span class="sidebar-icon">📜</span> Audit Log
+        </button>
+        <button class="sidebar-link" data-tab="settings">
+          <span class="sidebar-icon">🔑</span> My Account
+        </button>
+      </nav>
+    </aside>
+
+    <main class="admin-main">
+
+      <!-- ═══ DASHBOARD TAB ═══ -->
+      <div class="tab-content active" id="tab-dashboard">
+        <div class="page-title">Dashboard Overview</div>
+        <div class="stats-grid" id="stats-grid">
+          <div class="stat-card"><div class="stat-card-label">Total Submissions</div><div class="stat-card-value" id="stat-total">—</div><div class="stat-card-sub">All time</div></div>
+          <div class="stat-card"><div class="stat-card-label">Last 30 Days</div><div class="stat-card-value" id="stat-30d">—</div><div class="stat-card-sub">New submissions</div></div>
+          <div class="stat-card"><div class="stat-card-label">Exit Leads</div><div class="stat-card-value" id="stat-leads">—</div><div class="stat-card-sub">Email captures</div></div>
+          <div class="stat-card"><div class="stat-card-label">Chat Sessions</div><div class="stat-card-value" id="stat-chats">—</div><div class="stat-card-sub">Chatbot conversations</div></div>
+        </div>
+
+        <!-- Status breakdown -->
+        <div class="dashboard-grid">
+          <div class="card">
+            <div class="card-header">Submissions by Status</div>
+            <div id="status-breakdown" class="status-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-header">Recent Activity</div>
+            <div id="recent-activity" class="activity-feed"></div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:1rem">
+          <div class="card-header">Recent Submissions</div>
+          <div id="recent-submissions-container">
+            <table class="data-table">
+              <thead><tr><th>Name</th><th>Email</th><th>Service</th><th>Status</th><th>Date</th></tr></thead>
+              <tbody id="recent-submissions-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ SUBMISSIONS TAB ═══ -->
+      <div class="tab-content" id="tab-submissions">
+        <div class="page-title">Submissions</div>
+        <div class="table-controls">
+          <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+            <input type="text" class="search-input" id="search-input" placeholder="Search by name, email, org...">
+            <select class="filter-select" id="status-filter">
+              <option value="all">All Statuses</option>
+              <option value="new">New</option>
+              <option value="contacted">Contacted</option>
+              <option value="qualified">Qualified</option>
+              <option value="closed-won">Closed Won</option>
+              <option value="closed-lost">Closed Lost</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:0.5rem">
+            <button class="btn btn-outline btn-sm">📥 Export CSV</button>
+            <button class="btn btn-outline btn-sm">↻ Refresh</button>
+          </div>
+        </div>
+
+        <div id="submissions-table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th><th>Name</th><th>Email</th><th>Organization</th>
+                <th>Service</th><th>Status</th><th>Date</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="submissions-body"></tbody>
+          </table>
+        </div>
+        <div id="submissions-empty" class="empty-state" hidden>
+          <div class="empty-state-icon">📋</div>
+          <div class="empty-state-text">No submissions yet. They'll appear here when visitors submit the form.</div>
+        </div>
+      </div>
+
+      <!-- ═══ EXIT LEADS TAB ═══ -->
+      <div class="tab-content" id="tab-exit-leads">
+        <div class="page-title">Exit-Intent Leads</div>
+        <div class="table-controls">
+          <div></div>
+          <div style="display:flex;gap:0.5rem">
+            <button class="btn btn-outline btn-sm">📥 Export CSV</button>
+            <button class="btn btn-outline btn-sm">↻ Refresh</button>
+          </div>
+        </div>
+        <div id="leads-table-container">
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Email</th><th>Captured At</th><th>Actions</th></tr></thead>
+            <tbody id="leads-body"></tbody>
+          </table>
+        </div>
+        <div id="leads-empty" class="empty-state" hidden>
+          <div class="empty-state-icon">📧</div>
+          <div class="empty-state-text">No exit-intent leads captured yet.</div>
+        </div>
+      </div>
+
+      <!-- ═══ SERVICES TAB ═══ -->
+      <div class="tab-content" id="tab-services">
+        <div class="page-title-row">
+          <div class="page-title">Services Management</div>
+          <button class="btn btn-gold btn-sm">+ Add Service</button>
+        </div>
+        <p class="page-desc">Manage your à la carte service catalog. Toggle visibility to hide/show services on the website.</p>
+
+        <div class="filter-row">
+          <select class="filter-select" id="service-category-filter">
+            <option value="">All Categories</option>
+            <option value="Healthcare-Specific Consulting">Healthcare-Specific</option>
+            <option value="Compliance & Risk Management">Compliance & Risk</option>
+            <option value="Operations & Process">Operations & Process</option>
+            <option value="Technology & AI">Technology & AI</option>
+            <option value="HR & Workforce">HR & Workforce</option>
+            <option value="Marketing & Growth">Marketing & Growth</option>
+          </select>
+        </div>
+
+        <div id="services-list-container"></div>
+      </div>
+
+      <!-- ═══ TESTIMONIALS TAB ═══ -->
+      <div class="tab-content" id="tab-testimonials">
+        <div class="page-title-row">
+          <div class="page-title">Testimonials</div>
+          <button class="btn btn-gold btn-sm">+ Add Testimonial</button>
+        </div>
+        <p class="page-desc">Manage client testimonials shown on the website. Toggle visibility to show/hide.</p>
+        <div id="testimonials-list-container"></div>
+      </div>
+
+      <!-- ═══ FAQ TAB ═══ -->
+      <div class="tab-content" id="tab-faq">
+        <div class="page-title-row">
+          <div class="page-title">FAQ Management</div>
+          <button class="btn btn-gold btn-sm">+ Add FAQ</button>
+        </div>
+        <p class="page-desc">Manage frequently asked questions. Toggle visibility or reorder.</p>
+        <div id="faq-list-container"></div>
+      </div>
+
+      <!-- ═══ SITE SETTINGS TAB ═══ -->
+      <div class="tab-content" id="tab-site-settings">
+        <div class="page-title">Site Settings</div>
+        <p class="page-desc">Edit website copy, SEO meta tags, contact information, and trust badges. Changes are saved and can be pulled into the front-end dynamically.</p>
+        <div id="settings-form-container"></div>
+      </div>
+
+      <!-- ═══ CHAT LOGS TAB ═══ -->
+      <section id="tab-chat-logs" class="tab-content" style="display:none;">
+        <h2 class="section-title">AI Chat Logs</h2>
+        <div class="card">
+          <p>These are the conversations users have had with the AI assistant.</p>
+          <div style="display: flex; gap: 2rem; margin-top: 1rem;">
+            <div style="flex: 1; max-width: 300px; border-right: 1px solid #e2e8f0; padding-right: 1rem;">
+              <ul id="chat-sessions-list" style="list-style:none; padding:0; margin:0;">
+                <!-- Chat sessions inserted here -->
+              </ul>
+            </div>
+            <div style="flex: 2;">
+              <div id="chat-messages-container" style="background: #f8fafc; padding: 1rem; border-radius: 8px; min-height: 400px; max-height: 600px; overflow-y: auto;">
+                <p style="color:var(--color-slate); text-align:center;">Select a session to view the transcript.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══ CLIENTS TAB ═══ -->
+      <section id="tab-clients" class="tab-content" style="display:none;">
+        <h2 class="section-title">Client Portal Users</h2>
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <p>Manage registered clients and grant them access to digital products.</p>
+            <button class="btn btn-gold btn-sm">Grant Access</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Company</th>
+                <th>Purchases</th>
+                <th>Date Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="clients-tbody">
+              <!-- Clients loaded via JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ═══ USERS TAB (super_admin) ═══ -->
+      <div class="tab-content" id="tab-users">
+        <div class="page-title-row">
+          <div class="page-title">User Management</div>
+          <button class="btn btn-gold btn-sm">+ Add User</button>
+        </div>
+        <p class="page-desc">Manage admin accounts. Only super admins can create or deactivate accounts.</p>
+        <div id="users-list-container"></div>
+      </div>
+
+      <!-- ═══ AUDIT LOG TAB (super_admin) ═══ -->
+      <div class="tab-content" id="tab-audit-log">
+        <div class="page-title">Audit Log</div>
+        <p class="page-desc">Track all administrative actions with timestamps and user attribution.</p>
+        <div id="audit-log-container"></div>
+      </div>
+
+      <!-- ═══ ACCOUNT SETTINGS TAB ═══ -->
+      <div class="tab-content" id="tab-settings">
+        <div class="page-title">My Account</div>
+        <div class="settings-grid">
+          <div class="settings-card">
+            <h3>Profile</h3>
+            <div id="profile-msg" class="settings-msg" hidden></div>
+            <form>
+              <div class="form-field"><label for="profile-name">Display Name</label><input type="text" id="profile-name" required></div>
+              <div class="form-field"><label>Email</label><input type="email" id="profile-email" disabled></div>
+              <div class="form-field"><label>Role</label><input type="text" id="profile-role" disabled></div>
+              <button type="submit" class="btn btn-gold">Save Profile</button>
+            </form>
+          </div>
+          <div class="settings-card">
+            <h3>Change Password</h3>
+            <div id="settings-msg" class="settings-msg" hidden></div>
+            <form>
+              <div class="form-field"><label for="current-pw">Current Password</label><input type="password" id="current-pw" required></div>
+              <div class="form-field"><label for="new-pw">New Password</label><input type="password" id="new-pw" required minlength="8"></div>
+              <div class="form-field"><label for="confirm-pw">Confirm New Password</label><input type="password" id="confirm-pw" required minlength="8"></div>
+              <button type="submit" class="btn btn-gold">Update Password</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ═══ MODAL (reusable for all forms) ═══ -->
+  <div class="admin-modal-overlay" id="admin-modal">
+    <div class="admin-modal">
+      <div class="admin-modal-header">
+        <h3 id="admin-modal-title">Form</h3>
+        <button class="modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="admin-modal-body" id="admin-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ═══ SUBMISSION DETAIL DRAWER ═══ -->
+  <div class="detail-drawer-overlay" id="detail-drawer">
+    <div class="detail-drawer">
+      <div class="detail-drawer-header">
+        <h3>Submission Detail</h3>
+        <button class="modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div class="detail-drawer-body" id="detail-drawer-body"></div>
+    </div>
+  </div>
+
+
+
+  <script src="/assets/js/admin.js"></script>
+</body>
+</html>
