@@ -1,6 +1,11 @@
 node_modules/
 .env
+# SQLite database files (including WAL/SHM journal files that contain sensitive data)
 *.db
+*.db-shm
+*.db-wal
 dist/
 .DS_Store
 Thumbs.db
+*.log
+output*.log

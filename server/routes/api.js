@@ -53,6 +53,11 @@ const upload = multer({
 //  PUBLIC ENDPOINTS
 // ═══════════════════════════════════════════════════════
 
+// GET /api/config/paypal — public endpoint to expose PayPal client ID for frontend SDK
+router.get('/config/paypal', (req, res) => {
+  res.json({ clientId: process.env.PAYPAL_CLIENT_ID || 'test' });
+});
+
 // POST /api/submissions — handle all form submissions
 router.post('/submissions', [
   body('firstName').trim().notEmpty().escape().withMessage('First name is required'),
@@ -391,7 +396,7 @@ router.post('/services', authenticateToken, [
   res.status(201).json({ message: 'Service created', id: result.lastInsertRowid });
 });
 
-router.patch('/services/:id', (req, res) => {
+router.patch('/services/:id', authenticateToken, (req, res) => {
   const db = getDb();
   const fields = ['category', 'name', 'description', 'price', 'price_unit', 'tags', 'is_visible', 'sort_order'];
   const updates = [];
@@ -449,7 +454,7 @@ router.post('/testimonials', authenticateToken, [
   res.status(201).json({ message: 'Testimonial created', id: result.lastInsertRowid });
 });
 
-router.patch('/testimonials/:id', (req, res) => {
+router.patch('/testimonials/:id', authenticateToken, (req, res) => {
   const db = getDb();
   const fields = ['quote', 'author_name', 'author_role', 'author_initials', 'rating', 'is_visible', 'sort_order'];
   const updates = [];
@@ -503,7 +508,7 @@ router.post('/faq', authenticateToken, [
   res.status(201).json({ message: 'FAQ created', id: result.lastInsertRowid });
 });
 
-router.patch('/faq/:id', (req, res) => {
+router.patch('/faq/:id', authenticateToken, (req, res) => {
   const db = getDb();
   const fields = ['question', 'answer', 'is_visible', 'sort_order'];
   const updates = [];
@@ -545,7 +550,7 @@ router.get('/settings', authenticateToken, (req, res) => {
   res.json({ settings: db.prepare(query).all(...params) });
 });
 
-router.patch('/settings', (req, res) => {
+router.patch('/settings', authenticateToken, (req, res) => {
   const db = getDb();
   const { updates } = req.body; // Array of { key, value }
   if (!updates || !Array.isArray(updates)) {
@@ -647,7 +652,7 @@ router.post('/admin/clients/:id/purchases', [
 });
 
 // POST /api/admin/upload
-router.post('/admin/upload', authenticateToken, requireRole(['super_admin', 'admin']), (req, res) => {
+router.post('/admin/upload', authenticateToken, requireRole('super_admin', 'admin'), (req, res) => {
   upload.single('file')(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       return res.status(400).json({ error: 'Multer error: ' + err.message });

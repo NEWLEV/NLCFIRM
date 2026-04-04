@@ -129,6 +129,28 @@
     setText('roi-total', '$' + savingsAmt.toLocaleString());
   };
 
+  window.submitROIReport = async function () {
+    var emailInput = document.getElementById('roi-email');
+    var email = emailInput ? emailInput.value.trim() : '';
+    if (!email || !email.includes('@')) {
+      if (emailInput) { emailInput.style.borderColor = 'var(--danger)'; setTimeout(function() { emailInput.style.borderColor = ''; }, 2000); }
+      return;
+    }
+    var savings = document.getElementById('roi-total') ? document.getElementById('roi-total').textContent : 'N/A';
+    var emp = document.getElementById('roi-emp') ? document.getElementById('roi-emp').value : '?';
+    try {
+      await fetch('/api/exit-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, source: 'roi-calculator', notes: 'Est. savings: ' + savings + ', Employees: ' + emp })
+      });
+      if (emailInput) emailInput.value = '';
+      var btn = document.querySelector('[onclick="submitROIReport()"]');
+      if (btn) { btn.textContent = '✓ Sent!'; btn.disabled = true; setTimeout(function() { btn.textContent = 'Send Report'; btn.disabled = false; }, 3000); }
+    } catch (e) {}
+  };
+
+
   // ─── MODAL ─────────────────────────────────────────
   var modalData = {
     consult: ['Book a Free Discovery Call', 'A focused 20-min session with a senior consultant — no pressure, just clarity on your best next step.'],
@@ -261,10 +283,6 @@
     }
   };
 
-  function showFieldError(msg) {
-    // Simple alert for now — could be upgraded to inline error display
-    alert(msg);
-  }
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
@@ -345,11 +363,11 @@
 
   // ─── SOCIAL PROOF TOASTS ───────────────────────────
   var toasts = [
-    { avatar: 'SJ', text: '<strong>Sandra J.</strong> purchased Business Health Assessment', time: '2 minutes ago' },
-    { avatar: 'MK', text: '<strong>Marcus K.</strong> enrolled in Growth Plan', time: '8 minutes ago' },
-    { avatar: 'AP', text: '<strong>Amanda P.</strong> booked a Free Discovery Call', time: '14 minutes ago' },
-    { avatar: 'DW', text: '<strong>Dr. Wilson</strong> purchased HIPAA Checklist Pack', time: '23 minutes ago' },
-    { avatar: 'TR', text: '<strong>Tara R.</strong> subscribed to AI Content Agent', time: '31 minutes ago' }
+    { avatar: '🏥', text: 'A <strong>community health center</strong> purchased Business Health Assessment', time: 'Recently' },
+    { avatar: '⚕️', text: 'A <strong>healthcare organization</strong> enrolled in the Growth Plan', time: 'Recently' },
+    { avatar: '📋', text: 'A <strong>medical practice</strong> booked a Free Discovery Call', time: 'Recently' },
+    { avatar: '🔒', text: 'A <strong>multi-site health system</strong> purchased the HIPAA Checklist Pack', time: 'Recently' },
+    { avatar: '🤖', text: 'A <strong>nonprofit clinic</strong> subscribed to the AI Content Agent', time: 'Recently' }
   ];
   var toastIdx = 0;
 

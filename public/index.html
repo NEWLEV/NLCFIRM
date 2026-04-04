@@ -484,7 +484,7 @@
       <p class="product-desc">Save $188. Every assessment, checklist, and template — all in one purchase.</p>
     </div>
     <div class="bundle-price">
-      <button class="btn btn-gold" onclick="openModal('bundle')">Get the Bundle →</button>
+      <button class="btn btn-gold" onclick="openCheckoutModal('bundle-all', 'All-in-One Tool Bundle (5 Tools)', 347)">Get the Bundle →</button>
     </div>
   </div>
 </section>
@@ -506,8 +506,13 @@
         <div class="big" id="roi-total">$62,400</div>
         <div class="sub">Based on industry averages and NLC client outcomes</div>
       </div>
-      <button class="btn btn-gold full-width" style="margin-top:1.2rem" onclick="openModal('consult')">Discuss Your ROI — Free Call</button>
+      <div style="margin-top:1rem;display:flex;gap:0.5rem;align-items:center;">
+        <input type="email" id="roi-email" placeholder="Email me this report" style="flex:1;padding:0.65rem 1rem;border:1px solid var(--color-gold-opacity);border-radius:8px;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='var(--color-gold)'" onblur="this.style.borderColor='var(--color-gold-opacity)'">
+        <button class="btn btn-gold" onclick="submitROIReport()" style="white-space:nowrap;padding:0.65rem 1.2rem;">Send Report</button>
+      </div>
+      <button class="btn btn-dark full-width" style="margin-top:0.75rem" onclick="openModal('consult')">Discuss Your ROI — Free Call</button>
     </div>
+
   </div>
 </section>
 
@@ -684,8 +689,9 @@
   </div>
   <div class="footer-bottom">
     <span>© 2026 New Level Consultants. All rights reserved.</span>
-    <span>Privacy Policy · Terms of Service · HIPAA Notice</span>
+    <span><a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Service</a> · <a href="/hipaa-notice.html">HIPAA Notice</a></span>
   </div>
+
 </footer>
 
 <!-- STICKY CTA BAR -->
@@ -783,7 +789,26 @@
   </div>
 
   <script src="/assets/js/main.js" defer></script>
-  <script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=<%= PAYPAL_CLIENT_ID %>&currency=USD" id="paypal-sdk"></script>
+  <script>
+    // Dynamically set PayPal client-id from server config
+    (function() {
+      var sdk = document.getElementById('paypal-sdk');
+      if (sdk) {
+        fetch('/api/config/paypal').then(r => r.json()).then(cfg => {
+          if (cfg && cfg.clientId && cfg.clientId !== 'test') {
+            var s = document.createElement('script');
+            s.src = 'https://www.paypal.com/sdk/js?client-id=' + cfg.clientId + '&currency=USD';
+            s.onload = function() { window.__paypalReady = true; };
+            document.head.appendChild(s);
+            sdk.remove();
+          } else {
+            console.warn('PayPal: Running in sandbox/test mode. Configure PAYPAL_CLIENT_ID in .env for live payments.');
+          }
+        }).catch(() => {});
+      }
+    })();
+  </script>
   <script src="/assets/js/checkout.js"></script>
 </body>
 </html>
