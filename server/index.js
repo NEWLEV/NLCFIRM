@@ -132,17 +132,20 @@ app.use((err, req, res, next) => {
 
 // ─── START ────────────────────────────────────────────
 // Initialize database before starting server
-getDb();
-
-app.listen(PORT, () => {
-  console.log('');
-  console.log('╔═══════════════════════════════════════════════════╗');
-  console.log('║   New Level Consultants — Server Running          ║');
-  console.log(`║   Local:  http://localhost:${PORT}                    ║`);
-  console.log(`║   Admin:  http://localhost:${PORT}/login.html         ║`);
-  console.log(`║   Mode:   ${(process.env.NODE_ENV || 'development').padEnd(15)}                 ║`);
-  console.log('╚═══════════════════════════════════════════════════╝');
-  console.log('');
+getDb().then(() => {
+  app.listen(PORT, () => {
+    console.log('');
+    console.log('╔═══════════════════════════════════════════════════╗');
+    console.log('║   New Level Consultants — Server Running          ║');
+    console.log(`║   Local:  http://localhost:${PORT}                    ║`);
+    console.log(`║   Admin:  http://localhost:${PORT}/login.html         ║`);
+    console.log(`║   Mode:   ${(process.env.NODE_ENV || 'development').padEnd(15)}                 ║`);
+    console.log('╚═══════════════════════════════════════════════════╝');
+    console.log('');
+  });
+}).catch(err => {
+  console.error('FATAL: Failed to initialize database:', err);
+  process.exit(1);
 });
 
 module.exports = app;

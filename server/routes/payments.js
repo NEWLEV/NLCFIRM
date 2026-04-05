@@ -10,15 +10,15 @@ const router = express.Router();
 // POST /api/payments/verify
 router.post('/verify', async (req, res) => {
   const { orderID, productID, productName, price, payerEmail, payerFirstName, payerLastName } = req.body;
-  const db = getDb();
-
+  
   try {
+    const db = await getDb();
     // 1. Verify the orderID via PayPal's Node SDK or API
     // (In a full production scenario, you would do a server-to-server call to verify the Order ID with PayPal)
     // For this implementation, we assume the frontend SDK handled the capture, but we still secure the DB insert.
     
     // 2. See if the client already exists
-    let client = db.prepare('SELECT id FROM clients WHERE email = ?').get(payerEmail);
+    let client = await db.get('SELECT id FROM clients WHERE email = ?', [payerEmail]);
     let clientId;
     let isNewClient = false;
     let generatedPassword = null;
@@ -28,14 +28,14 @@ router.post('/verify', async (req, res) => {
     } else {
       // Create new client account automatically
       generatedPassword = crypto.randomBytes(8).toString('hex');
-      const hash = bcrypt.hashSync(generatedPassword, 12);
+      const hash = await bcrypt.hash(generatedPassword, 12);
       
-      const insertResult = db.prepare(`
+      const insertResult = await db.run(`
         INSERT INTO clients (email, password_hash, first_name, last_name, is_active)
         VALUES (?, ?, ?, ?, 1)
-      `).run(payerEmail, hash, payerFirstName, payerLastName);
+      `, [payerEmail, hash, payerFirstName, payerLastName]);
       
-      clientId = insertResult.lastInsertRowid;
+      clientId = insertResult.lastID;
       isNewClient = true;
     }
 
@@ -44,10 +44,10 @@ router.post('/verify', async (req, res) => {
     // Here we'll map productID to a placeholder secure link. In a real CMS, this would pull from a `products` table.
     const accessLink = `https://nlcfirm.com/downloads/${productID}.pdf`; 
 
-    db.prepare(`
+    await db.run(`
       INSERT INTO client_purchases (client_id, product_id, product_name, access_link)
       VALUES (?, ?, ?, ?)
-    `).run(clientId, productID, productName, accessLink);
+    `, [clientId, productID, productName, accessLink]);
 
     // 4. Send Email Notification
     if (isNewClient) {
