@@ -9,3 +9,5 @@ dist/
 Thumbs.db
 *.log
 output*.log
+test-*.js
+logs/

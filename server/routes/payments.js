@@ -12,14 +12,13 @@ router.post('/verify', async (req, res) => {
   const { orderID, productID, productName, price, payerEmail, payerFirstName, payerLastName } = req.body;
   
   try {
-    const db = await getDb();
+    const db = getDb();
     // 1. Verify the orderID via PayPal's Node SDK or API
     // (In a full production scenario, you would do a server-to-server call to verify the Order ID with PayPal)
     // For this implementation, we assume the frontend SDK handled the capture, but we still secure the DB insert.
     
     // 2. See if the client already exists
-    const [clients] = await db.execute('SELECT id FROM clients WHERE email = ?', [payerEmail]);
-    const client = clients[0];
+    let client = db.prepare('SELECT id FROM clients WHERE email = ?').get(payerEmail);
     let clientId;
     let isNewClient = false;
     let generatedPassword = null;
@@ -31,12 +30,12 @@ router.post('/verify', async (req, res) => {
       generatedPassword = crypto.randomBytes(8).toString('hex');
       const hash = await bcrypt.hash(generatedPassword, 12);
       
-      const [insertResult] = await db.execute(`
+      const insertResult = db.prepare(`
         INSERT INTO clients (email, password_hash, first_name, last_name, is_active)
         VALUES (?, ?, ?, ?, 1)
-      `, [payerEmail, hash, payerFirstName, payerLastName]);
+      `).run(payerEmail, hash, payerFirstName, payerLastName);
       
-      clientId = insertResult.insertId;
+      clientId = insertResult.lastInsertRowid;
       isNewClient = true;
     }
 
@@ -45,10 +44,10 @@ router.post('/verify', async (req, res) => {
     // Here we'll map productID to a placeholder secure link. In a real CMS, this would pull from a `products` table.
     const accessLink = `https://nlcfirm.com/downloads/${productID}.pdf`; 
 
-    await db.execute(`
+    db.prepare(`
       INSERT INTO client_purchases (client_id, product_id, product_name, access_link)
       VALUES (?, ?, ?, ?)
-    `, [clientId, productID, productName, accessLink]);
+    `).run(clientId, productID, productName, accessLink);
 
     // 4. Send Email Notification
     if (isNewClient) {

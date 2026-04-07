@@ -44,20 +44,20 @@ router.post('/auth/register', [
   const { firstName, lastName, email, password, phone, company } = req.body;
   
   try {
-    const db = await getDb();
-    const [existingRows] = await db.execute('SELECT id FROM clients WHERE email = ?', [email]);
-    if (existingRows.length > 0) {
+    const db = getDb();
+    const existing = db.prepare('SELECT id FROM clients WHERE email = ?').get(email);
+    if (existing) {
       return res.status(400).json({ error: 'Email already in use' });
     }
 
     const hash = await bcrypt.hash(password, 12);
-    const [result] = await db.execute(`
+    const result = db.prepare(`
       INSERT INTO clients (email, password_hash, first_name, last_name, phone, company)
       VALUES (?, ?, ?, ?, ?, ?)
-    `, [email, hash, firstName, lastName, phone || null, company || null]);
+    `).run(email, hash, firstName, lastName, phone || null, company || null);
     
     // Automatically log them in
-    const newClientId = result.insertId;
+    const newClientId = result.lastInsertRowid;
     const token = jwt.sign(
       { id: newClientId, email, role: 'client' },
       process.env.JWT_SECRET,
@@ -91,9 +91,8 @@ router.post('/auth/login', [
   const { email, password } = req.body;
   
   try {
-    const db = await getDb();
-    const [clients] = await db.execute('SELECT * FROM clients WHERE email = ?', [email]);
-    const client = clients[0];
+    const db = getDb();
+    const client = db.prepare('SELECT * FROM clients WHERE email = ?').get(email);
     if (!client) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
@@ -107,7 +106,7 @@ router.post('/auth/login', [
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    await db.execute("UPDATE clients SET last_login = NOW() WHERE id = ?", [client.id]);
+    db.prepare("UPDATE clients SET last_login = datetime('now') WHERE id = ?").run(client.id);
 
     const token = jwt.sign(
       { id: client.id, email: client.email, role: 'client' },
@@ -144,9 +143,8 @@ router.post('/auth/forgot-password', [
   const { email } = req.body;
   
   try {
-    const db = await getDb();
-    const [clients] = await db.execute('SELECT id, email FROM clients WHERE email = ?', [email]);
-    const client = clients[0];
+    const db = getDb();
+    const client = db.prepare('SELECT id, email FROM clients WHERE email = ?').get(email);
     if (!client) {
       // Security best practice: don't reveal if user exists. 
       // Just say if account exists, email was sent.
@@ -154,9 +152,9 @@ router.post('/auth/forgot-password', [
     }
 
     const token = crypto.randomBytes(32).toString('hex');
-    const expires = new Date(Date.now() + 3600000); // 1 hour
+    const expires = new Date(Date.now() + 3600000).toISOString(); // 1 hour
 
-    await db.execute('UPDATE clients SET reset_token = ?, reset_expires = ? WHERE id = ?', [token, expires, client.id]);
+    db.prepare('UPDATE clients SET reset_token = ?, reset_expires = ? WHERE id = ?').run(token, expires, client.id);
 
     const resetLink = `${req.protocol}://${req.get('host')}/reset-password.html?token=${token}`;
     
@@ -182,16 +180,15 @@ router.post('/auth/reset-password', [
   const { token, password } = req.body;
   
   try {
-    const db = await getDb();
-    const [clients] = await db.execute('SELECT id FROM clients WHERE reset_token = ? AND reset_expires > NOW()', [token]);
-    const client = clients[0];
+    const db = getDb();
+    const client = db.prepare('SELECT id FROM clients WHERE reset_token = ? AND reset_expires > datetime(?)').get(token, new Date().toISOString());
 
     if (!client) {
       return res.status(400).json({ error: 'Invalid or expired reset token' });
     }
 
     const hash = await bcrypt.hash(password, 12);
-    await db.execute('UPDATE clients SET password_hash = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?', [hash, client.id]);
+    db.prepare('UPDATE clients SET password_hash = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?').run(hash, client.id);
 
     res.json({ message: 'Password has been reset successfully. You can now log in.' });
   } catch (err) {
@@ -210,9 +207,9 @@ router.use(authenticateClient);
 // GET /api/client/profile
 router.get('/profile', async (req, res) => {
   try {
-    const db = await getDb();
-    const [rows] = await db.execute('SELECT id, email, first_name, last_name, phone, company, created_at FROM clients WHERE id = ?', [req.client.id]);
-    res.json({ client: rows[0] });
+    const db = getDb();
+    const client = db.prepare('SELECT id, email, first_name, last_name, phone, company, created_at FROM clients WHERE id = ?').get(req.client.id);
+    res.json({ client });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch profile' });
   }
@@ -221,8 +218,8 @@ router.get('/profile', async (req, res) => {
 // GET /api/client/purchases
 router.get('/purchases', async (req, res) => {
   try {
-    const db = await getDb();
-    const [purchases] = await db.execute('SELECT * FROM client_purchases WHERE client_id = ? ORDER BY purchased_at DESC', [req.client.id]);
+    const db = getDb();
+    const purchases = db.prepare('SELECT * FROM client_purchases WHERE client_id = ? ORDER BY purchased_at DESC').all(req.client.id);
     res.json({ purchases });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch purchases' });
@@ -232,8 +229,8 @@ router.get('/purchases', async (req, res) => {
 // GET /api/client/subscriptions
 router.get('/subscriptions', async (req, res) => {
   try {
-    const db = await getDb();
-    const [subscriptions] = await db.execute('SELECT * FROM client_subscriptions WHERE client_id = ? ORDER BY created_at DESC', [req.client.id]);
+    const db = getDb();
+    const subscriptions = db.prepare('SELECT * FROM client_subscriptions WHERE client_id = ? ORDER BY created_at DESC').all(req.client.id);
     res.json({ subscriptions });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch subscriptions' });
