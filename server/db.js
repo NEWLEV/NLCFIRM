@@ -1,198 +1,202 @@
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
+const path = require('path');
 
 let pool;
 
 /**
- * Get the database connection (initializes if necessary)
+ * Get the database connection pool (initializes if necessary)
  */
 async function getDb() {
   if (!pool) {
-    if (!process.env.MYSQL_HOST) {
-      console.warn("WARNING: MYSQL_HOST not set. Please configure MySQL environment variables.");
-    }
-    
-    pool = mysql.createPool({
-      host: process.env.MYSQL_HOST || 'localhost',
-      user: process.env.MYSQL_USER || 'root',
-      password: process.env.MYSQL_PASSWORD || '',
-      database: process.env.MYSQL_DATABASE || 'nlcfirm',
+    // Hostinger production environment variables
+    const config = {
+      host: process.env.DB_HOST || 'localhost',
+      port: process.env.DB_PORT || 3306,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD || process.env.DB_PASS,
+      database: process.env.DB_NAME,
       waitForConnections: true,
       connectionLimit: 10,
-      queueLimit: 0
-    });
+      queueLimit: 0,
+      enableKeepAlive: true,
+      keepAliveInitialDelay: 0
+    };
+
+    // If local and no DB credentials, we'd normally fallback to SQLite, 
+    // but the current requirement is Hostinger compliance with mysql2.
+    if (!config.user || !config.database) {
+      console.warn("⚠️ MySQL credentials missing. Ensure DB_USER and DB_NAME are set in .env.");
+    }
+
+    pool = mysql.createPool(config);
     
     await initTables();
     await seedAdmins();
   }
-
-  // Wrapper to makemysql2 behave exactly like the sqlite 'async' driver
-  // so we don't have to rewrite 800 lines of API routes.
-  return {
-    all: async (sql, params = []) => {
-      const [rows] = await pool.execute(sql, params);
-      return rows;
-    },
-    get: async (sql, params = []) => {
-      const [rows] = await pool.execute(sql, params);
-      return rows[0];
-    },
-    run: async (sql, params = []) => {
-      const [result] = await pool.execute(sql, params);
-      return { lastID: result.insertId, changes: result.affectedRows };
-    },
-    exec: async (sql) => {
-      // For multi-statement or direct queries without params
-      await pool.query(sql);
-    }
-  };
+  return pool;
 }
 
+// Helper to handle sqlite-style '?' placeholders vs mysql-style
+// mysql2 supports '?' by default.
+
 async function initTables() {
-  const queries = `
-    CREATE TABLE IF NOT EXISTS admin_users (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      email VARCHAR(255) UNIQUE NOT NULL,
-      password_hash VARCHAR(255) NOT NULL,
-      display_name VARCHAR(100) NOT NULL DEFAULT '',
-      role VARCHAR(50) NOT NULL DEFAULT 'admin',
-      is_active TINYINT NOT NULL DEFAULT 1,
-      last_login TIMESTAMP NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );
+  const db = await pool.getConnection();
+  try {
+    // Use multi-line backticks carefully — MySQL syntax slightly different (e.g. AUTO_INCREMENT vs AUTOINCREMENT)
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS admin_users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        display_name VARCHAR(255) NOT NULL DEFAULT '',
+        role VARCHAR(50) NOT NULL DEFAULT 'admin',
+        is_active TINYINT(1) NOT NULL DEFAULT 1,
+        last_login DATETIME,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS submissions (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      first_name VARCHAR(100) NOT NULL,
-      last_name VARCHAR(100) NOT NULL,
-      email VARCHAR(255) NOT NULL,
-      organization VARCHAR(255),
-      org_size VARCHAR(100),
-      industry VARCHAR(100),
-      message TEXT,
-      contact_method VARCHAR(50) DEFAULT 'Email',
-      service_type VARCHAR(100),
-      admin_notes TEXT,
-      status VARCHAR(50) NOT NULL DEFAULT 'new',
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS submissions (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        organization VARCHAR(255),
+        org_size VARCHAR(100),
+        industry VARCHAR(255),
+        message TEXT,
+        contact_method VARCHAR(100) DEFAULT 'Email',
+        service_type VARCHAR(255),
+        admin_notes TEXT,
+        status VARCHAR(50) NOT NULL DEFAULT 'new',
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS exit_leads (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      email VARCHAR(255) NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS exit_leads (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) NOT NULL,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS chat_logs (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      session_id VARCHAR(255) NOT NULL,
-      role VARCHAR(50) NOT NULL,
-      message TEXT NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS chat_logs (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        session_id VARCHAR(255) NOT NULL,
+        role VARCHAR(50) NOT NULL,
+        message TEXT NOT NULL,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS services (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      category VARCHAR(100) NOT NULL,
-      name VARCHAR(255) NOT NULL,
-      description TEXT,
-      price VARCHAR(50) NOT NULL DEFAULT '',
-      price_unit VARCHAR(50) NOT NULL DEFAULT 'one-time',
-      tags TEXT,
-      is_visible TINYINT NOT NULL DEFAULT 1,
-      sort_order INT NOT NULL DEFAULT 0,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS services (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        category VARCHAR(255) NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        price VARCHAR(100) NOT NULL DEFAULT '',
+        price_unit VARCHAR(100) NOT NULL DEFAULT 'one-time',
+        tags TEXT COMMENT 'JSON array',
+        is_visible TINYINT(1) NOT NULL DEFAULT 1,
+        sort_order INT NOT NULL DEFAULT 0,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS site_settings (
-      \`key\` VARCHAR(100) PRIMARY KEY NOT NULL,
-      value TEXT,
-      category VARCHAR(100) NOT NULL DEFAULT 'general',
-      label VARCHAR(255) NOT NULL DEFAULT '',
-      field_type VARCHAR(50) NOT NULL DEFAULT 'text',
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS site_settings (
+        \`key\` VARCHAR(100) PRIMARY KEY,
+        value TEXT NOT NULL,
+        category VARCHAR(100) NOT NULL DEFAULT 'general',
+        label VARCHAR(255) NOT NULL DEFAULT '',
+        field_type VARCHAR(100) NOT NULL DEFAULT 'text',
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS testimonials (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      quote TEXT NOT NULL,
-      author_name VARCHAR(255) NOT NULL,
-      author_role VARCHAR(255) NOT NULL DEFAULT '',
-      author_initials VARCHAR(10) NOT NULL DEFAULT '',
-      rating INT NOT NULL DEFAULT 5,
-      is_visible TINYINT NOT NULL DEFAULT 1,
-      sort_order INT NOT NULL DEFAULT 0,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS testimonials (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        quote TEXT NOT NULL,
+        author_name VARCHAR(255) NOT NULL,
+        author_role VARCHAR(255) NOT NULL DEFAULT '',
+        author_initials VARCHAR(10) NOT NULL DEFAULT '',
+        rating INT NOT NULL DEFAULT 5,
+        is_visible TINYINT(1) NOT NULL DEFAULT 1,
+        sort_order INT NOT NULL DEFAULT 0,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS faq_items (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      question TEXT NOT NULL,
-      answer TEXT NOT NULL,
-      is_visible TINYINT NOT NULL DEFAULT 1,
-      sort_order INT NOT NULL DEFAULT 0,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS faq_items (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        question TEXT NOT NULL,
+        answer TEXT NOT NULL,
+        is_visible TINYINT(1) NOT NULL DEFAULT 1,
+        sort_order INT NOT NULL DEFAULT 0,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS clients (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      email VARCHAR(255) UNIQUE NOT NULL,
-      password_hash VARCHAR(255) NOT NULL,
-      first_name VARCHAR(100) NOT NULL,
-      last_name VARCHAR(100) NOT NULL,
-      phone VARCHAR(50),
-      company VARCHAR(255),
-      is_active TINYINT NOT NULL DEFAULT 1,
-      last_login TIMESTAMP NULL,
-      reset_token VARCHAR(255),
-      reset_expires TIMESTAMP NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS clients (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255) NOT NULL,
+        first_name VARCHAR(255) NOT NULL,
+        last_name VARCHAR(255) NOT NULL,
+        phone VARCHAR(50),
+        company VARCHAR(255),
+        is_active TINYINT(1) NOT NULL DEFAULT 1,
+        last_login DATETIME,
+        reset_token VARCHAR(255),
+        reset_expires VARCHAR(255),
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS client_purchases (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      client_id INT NOT NULL,
-      product_id VARCHAR(100) NOT NULL,
-      product_name VARCHAR(255) NOT NULL,
-      access_link TEXT,
-      status VARCHAR(50) NOT NULL DEFAULT 'active',
-      purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS client_purchases (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        client_id INT NOT NULL,
+        product_id VARCHAR(255) NOT NULL,
+        product_name VARCHAR(255) NOT NULL,
+        access_link TEXT,
+        status VARCHAR(50) NOT NULL DEFAULT 'active',
+        purchased_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS client_subscriptions (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      client_id INT NOT NULL,
-      plan_name VARCHAR(100) NOT NULL,
-      status VARCHAR(50) NOT NULL DEFAULT 'active',
-      next_billing_date TIMESTAMP NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
-    );
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS audit_log (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
+        user_email VARCHAR(255),
+        action VARCHAR(255) NOT NULL,
+        entity_type VARCHAR(100),
+        entity_id INT,
+        details TEXT,
+        ip_address VARCHAR(100),
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
-    CREATE TABLE IF NOT EXISTS audit_log (
-      id INT AUTO_INCREMENT PRIMARY KEY,
-      user_id INT,
-      user_email VARCHAR(255),
-      action VARCHAR(100) NOT NULL,
-      entity_type VARCHAR(100),
-      entity_id INT,
-      details TEXT,
-      ip_address VARCHAR(100),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    );
-  `;
-
-  // We split the queries because mysql pool.query won't execute multi-statements without special flags.
-  const statements = queries.split(';').map(q => q.trim()).filter(q => q.length > 0);
-  for (const stmt of statements) {
-    await pool.query(stmt);
+    // MySQL indices are normally handled explicitly in CREATE TABLE
+  } finally {
+    db.release();
   }
 }
 
@@ -231,8 +235,8 @@ async function seedAdmins() {
   }
 
   // Seed site settings
-  const [[{ count: settingsCount }]] = await pool.query('SELECT COUNT(*) as count FROM site_settings');
-  if (settingsCount === 0) {
+  const [settings] = await pool.execute('SELECT COUNT(*) as count FROM site_settings');
+  if (settings[0].count === 0) {
     const defaults = [
       ['hero_eyebrow', 'Healthcare & Business Consulting', 'hero', 'Hero Eyebrow Text', 'text'],
       ['hero_title', 'Elevate Every<br><em>Level</em> of Your<br>Organization', 'hero', 'Hero Title (HTML allowed)', 'textarea'],
@@ -257,8 +261,8 @@ async function seedAdmins() {
   }
 
   // Seed testimonials
-  const [[{ count: testimonialsCount }]] = await pool.query('SELECT COUNT(*) as count FROM testimonials');
-  if (testimonialsCount === 0) {
+  const [testimonials] = await pool.execute('SELECT COUNT(*) as count FROM testimonials');
+  if (testimonials[0].count === 0) {
     const defaultTestimonials = [
       ['New Level Consultants transformed our HIPAA program from reactive to proactive. We passed our first external audit with zero findings — something we had never achieved before.', 'Rachel M.', 'COO, Community Health Center', 'RM', 5, 1],
       ['Their AI automation setup saved our billing team 30+ hours per month. The ROI in the first three months alone justified the entire year\'s retainer cost.', 'Dr. David T.', 'Founder, Telehealth Practice', 'DT', 5, 2],
@@ -270,8 +274,8 @@ async function seedAdmins() {
   }
 
   // Seed FAQs
-  const [[{ count: faqCount }]] = await pool.query('SELECT COUNT(*) as count FROM faq_items');
-  if (faqCount === 0) {
+  const [faqs] = await pool.execute('SELECT COUNT(*) as count FROM faq_items');
+  if (faqs[0].count === 0) {
     const defaultFAQs = [
       ['How quickly can I get started?', 'Productized tools are instant or 24-hour delivery. Retainer plans and à la carte projects onboard within 3–5 business days of your first call.', 1],
       ['Do you work with organizations outside of healthcare?', 'Yes. While we specialize in healthcare, our compliance, operations, AI, and business development services serve nonprofits, legal practices, and mid-size businesses across industries.', 2],

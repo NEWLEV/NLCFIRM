@@ -18,7 +18,8 @@ router.post('/verify', async (req, res) => {
     // For this implementation, we assume the frontend SDK handled the capture, but we still secure the DB insert.
     
     // 2. See if the client already exists
-    let client = await db.get('SELECT id FROM clients WHERE email = ?', [payerEmail]);
+    const [clients] = await db.execute('SELECT id FROM clients WHERE email = ?', [payerEmail]);
+    const client = clients[0];
     let clientId;
     let isNewClient = false;
     let generatedPassword = null;
@@ -30,12 +31,12 @@ router.post('/verify', async (req, res) => {
       generatedPassword = crypto.randomBytes(8).toString('hex');
       const hash = await bcrypt.hash(generatedPassword, 12);
       
-      const insertResult = await db.run(`
+      const [insertResult] = await db.execute(`
         INSERT INTO clients (email, password_hash, first_name, last_name, is_active)
         VALUES (?, ?, ?, ?, 1)
       `, [payerEmail, hash, payerFirstName, payerLastName]);
       
-      clientId = insertResult.lastID;
+      clientId = insertResult.insertId;
       isNewClient = true;
     }
 
@@ -44,7 +45,7 @@ router.post('/verify', async (req, res) => {
     // Here we'll map productID to a placeholder secure link. In a real CMS, this would pull from a `products` table.
     const accessLink = `https://nlcfirm.com/downloads/${productID}.pdf`; 
 
-    await db.run(`
+    await db.execute(`
       INSERT INTO client_purchases (client_id, product_id, product_name, access_link)
       VALUES (?, ?, ?, ?)
     `, [clientId, productID, productName, accessLink]);

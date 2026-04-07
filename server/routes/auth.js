@@ -21,7 +21,8 @@ router.post('/login', [
   
   try {
     const db = await getDb();
-    const user = await db.get('SELECT * FROM admin_users WHERE email = ?', [email]);
+    const [users] = await db.execute('SELECT * FROM admin_users WHERE email = ?', [email]);
+    const user = users[0];
     
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
@@ -37,10 +38,10 @@ router.post('/login', [
     }
 
     // Update last login time
-    await db.run("UPDATE admin_users SET last_login = datetime('now') WHERE id = ?", [user.id]);
+    await db.execute("UPDATE admin_users SET last_login = NOW() WHERE id = ?", [user.id]);
 
     // Log the login
-    await db.run(
+    await db.execute(
       'INSERT INTO audit_log (user_id, user_email, action, details, ip_address) VALUES (?, ?, ?, ?, ?)',
       [user.id, user.email, 'login', 'User logged in', req.ip]
     );
@@ -70,10 +71,11 @@ router.post('/login', [
 router.get('/me', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const user = await db.get(
+    const [rows] = await db.execute(
       'SELECT id, email, role, display_name, created_at, last_login FROM admin_users WHERE id = ?',
       [req.user.id]
     );
+    const user = rows[0];
     if (!user) return res.status(404).json({ error: 'User not found' });
     res.json({ user });
   } catch (err) {
@@ -95,17 +97,18 @@ router.post('/change-password', authenticateToken, [
   
   try {
     const db = await getDb();
-    const user = await db.get('SELECT * FROM admin_users WHERE id = ?', [req.user.id]);
+    const [rows] = await db.execute('SELECT * FROM admin_users WHERE id = ?', [req.user.id]);
+    const user = rows[0];
     
     if (!user || !(await bcrypt.compare(currentPassword, user.password_hash))) {
       return res.status(401).json({ error: 'Current password is incorrect' });
     }
 
     const hash = await bcrypt.hash(newPassword, 12);
-    await db.run("UPDATE admin_users SET password_hash = ?, updated_at = datetime('now') WHERE id = ?", [hash, req.user.id]);
+    await db.execute("UPDATE admin_users SET password_hash = ?, updated_at = NOW() WHERE id = ?", [hash, req.user.id]);
 
     // Audit log
-    await db.run(
+    await db.execute(
       'INSERT INTO audit_log (user_id, user_email, action, details) VALUES (?, ?, ?, ?)',
       [req.user.id, req.user.email, 'change_password', 'Password changed']
     );
@@ -127,7 +130,7 @@ router.post('/update-profile', authenticateToken, [
 
   try {
     const db = await getDb();
-    await db.run("UPDATE admin_users SET display_name = ?, updated_at = datetime('now') WHERE id = ?", [
+    await db.execute("UPDATE admin_users SET display_name = ?, updated_at = NOW() WHERE id = ?", [
       req.body.displayName,
       req.user.id
     ]);
@@ -142,7 +145,7 @@ router.post('/update-profile', authenticateToken, [
 router.get('/users', authenticateToken, requireRole('super_admin'), async (req, res) => {
   try {
     const db = await getDb();
-    const users = await db.all(
+    const [users] = await db.execute(
       'SELECT id, email, display_name, role, is_active, last_login, created_at FROM admin_users ORDER BY created_at ASC'
     );
     res.json({ users });
@@ -167,24 +170,24 @@ router.post('/users', authenticateToken, requireRole('super_admin'), [
   
   try {
     const db = await getDb();
-    const existing = await db.get('SELECT id FROM admin_users WHERE email = ?', [email]);
-    if (existing) {
+    const [existingRows] = await db.execute('SELECT id FROM admin_users WHERE email = ?', [email]);
+    if (existingRows.length > 0) {
       return res.status(409).json({ error: 'An account with this email already exists' });
     }
 
     const hash = await bcrypt.hash(password, 12);
-    const result = await db.run(
+    const [result] = await db.execute(
       'INSERT INTO admin_users (email, password_hash, display_name, role) VALUES (?, ?, ?, ?)',
       [email, hash, displayName, role]
     );
 
     // Audit
-    await db.run(
+    await db.execute(
       'INSERT INTO audit_log (user_id, user_email, action, entity_type, entity_id, details) VALUES (?, ?, ?, ?, ?, ?)',
-      [req.user.id, req.user.email, 'create_user', 'admin_users', result.lastID, `Created user: ${email}`]
+      [req.user.id, req.user.email, 'create_user', 'admin_users', result.insertId, `Created user: ${email}`]
     );
 
-    res.status(201).json({ message: 'User created successfully', id: result.lastID });
+    res.status(201).json({ message: 'User created successfully', id: result.insertId });
   } catch (err) {
     res.status(500).json({ error: 'Failed to create user' });
   }
@@ -217,18 +220,18 @@ router.patch('/users/:id', authenticateToken, requireRole('super_admin'), async 
     return res.status(400).json({ error: 'No updates provided' });
   }
 
-  updates.push("updated_at = datetime('now')");
+  updates.push("updated_at = NOW()");
   
   try {
     const db = await getDb();
-    const result = await db.run(`UPDATE admin_users SET ${updates.join(', ')} WHERE id = ?`, [...params, userId]);
+    const [result] = await db.execute(`UPDATE admin_users SET ${updates.join(', ')} WHERE id = ?`, [...params, userId]);
 
-    if (result.changes === 0) {
+    if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     // Audit
-    await db.run(
+    await db.execute(
       'INSERT INTO audit_log (user_id, user_email, action, entity_type, entity_id, details) VALUES (?, ?, ?, ?, ?, ?)',
       [req.user.id, req.user.email, 'update_user', 'admin_users', userId, JSON.stringify(req.body)]
     );

@@ -13,7 +13,7 @@ const router = express.Router();
 async function auditLog(req, action, entityType, entityId, details) {
   try {
     const db = await getDb();
-    await db.run(
+    await db.execute(
       'INSERT INTO audit_log (user_id, user_email, action, entity_type, entity_id, details, ip_address) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [req.user?.id || null, req.user?.email || 'system', action, entityType, entityId || null, details || null, req.ip]
     );
@@ -80,7 +80,7 @@ router.post('/submissions', [
   
   try {
     const db = await getDb();
-    const result = await db.run(`
+    const [result] = await db.execute(`
       INSERT INTO submissions (first_name, last_name, email, organization, org_size, industry, message, contact_method, service_type)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [firstName, lastName, email, organization || null, orgSize || null, industry || null, message || null, contactMethod || 'Email', serviceType || null]);
@@ -88,7 +88,7 @@ router.post('/submissions', [
     // Send email notification non-blocking
     notifyAdminNewLead({ firstName, lastName, email, organization, serviceType, message }).catch(err => console.error("Email notify error:", err));
 
-    res.status(201).json({ message: 'Submission received successfully', id: result.lastID });
+    res.status(201).json({ message: 'Submission received successfully', id: result.insertId });
   } catch (err) {
     console.error('Submission error:', err);
     res.status(500).json({ error: 'Failed to save submission' });
@@ -106,9 +106,9 @@ router.post('/exit-lead', [
 
   try {
     const db = await getDb();
-    const existing = await db.get('SELECT id FROM exit_leads WHERE email = ?', [req.body.email]);
-    if (!existing) {
-      await db.run('INSERT INTO exit_leads (email) VALUES (?)', [req.body.email]);
+    const [rows] = await db.execute('SELECT id FROM exit_leads WHERE email = ?', [req.body.email]);
+    if (rows.length === 0) {
+      await db.execute('INSERT INTO exit_leads (email) VALUES (?)', [req.body.email]);
     }
     res.status(201).json({ message: 'Lead captured successfully' });
   } catch (err) {
@@ -130,7 +130,7 @@ router.post('/chat-log', [
 
   try {
     const db = await getDb();
-    await db.run('INSERT INTO chat_logs (session_id, role, message) VALUES (?, ?, ?)', [
+    await db.execute('INSERT INTO chat_logs (session_id, role, message) VALUES (?, ?, ?)', [
       req.body.sessionId, req.body.role, req.body.message
     ]);
     res.status(201).json({ message: 'Chat logged' });
@@ -149,7 +149,8 @@ router.get('/services', async (req, res) => {
     const params = [];
     if (category) { query += ' AND category = ?'; params.push(category); }
     query += ' ORDER BY sort_order, id';
-    res.json({ services: await db.all(query, params) });
+    const [rows] = await db.execute(query, params);
+    res.json({ services: rows });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch services' });
   }
@@ -159,7 +160,8 @@ router.get('/services', async (req, res) => {
 router.get('/testimonials', async (req, res) => {
   try {
     const db = await getDb();
-    res.json({ testimonials: await db.all('SELECT * FROM testimonials WHERE is_visible = 1 ORDER BY sort_order, id') });
+    const [rows] = await db.execute('SELECT * FROM testimonials WHERE is_visible = 1 ORDER BY sort_order, id');
+    res.json({ testimonials: rows });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch testimonials' });
   }
@@ -169,7 +171,8 @@ router.get('/testimonials', async (req, res) => {
 router.get('/faq', async (req, res) => {
   try {
     const db = await getDb();
-    res.json({ faq: await db.all('SELECT * FROM faq_items WHERE is_visible = 1 ORDER BY sort_order, id') });
+    const [rows] = await db.execute('SELECT * FROM faq_items WHERE is_visible = 1 ORDER BY sort_order, id');
+    res.json({ faq: rows });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch FAQ' });
   }
@@ -180,10 +183,11 @@ router.get('/settings', async (req, res) => {
   try {
     const db = await getDb();
     const { category } = req.query;
-    let query = 'SELECT key, value, category FROM site_settings';
+    let query = 'SELECT `key`, value, category FROM site_settings';
     const params = [];
     if (category) { query += ' WHERE category = ?'; params.push(category); }
-    res.json({ settings: await db.all(query, params) });
+    const [rows] = await db.execute(query, params);
+    res.json({ settings: rows });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch settings' });
   }
@@ -198,27 +202,39 @@ router.get('/dashboard', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
 
-    const { count: totalSubmissions } = await db.get('SELECT COUNT(*) as count FROM submissions');
-    const byStatus = await db.all('SELECT status, COUNT(*) as count FROM submissions GROUP BY status');
-    const { count: last30Days } = await db.get("SELECT COUNT(*) as count FROM submissions WHERE created_at >= datetime('now', '-30 days')");
-    const { count: totalExitLeads } = await db.get('SELECT COUNT(*) as count FROM exit_leads');
-    const { count: totalChatSessions } = await db.get('SELECT COUNT(DISTINCT session_id) as count FROM chat_logs');
-    const { count: totalServices } = await db.get('SELECT COUNT(*) as count FROM services');
-    const { count: visibleServices } = await db.get('SELECT COUNT(*) as count FROM services WHERE is_visible = 1');
+    const [totalRows] = await db.execute('SELECT COUNT(*) as count FROM submissions');
+    const totalSubmissions = totalRows[0].count;
 
-    const recent = await db.all('SELECT * FROM submissions ORDER BY created_at DESC LIMIT 10');
-    const byService = await db.all("SELECT service_type, COUNT(*) as count FROM submissions WHERE service_type IS NOT NULL GROUP BY service_type ORDER BY count DESC");
+    const [byStatus] = await db.execute('SELECT status, COUNT(*) as count FROM submissions GROUP BY status');
+    
+    const [last30Rows] = await db.execute("SELECT COUNT(*) as count FROM submissions WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)");
+    const last30Days = last30Rows[0].count;
 
-    const dailyStats = await db.all(`
-      SELECT date(created_at) as date, COUNT(*) as count
+    const [exitLeadsRows] = await db.execute('SELECT COUNT(*) as count FROM exit_leads');
+    const totalExitLeads = exitLeadsRows[0].count;
+
+    const [chatSessionsRows] = await db.execute('SELECT COUNT(DISTINCT session_id) as count FROM chat_logs');
+    const totalChatSessions = chatSessionsRows[0].count;
+
+    const [totalServicesRows] = await db.execute('SELECT COUNT(*) as count FROM services');
+    const totalServices = totalServicesRows[0].count;
+
+    const [visibleServicesRows] = await db.execute('SELECT COUNT(*) as count FROM services WHERE is_visible = 1');
+    const visibleServices = visibleServicesRows[0].count;
+
+    const [recent] = await db.execute('SELECT * FROM submissions ORDER BY created_at DESC LIMIT 10');
+    const [byService] = await db.execute("SELECT service_type, COUNT(*) as count FROM submissions WHERE service_type IS NOT NULL GROUP BY service_type ORDER BY count DESC");
+
+    const [dailyStats] = await db.execute(`
+      SELECT DATE(created_at) as date, COUNT(*) as count
       FROM submissions
-      WHERE created_at >= datetime('now', '-30 days')
-      GROUP BY date(created_at)
+      WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)
+      GROUP BY DATE(created_at)
       ORDER BY date
     `);
 
     // Recent audit log entries
-    const recentActivity = await db.all(
+    const [recentActivity] = await db.execute(
       'SELECT * FROM audit_log ORDER BY created_at DESC LIMIT 15'
     );
 
@@ -262,9 +278,9 @@ router.get('/submissions', authenticateToken, async (req, res) => {
     }
 
     query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(Number(limit), Number(offset));
+    params.push(String(limit), String(offset)); // mysql2 expects strings or handles conversion
 
-    const rows = await db.all(query, params);
+    const [rows] = await db.execute(query, params);
 
     let countQuery = 'SELECT COUNT(*) as total FROM submissions WHERE 1=1';
     const countParams = [];
@@ -277,7 +293,8 @@ router.get('/submissions', authenticateToken, async (req, res) => {
       const s = `%${search}%`;
       countParams.push(s, s, s, s);
     }
-    const { total } = await db.get(countQuery, countParams);
+    const [countRows] = await db.execute(countQuery, countParams);
+    const total = countRows[0].total;
 
     res.json({ submissions: rows, total, limit: Number(limit), offset: Number(offset) });
   } catch (err) {
@@ -289,7 +306,8 @@ router.get('/submissions', authenticateToken, async (req, res) => {
 router.get('/submissions/:id', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const row = await db.get('SELECT * FROM submissions WHERE id = ?', [req.params.id]);
+    const [rows] = await db.execute('SELECT * FROM submissions WHERE id = ?', [req.params.id]);
+    const row = rows[0];
     if (!row) return res.status(404).json({ error: 'Submission not found' });
     res.json({ submission: row });
   } catch (err) {
@@ -319,12 +337,12 @@ router.patch('/submissions/:id', authenticateToken, async (req, res) => {
     if (updates.length === 0) {
       return res.status(400).json({ error: 'No updates provided' });
     }
-    updates.push("updated_at = datetime('now')");
+    updates.push("updated_at = NOW()");
     params.push(req.params.id);
 
-    const result = await db.run(`UPDATE submissions SET ${updates.join(', ')} WHERE id = ?`, params);
+    const [result] = await db.execute(`UPDATE submissions SET ${updates.join(', ')} WHERE id = ?`, params);
 
-    if (result.changes === 0) {
+    if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'Submission not found' });
     }
 
@@ -339,8 +357,8 @@ router.patch('/submissions/:id', authenticateToken, async (req, res) => {
 router.delete('/submissions/:id', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const result = await db.run('DELETE FROM submissions WHERE id = ?', [req.params.id]);
-    if (result.changes === 0) return res.status(404).json({ error: 'Submission not found' });
+    const [result] = await db.execute('DELETE FROM submissions WHERE id = ?', [req.params.id]);
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Submission not found' });
     await auditLog(req, 'delete_submission', 'submissions', Number(req.params.id));
     res.json({ message: 'Submission deleted' });
   } catch (err) {
@@ -352,7 +370,7 @@ router.delete('/submissions/:id', authenticateToken, async (req, res) => {
 router.get('/exit-leads', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const leads = await db.all('SELECT * FROM exit_leads ORDER BY created_at DESC');
+    const [leads] = await db.execute('SELECT * FROM exit_leads ORDER BY created_at DESC');
     res.json({ leads, total: leads.length });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch exit leads' });
@@ -362,8 +380,8 @@ router.get('/exit-leads', authenticateToken, async (req, res) => {
 router.delete('/exit-leads/:id', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const result = await db.run('DELETE FROM exit_leads WHERE id = ?', [req.params.id]);
-    if (result.changes === 0) return res.status(404).json({ error: 'Lead not found' });
+    const [result] = await db.execute('DELETE FROM exit_leads WHERE id = ?', [req.params.id]);
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Lead not found' });
     res.json({ message: 'Lead deleted' });
   } catch (err) {
     res.status(500).json({ error: 'Failed to delete lead' });
@@ -374,7 +392,7 @@ router.delete('/exit-leads/:id', authenticateToken, async (req, res) => {
 router.get('/export/submissions', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const rows = await db.all('SELECT * FROM submissions ORDER BY created_at DESC');
+    const [rows] = await db.execute('SELECT * FROM submissions ORDER BY created_at DESC');
 
     const headers = ['ID', 'First Name', 'Last Name', 'Email', 'Organization', 'Org Size', 'Industry', 'Message', 'Contact Method', 'Service Type', 'Status', 'Admin Notes', 'Created At'];
     const csv = [
@@ -407,7 +425,7 @@ router.get('/export/submissions', authenticateToken, async (req, res) => {
 router.get('/export/exit-leads', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const rows = await db.all('SELECT * FROM exit_leads ORDER BY created_at DESC');
+    const [rows] = await db.execute('SELECT * FROM exit_leads ORDER BY created_at DESC');
     const csv = ['ID,Email,Created At', ...rows.map(r => `${r.id},${r.email},${r.created_at}`)].join('\n');
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', 'attachment; filename=nlc-exit-leads.csv');
@@ -430,7 +448,8 @@ router.get('/services', authenticateToken, async (req, res) => {
     if (category) { query += ' AND category = ?'; params.push(category); }
     if (visible !== undefined) { query += ' AND is_visible = ?'; params.push(Number(visible)); }
     query += ' ORDER BY category, sort_order, id';
-    res.json({ services: await db.all(query, params) });
+    const [rows] = await db.execute(query, params);
+    res.json({ services: rows });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch services' });
   }
@@ -447,13 +466,13 @@ router.post('/services', authenticateToken, [
   try {
     const db = await getDb();
     const { category, name, description, price, price_unit, tags, sort_order } = req.body;
-    const result = await db.run(
+    const [result] = await db.execute(
       'INSERT INTO services (category, name, description, price, price_unit, tags, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [category, name, description || '', price, price_unit || 'one-time', JSON.stringify(tags || []), sort_order || 0]
     );
 
-    await auditLog(req, 'create_service', 'services', result.lastID, `Created: ${name}`);
-    res.status(201).json({ message: 'Service created', id: result.lastID });
+    await auditLog(req, 'create_service', 'services', result.insertId, `Created: ${name}`);
+    res.status(201).json({ message: 'Service created', id: result.insertId });
   } catch (err) {
     res.status(500).json({ error: 'Failed to create service' });
   }
@@ -473,11 +492,11 @@ router.patch('/services/:id', authenticateToken, async (req, res) => {
       }
     }
     if (updates.length === 0) return res.status(400).json({ error: 'No updates provided' });
-    updates.push("updated_at = datetime('now')");
+    updates.push("updated_at = NOW()");
     params.push(req.params.id);
 
-    const result = await db.run(`UPDATE services SET ${updates.join(', ')} WHERE id = ?`, params);
-    if (result.changes === 0) return res.status(404).json({ error: 'Service not found' });
+    const [result] = await db.execute(`UPDATE services SET ${updates.join(', ')} WHERE id = ?`, params);
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Service not found' });
 
     await auditLog(req, 'update_service', 'services', Number(req.params.id), JSON.stringify(req.body));
     res.json({ message: 'Service updated' });
@@ -489,8 +508,8 @@ router.patch('/services/:id', authenticateToken, async (req, res) => {
 router.delete('/services/:id', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const result = await db.run('DELETE FROM services WHERE id = ?', [req.params.id]);
-    if (result.changes === 0) return res.status(404).json({ error: 'Service not found' });
+    const [result] = await db.execute('DELETE FROM services WHERE id = ?', [req.params.id]);
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Service not found' });
     await auditLog(req, 'delete_service', 'services', Number(req.params.id));
     res.json({ message: 'Service deleted' });
   } catch (err) {
@@ -505,7 +524,8 @@ router.delete('/services/:id', authenticateToken, async (req, res) => {
 router.get('/testimonials', async (req, res) => {
   try {
     const db = await getDb();
-    res.json({ testimonials: await db.all('SELECT * FROM testimonials ORDER BY sort_order, id') });
+    const [rows] = await db.execute('SELECT * FROM testimonials ORDER BY sort_order, id');
+    res.json({ testimonials: rows });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch testimonials' });
   }
@@ -522,13 +542,13 @@ router.post('/testimonials', authenticateToken, [
     const db = await getDb();
     const { quote, author_name, author_role, author_initials, rating, sort_order } = req.body;
     const initials = author_initials || author_name.split(' ').map(w => w[0]).join('').toUpperCase();
-    const result = await db.run(
+    const [result] = await db.execute(
       'INSERT INTO testimonials (quote, author_name, author_role, author_initials, rating, sort_order) VALUES (?, ?, ?, ?, ?, ?)',
       [quote, author_name, author_role || '', initials, rating || 5, sort_order || 0]
     );
 
-    await auditLog(req, 'create_testimonial', 'testimonials', result.lastID);
-    res.status(201).json({ message: 'Testimonial created', id: result.lastID });
+    await auditLog(req, 'create_testimonial', 'testimonials', result.insertId);
+    res.status(201).json({ message: 'Testimonial created', id: result.insertId });
   } catch (err) {
     res.status(500).json({ error: 'Failed to create testimonial' });
   }
@@ -545,11 +565,11 @@ router.patch('/testimonials/:id', authenticateToken, async (req, res) => {
       if (req.body[f] !== undefined) { updates.push(`${f} = ?`); params.push(req.body[f]); }
     }
     if (updates.length === 0) return res.status(400).json({ error: 'No updates' });
-    updates.push("updated_at = datetime('now')");
+    updates.push("updated_at = NOW()");
     params.push(req.params.id);
 
-    const result = await db.run(`UPDATE testimonials SET ${updates.join(', ')} WHERE id = ?`, params);
-    if (result.changes === 0) return res.status(404).json({ error: 'Testimonial not found' });
+    const [result] = await db.execute(`UPDATE testimonials SET ${updates.join(', ')} WHERE id = ?`, params);
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Testimonial not found' });
 
     await auditLog(req, 'update_testimonial', 'testimonials', Number(req.params.id));
     res.json({ message: 'Testimonial updated' });
@@ -561,8 +581,8 @@ router.patch('/testimonials/:id', authenticateToken, async (req, res) => {
 router.delete('/testimonials/:id', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const result = await db.run('DELETE FROM testimonials WHERE id = ?', [req.params.id]);
-    if (result.changes === 0) return res.status(404).json({ error: 'Testimonial not found' });
+    const [result] = await db.execute('DELETE FROM testimonials WHERE id = ?', [req.params.id]);
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'Testimonial not found' });
     await auditLog(req, 'delete_testimonial', 'testimonials', Number(req.params.id));
     res.json({ message: 'Testimonial deleted' });
   } catch (err) {
@@ -577,7 +597,8 @@ router.delete('/testimonials/:id', authenticateToken, async (req, res) => {
 router.get('/faq', async (req, res) => {
   try {
     const db = await getDb();
-    res.json({ faq: await db.all('SELECT * FROM faq_items ORDER BY sort_order, id') });
+    const [rows] = await db.execute('SELECT * FROM faq_items ORDER BY sort_order, id');
+    res.json({ faq: rows });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch FAQ' });
   }
@@ -593,13 +614,13 @@ router.post('/faq', authenticateToken, [
   try {
     const db = await getDb();
     const { question, answer, sort_order } = req.body;
-    const result = await db.run(
+    const [result] = await db.execute(
       'INSERT INTO faq_items (question, answer, sort_order) VALUES (?, ?, ?)',
       [question, answer, sort_order || 0]
     );
 
-    await auditLog(req, 'create_faq', 'faq_items', result.lastID);
-    res.status(201).json({ message: 'FAQ created', id: result.lastID });
+    await auditLog(req, 'create_faq', 'faq_items', result.insertId);
+    res.status(201).json({ message: 'FAQ created', id: result.insertId });
   } catch (err) {
     res.status(500).json({ error: 'Failed to create FAQ' });
   }
@@ -616,11 +637,11 @@ router.patch('/faq/:id', authenticateToken, async (req, res) => {
       if (req.body[f] !== undefined) { updates.push(`${f} = ?`); params.push(req.body[f]); }
     }
     if (updates.length === 0) return res.status(400).json({ error: 'No updates' });
-    updates.push("updated_at = datetime('now')");
+    updates.push("updated_at = NOW()");
     params.push(req.params.id);
 
-    const result = await db.run(`UPDATE faq_items SET ${updates.join(', ')} WHERE id = ?`, params);
-    if (result.changes === 0) return res.status(404).json({ error: 'FAQ not found' });
+    const [result] = await db.execute(`UPDATE faq_items SET ${updates.join(', ')} WHERE id = ?`, params);
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'FAQ not found' });
 
     await auditLog(req, 'update_faq', 'faq_items', Number(req.params.id));
     res.json({ message: 'FAQ updated' });
@@ -632,8 +653,8 @@ router.patch('/faq/:id', authenticateToken, async (req, res) => {
 router.delete('/faq/:id', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const result = await db.run('DELETE FROM faq_items WHERE id = ?', [req.params.id]);
-    if (result.changes === 0) return res.status(404).json({ error: 'FAQ not found' });
+    const [result] = await db.execute('DELETE FROM faq_items WHERE id = ?', [req.params.id]);
+    if (result.affectedRows === 0) return res.status(404).json({ error: 'FAQ not found' });
     await auditLog(req, 'delete_faq', 'faq_items', Number(req.params.id));
     res.json({ message: 'FAQ deleted' });
   } catch (err) {
@@ -652,8 +673,9 @@ router.get('/settings', authenticateToken, async (req, res) => {
     let query = 'SELECT * FROM site_settings';
     const params = [];
     if (category) { query += ' WHERE category = ?'; params.push(category); }
-    query += ' ORDER BY category, key';
-    res.json({ settings: await db.all(query, params) });
+    query += ' ORDER BY category, `key`';
+    const [rows] = await db.execute(query, params);
+    res.json({ settings: rows });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch settings' });
   }
@@ -667,10 +689,8 @@ router.patch('/settings', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Updates array required' });
     }
 
-    // SQLite driver doesn't support the same .transaction() as better-sqlite3
-    // We can use a simple async loop
     for (const item of updates) {
-      await db.run("UPDATE site_settings SET value = ?, updated_at = datetime('now') WHERE key = ?", [item.value, item.key]);
+      await db.execute("UPDATE site_settings SET value = ?, updated_at = NOW() WHERE `key` = ?", [item.value, item.key]);
     }
 
     await auditLog(req, 'update_settings', 'site_settings', null, `Updated ${updates.length} settings`);
@@ -688,11 +708,11 @@ router.get('/audit-log', authenticateToken, requireRole('super_admin'), async (r
   try {
     const db = await getDb();
     const { limit = 100, offset = 0 } = req.query;
-    const logs = await db.all('SELECT * FROM audit_log ORDER BY created_at DESC LIMIT ? OFFSET ?', [
-      Number(limit), Number(offset)
+    const [rows] = await db.execute('SELECT * FROM audit_log ORDER BY created_at DESC LIMIT ? OFFSET ?', [
+      String(limit), String(offset)
     ]);
-    const { total } = await db.get('SELECT COUNT(*) as total FROM audit_log');
-    res.json({ logs, total });
+    const [countRows] = await db.execute('SELECT COUNT(*) as total FROM audit_log');
+    res.json({ logs: rows, total: countRows[0].total });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch audit log' });
   }
@@ -705,7 +725,7 @@ router.get('/audit-log', authenticateToken, requireRole('super_admin'), async (r
 router.get('/chat-sessions', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const sessions = await db.all(`
+    const [sessions] = await db.execute(`
       SELECT session_id, MIN(created_at) as started_at, MAX(created_at) as last_message,
              COUNT(*) as message_count
       FROM chat_logs
@@ -722,7 +742,7 @@ router.get('/chat-sessions', authenticateToken, async (req, res) => {
 router.get('/chat-sessions/:sessionId', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const messages = await db.all(
+    const [messages] = await db.execute(
       'SELECT * FROM chat_logs WHERE session_id = ? ORDER BY created_at ASC',
       [req.params.sessionId]
     );
@@ -739,7 +759,7 @@ router.get('/chat-sessions/:sessionId', authenticateToken, async (req, res) => {
 router.get('/admin/clients', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const clients = await db.all(`
+    const [clients] = await db.execute(`
       SELECT c.id, c.email, c.first_name, c.last_name, c.company, c.is_active, c.created_at, c.last_login,
              COUNT(p.id) as total_purchases
       FROM clients c
@@ -766,13 +786,13 @@ router.post('/admin/clients/:id/purchases', [
   
   try {
     const db = await getDb();
-    const result = await db.run(`
+    const [result] = await db.execute(`
       INSERT INTO client_purchases (client_id, product_id, product_name, access_link)
       VALUES (?, ?, ?, ?)
     `, [req.params.id, productId, productName, accessLink]);
 
     await auditLog(req, 'grant_purchase', 'client', req.params.id, `Granted standard product access: ${productName}`);
-    res.status(201).json({ message: 'Purchase granted successfully', id: result.lastID });
+    res.status(201).json({ message: 'Purchase granted successfully', id: result.insertId });
   } catch (err) {
     console.error('Grant Purchase Error:', err);
     res.status(500).json({ error: 'Failed to grant purchase' });
