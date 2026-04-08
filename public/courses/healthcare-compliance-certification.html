@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Healthcare Compliance Certification — New Level Consultants</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#1a1a2e; --gold:#b8860b; --gold-light:#f4d03f; --slate:#64748b; --bg:#0d0d1f; --card:#161630; --border:rgba(255,255,255,0.08); --green:#22c55e; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:#e2e8f0; min-height:100vh; }
+
+  /* Layout */
+  .layout { display:grid; grid-template-columns:300px 1fr; min-height:100vh; }
+  
+  /* Sidebar */
+  .sidebar { background:#0a0a1a; border-right:1px solid var(--border); position:sticky; top:0; height:100vh; overflow-y:auto; display:flex; flex-direction:column; }
+  .sidebar-brand { padding:1.5rem; border-bottom:1px solid var(--border); }
+  .sidebar-brand a { color:var(--gold-light); font-family:'Playfair Display',serif; font-size:1rem; text-decoration:none; display:block; margin-bottom:0.25rem; }
+  .sidebar-brand p { color:var(--slate); font-size:0.75rem; }
+  .course-progress-wrap { padding:1rem 1.5rem; border-bottom:1px solid var(--border); }
+  .cp-label { font-size:0.75rem; color:var(--slate); font-weight:600; text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem; }
+  .cp-bar { height:4px; background:rgba(255,255,255,0.1); border-radius:2px; margin-bottom:0.4rem; }
+  .cp-fill { height:4px; background:linear-gradient(90deg,var(--gold),var(--gold-light)); border-radius:2px; transition:width 0.5s; }
+  .cp-pct { font-size:0.8rem; font-weight:700; color:var(--gold-light); }
+
+  .modules-list { flex:1; padding:0.75rem 0; }
+  .module-item { padding:0.6rem 1.5rem; cursor:pointer; transition:0.2s; border-left:3px solid transparent; }
+  .module-item:hover { background:rgba(255,255,255,0.04); }
+  .module-item.active { background:rgba(184,134,11,0.1); border-left-color:var(--gold); }
+  .module-item.completed { border-left-color:var(--green); }
+  .mi-num { font-size:0.65rem; font-weight:700; color:var(--slate); text-transform:uppercase; letter-spacing:1px; }
+  .mi-title { font-size:0.85rem; font-weight:600; color:#e2e8f0; margin-top:0.15rem; }
+  .mi-check { font-size:0.8rem; color:var(--green); margin-left:0.5rem; }
+  .mi-duration { font-size:0.7rem; color:var(--slate); margin-top:0.15rem; }
+
+  /* Main */
+  .main-content { overflow-y:auto; }
+  .top-bar { background:rgba(13,13,31,0.9); backdrop-filter:blur(12px); padding:1rem 2rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+  .top-bar a { color:var(--slate); text-decoration:none; font-size:0.85rem; }
+  .top-bar a:hover { color:#fff; }
+  .lesson-nav-btn { background:linear-gradient(135deg,var(--gold),#a07808); color:#fff; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.85rem; transition:0.2s; }
+  .lesson-nav-btn:hover { opacity:0.9; }
+  .lesson-nav-btn:disabled { opacity:0.4; cursor:not-allowed; }
+  .lesson-nav-btn.secondary { background:transparent; border:1px solid var(--border); color:var(--slate); }
+
+  .module-content { padding:3rem 3rem 4rem; max-width:820px; }
+  .module-badge { display:inline-block; background:rgba(184,134,11,0.2); color:var(--gold-light); border:1px solid rgba(184,134,11,0.4); font-size:0.7rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:0.3rem 0.8rem; border-radius:20px; margin-bottom:1rem; }
+  .module-title { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; line-height:1.2; margin-bottom:0.5rem; }
+  .module-meta { color:var(--slate); font-size:0.85rem; margin-bottom:2.5rem; display:flex; gap:1.5rem; }
+
+  .lesson-block { margin-bottom:2rem; }
+  .lesson-block h3 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--gold-light); margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:1px solid var(--border); }
+  .lesson-block p { color:#cbd5e1; line-height:1.8; margin-bottom:1rem; font-size:0.95rem; }
+  .lesson-block ul, .lesson-block ol { padding-left:1.4rem; color:#cbd5e1; line-height:1.8; margin-bottom:1rem; font-size:0.95rem; }
+  .lesson-block li { margin-bottom:0.3rem; }
+  .key-point { background:rgba(184,134,11,0.08); border:1px solid rgba(184,134,11,0.2); border-radius:8px; padding:1rem 1.25rem; margin-bottom:1rem; }
+  .key-point strong { color:var(--gold-light); }
+  .callout { background:rgba(34,197,94,0.08); border:1px solid rgba(34,197,94,0.2); border-radius:8px; padding:1rem 1.25rem; margin-bottom:1rem; }
+  .callout strong { color:var(--green); }
+  .warning-box { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.2); border-radius:8px; padding:1rem 1.25rem; margin-bottom:1rem; }
+  .warning-box strong { color:#ef4444; }
+
+  /* Quiz */
+  .quiz-section { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:2rem; margin-top:3rem; }
+  .quiz-title { font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:0.5rem; color:var(--gold-light); }
+  .quiz-sub { color:var(--slate); font-size:0.875rem; margin-bottom:1.5rem; }
+  .quiz-q { margin-bottom:1.5rem; }
+  .quiz-q-text { font-weight:600; margin-bottom:0.75rem; font-size:0.95rem; }
+  .quiz-options { display:flex; flex-direction:column; gap:0.5rem; }
+  .quiz-opt { background:#0d0d1f; border:1px solid var(--border); border-radius:8px; padding:0.75rem 1rem; cursor:pointer; transition:0.2s; font-size:0.9rem; display:flex; align-items:center; gap:0.75rem; }
+  .quiz-opt:hover { border-color:var(--gold); }
+  .quiz-opt.selected { border-color:var(--gold); background:rgba(184,134,11,0.1); }
+  .quiz-opt.correct { border-color:var(--green); background:rgba(34,197,94,0.1); color:var(--green); }
+  .quiz-opt.wrong { border-color:#ef4444; background:rgba(239,68,68,0.1); color:#ef4444; }
+  .quiz-opt-dot { width:16px; height:16px; border:2px solid var(--slate); border-radius:50%; flex-shrink:0; }
+  .quiz-opt.selected .quiz-opt-dot { border-color:var(--gold); background:var(--gold); }
+  .quiz-opt.correct .quiz-opt-dot { border-color:var(--green); background:var(--green); }
+  .quiz-submit { background:linear-gradient(135deg,var(--gold),#a07808); color:#fff; border:none; padding:0.75rem 2rem; border-radius:8px; cursor:pointer; font-weight:600; margin-top:1rem; width:100%; font-size:0.95rem; }
+  .quiz-result { text-align:center; padding:1.5rem; display:none; }
+  .quiz-result h3 { font-size:1.5rem; font-weight:700; margin-bottom:0.5rem; }
+  .quiz-result p { color:var(--slate); margin-bottom:1rem; }
+  .btn-next-module { background:linear-gradient(135deg,var(--gold),#a07808); color:#fff; border:none; padding:0.75rem 2rem; border-radius:8px; cursor:pointer; font-weight:700; font-size:1rem; }
+
+  /* Certificate */
+  #cert-section { display:none; max-width:900px; margin:3rem auto; padding:0 2rem; }
+  .cert-card { border:3px solid var(--gold); border-radius:16px; overflow:hidden; }
+  .cert-header { background:linear-gradient(135deg,var(--navy),#2d2d5f); padding:3rem; text-align:center; position:relative; overflow:hidden; }
+  .cert-header::before { content:''; position:absolute; inset:15px; border:1px solid rgba(184,134,11,0.3); border-radius:8px; pointer-events:none; }
+  .cert-body { background:#fff; padding:3rem; text-align:center; }
+
+  @media print {
+    .sidebar, .top-bar, .lesson-nav-btn, .quiz-submit, .btn-next-module { display:none!important; }
+    .layout { grid-template-columns:1fr; }
+    body { background:#fff; color:#000; }
+    #cert-section { display:block!important; }
+    .cert-card { border-color:#b8860b!important; }
+  }
+
+  @media(max-width:768px) {
+    .layout { grid-template-columns:1fr; }
+    .sidebar { height:auto; position:static; }
+    .module-content { padding:2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <a href="/portal.html">← Client Portal</a>
+      <p>Healthcare Compliance Certification</p>
+    </div>
+    <div class="course-progress-wrap">
+      <div class="cp-label">Your Progress</div>
+      <div class="cp-bar"><div class="cp-fill" id="sidebar-progress" style="width:0%"></div></div>
+      <div class="cp-pct" id="sidebar-pct">0% Complete</div>
+    </div>
+    <div class="modules-list" id="modules-list"></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content" id="main-content">
+    <div class="top-bar">
+      <div style="display:flex;gap:1rem;align-items:center;">
+        <button class="lesson-nav-btn secondary" onclick="prevModule()" id="btn-prev-m">← Previous</button>
+        <span style="color:var(--slate);font-size:0.85rem;" id="top-bar-loc">Module 1 of 6</span>
+        <button class="lesson-nav-btn" onclick="nextModule()" id="btn-next-m">Next →</button>
+      </div>
+      <button class="lesson-nav-btn secondary" onclick="window.print()">🖨️ Print Certificate</button>
+    </div>
+
+    <div class="module-content" id="module-content-area"></div>
+    <div id="cert-section">
+      <div class="cert-card">
+        <div class="cert-header">
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;color:rgba(255,255,255,0.7);letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Certificate of Completion</div>
+          <div style="font-size:2.5rem;font-weight:700;color:var(--gold-light);margin-bottom:0.25rem;">🏆</div>
+          <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff;margin-bottom:0.5rem;">Healthcare Compliance Certification</div>
+          <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);">6-Module Professional Certification Program</div>
+        </div>
+        <div class="cert-body">
+          <p style="color:#666;font-size:0.9rem;margin-bottom:0.5rem;">This certifies that</p>
+          <h2 style="font-family:'Playfair Display',serif;font-size:2rem;color:#1a1a2e;margin-bottom:0.5rem;" id="cert-name">Certificate Holder</h2>
+          <p style="color:#666;font-size:0.9rem;margin-bottom:1rem;">has successfully completed the</p>
+          <p style="font-size:1.1rem;font-weight:700;color:#1a1a2e;margin-bottom:0.5rem;">Healthcare Compliance Certification Program</p>
+          <p style="color:#666;font-size:0.85rem;margin-bottom:2rem;">Demonstrating competency in HIPAA Privacy & Security, EHE & Ryan White Compliance, Risk Assessment, Workforce Training, Breach Response, and Audit Readiness</p>
+          <div style="display:flex;justify-content:space-between;padding:1rem 2rem;border-top:2px solid #f1f5f9;">
+            <div style="text-align:center;"><div style="font-size:0.75rem;color:#999;margin-bottom:0.25rem;">Issued By</div><div style="font-weight:700;color:#1a1a2e;">New Level Consultants</div></div>
+            <div style="text-align:center;"><div style="font-size:0.75rem;color:#999;margin-bottom:0.25rem;">Completion Date</div><div style="font-weight:700;color:#1a1a2e;" id="cert-date"></div></div>
+            <div style="text-align:center;"><div style="font-size:0.75rem;color:#999;margin-bottom:0.25rem;">CEU Credits</div><div style="font-weight:700;color:#1a1a2e;">6 Hours</div></div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:1.5rem;padding-bottom:3rem;">
+        <button onclick="window.print()" style="background:linear-gradient(135deg,var(--gold),#a07808);color:#fff;border:none;padding:0.85rem 2.5rem;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;">🖨️ Print Your Certificate</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const MODULES = [
+  {
+    id:'m1', title:'HIPAA Fundamentals', duration:'~45 min', icon:'⚖️',
+    content: `
+      <div class="lesson-block">
+        <h3>1.1 What is HIPAA and Why Does It Matter?</h3>
+        <p>The Health Insurance Portability and Accountability Act (HIPAA) was enacted in 1996 and has evolved into the primary federal law governing the privacy and security of health information in the United States. For healthcare providers, health plans, and their business associates, HIPAA is not optional — it is a legal framework with significant civil and criminal penalties for non-compliance.</p>
+        <p>As of 2024, OCR (the Office for Civil Rights within HHS) has collected over <strong>$150 million in HIPAA settlements</strong> and has escalated enforcement, particularly around small and mid-sized providers who historically underinvested in compliance infrastructure.</p>
+        <div class="key-point"><strong>Key Point:</strong> HIPAA applies to Covered Entities (healthcare providers, health plans, healthcare clearinghouses) and their Business Associates — any third party that creates, receives, maintains, or transmits PHI on behalf of a Covered Entity.</div>
+      </div>
+      <div class="lesson-block">
+        <h3>1.2 The Three Core Rules</h3>
+        <p><strong>The Privacy Rule (45 CFR Part 164, Subpart E)</strong> establishes national standards for the protection of individually identifiable health information — called Protected Health Information (PHI). PHI is any information that relates to an individual's health status, provision of healthcare, or payment for healthcare that can be used to identify the individual.</p>
+        <ul>
+          <li>PHI includes 18 identifiers: name, address, dates, phone, email, SSN, MRN, account numbers, photos, and more</li>
+          <li>The Privacy Rule governs how PHI may be used and disclosed — with or without patient authorization</li>
+          <li>Patients have specific rights: access, amendment, accounting of disclosures, restrictions, and confidential communications</li>
+        </ul>
+        <p><strong>The Security Rule (45 CFR Part 164, Subparts C & D)</strong> establishes safeguards specifically for Electronic PHI (ePHI). It requires Administrative, Physical, and Technical safeguards — organized into Required and Addressable implementation specifications.</p>
+        <div class="callout"><strong>Important Distinction:</strong> "Addressable" does NOT mean optional. It means you must either implement the specification or document why an equivalent alternative was implemented instead.</div>
+        <p><strong>The Breach Notification Rule</strong> establishes requirements for notifying individuals, the HHS Secretary, and (in some cases) the media when a breach of unsecured PHI occurs. A breach is presumed to have occurred unless you can affirmatively demonstrate that the probability of compromise is low based on a 4-factor risk assessment.</p>
+      </div>
+      <div class="lesson-block">
+        <h3>1.3 The Enforcement Landscape</h3>
+        <p>OCR conducts investigations in response to complaints and conducts proactive audits. In 2024, OCR launched the HIPAA Right of Access initiative and has levied significant fines even against small practices for failing to respond to patient access requests within 30 days.</p>
+        <div class="warning-box"><strong>⚠ Top OCR Audit Targets:</strong> Lack of Risk Analysis, insufficient Business Associate Agreements, missing Notice of Privacy Practices, inadequate workforce training, and failure to respond to patient rights requests.</div>
+        <p>Penalties range from $100 to $50,000 per violation per category, depending on culpability. "Willful neglect" violations carry mandatory penalties of $10,000–$50,000 per violation.</p>
+      </div>
+      <div class="lesson-block">
+        <h3>1.4 Your HIPAA Compliance Program Framework</h3>
+        <p>A mature HIPAA compliance program includes six pillars:</p>
+        <ol>
+          <li><strong>Risk Analysis and Risk Management</strong> — the foundation of all compliance</li>
+          <li><strong>Policies and Procedures</strong> — documented, version-controlled, and accessible</li>
+          <li><strong>Workforce Training</strong> — upon hire and annually, documented with attestations</li>
+          <li><strong>Business Associate Management</strong> — BAA inventory, executed agreements, annual reviews</li>
+          <li><strong>Incident Response</strong> — detection, containment, assessment, notification</li>
+          <li><strong>Ongoing Monitoring and Auditing</strong> — system activity reviews, access audits, control testing</li>
+        </ol>
+      </div>`,
+    quiz: [
+      {q:'What does PHI stand for in HIPAA?', opts:['Protected Health Index','Protected Health Information','Private Health Infrastructure','Patient Health Inventory'], correct:1},
+      {q:'The Security Rule specifically governs:',opts:['Paper records only','Electronic PHI (ePHI) only','All PHI regardless of format','Verbal disclosures of health information'],correct:1},
+      {q:'Under the Breach Notification Rule, a breach is defined as:',opts:['Any unauthorized access to a system','Impermissible use or disclosure of unsecured PHI','A cyberattack on a healthcare system','Any HIPAA policy violation'],correct:1},
+    ]
+  },
+  {
+    id:'m2', title:'EHE & Ryan White Reporting', duration:'~40 min', icon:'📊',
+    content: `
+      <div class="lesson-block">
+        <h3>2.1 Understanding Federal HIV Programs</h3>
+        <p>The Ending the HIV Epidemic (EHE) initiative and the Ryan White HIV/AIDS Program are two of the most impactful federal programs for HIV clinical services. Organizations receiving funding under these programs have specific reporting, compliance, and quality management obligations that go beyond standard HIPAA requirements.</p>
+        <p>The Ryan White HIV/AIDS Program provides a comprehensive system of care that includes primary medical care, medications, and essential support services for low-income people living with HIV. Recipients and subrecipients must adhere to the Ryan White HIV/AIDS Program legislation (as amended), HRSA policy notices, and any grant-specific requirements.</p>
+      </div>
+      <div class="lesson-block">
+        <h3>2.2 Required Data Systems and Reporting</h3>
+        <p>Ryan White recipients are required to collect and report client-level data through the <strong>Ryan White Services Report (RSR)</strong> and the <strong>AIDS Drug Assistance Program Data Report (ADR)</strong>. These reports are submitted annually through the HRSA Electronic Handbooks (EHBs).</p>
+        <ul>
+          <li><strong>RSR:</strong> Unduplicated client count, demographics, HIV clinical outcomes (CD4, VL), services provided</li>
+          <li><strong>ADR:</strong> Clients receiving ADAP, medications dispensed, client-level data</li>
+          <li><strong>Clinical Quality Management (CQM):</strong> Recipients must have a written CQM plan and conduct ongoing quality improvement activities</li>
+        </ul>
+        <div class="key-point"><strong>Key Requirement:</strong> Ryan White organizations must demonstrate progress in achieving and maintaining viral suppression rates as a core performance outcome. HRSA targets viral suppression of 86%+ for all clients in care.</div>
+      </div>
+      <div class="lesson-block">
+        <h3>2.3 EHE Jurisdictional Requirements</h3>
+        <p>The EHE initiative targets the 57 jurisdictions with the highest HIV burden. Organizations in these jurisdictions receiving EHE funding must align their data collection and reporting with the EHE indicator framework, which includes:</p>
+        <ul>
+          <li>Diagnose: % of people living with HIV who know their status</li>
+          <li>Treat: % of people diagnosed with HIV who receive treatment</li>
+          <li>Prevent: # of people at risk who receive PrEP</li>
+          <li>Respond: Actions taken in identified clusters/outbreaks</li>
+        </ul>
+        <div class="callout"><strong>Compliance Tip:</strong> Ensure your EHR captures all required EHE indicators and that your data is linked to local health department surveillance systems as required by your grant award.</div>
+      </div>
+      <div class="lesson-block">
+        <h3>2.4 Compliance Monitoring and Desk Reviews</h3>
+        <p>HRSA conducts site visits and desk reviews of Ryan White recipients and subrecipients. Common areas of review include:</p>
+        <ul>
+          <li>Eligibility verification documentation (income eligibility re-assessed annually)</li>
+          <li>Service documentation in the EHR (services match RSR submissions)</li>
+          <li>Program Integrity requirements (no co-payment for services in excess of policy)</li>
+          <li>Financial management — allowable vs. unallowable costs under 2 CFR 200</li>
+          <li>Civil Rights compliance — Section 504 of the Rehabilitation Act, ADA, Title VI</li>
+        </ul>
+        <div class="warning-box"><strong>⚠ Common Finding:</strong> Ineligible client services — clients who did not complete annual eligibility re-assessment being served with Ryan White funds. Implement a tickler system to prompt annual reassessments.</div>
+      </div>`,
+    quiz: [
+      {q:'What does RSR stand for in Ryan White reporting?',opts:['Ryan White Services Report','Regional Services Review','Recipients Service Roster','Regulatory Submission Record'],correct:0},
+      {q:'What is the HRSA target for viral suppression under Ryan White programs?',opts:['70%+','80%+','86%+','95%+'],correct:2},
+      {q:'Under EHE, which of the following is NOT one of the four pillars?',opts:['Diagnose','Treat','Educate','Respond'],correct:2},
+    ]
+  },
+  {
+    id:'m3', title:'Risk Assessment Methodology', duration:'~35 min', icon:'🔍',
+    content: `
+      <div class="lesson-block">
+        <h3>3.1 Why Risk Analysis is the Cornerstone of Compliance</h3>
+        <p>The HIPAA Risk Analysis requirement (45 CFR §164.308(a)(1)) is the most frequently cited violation in OCR investigations and audits. A complete, accurate, thorough, and organization-wide risk analysis is not just a compliance checkbox — it is the foundation upon which all other HIPAA decisions are made.</p>
+        <p>Risk analysis must be conducted at implementation, and must be reviewed and updated in response to environmental or operations changes, or on a regular basis (best practice: annually).</p>
+        <div class="key-point"><strong>NIST Framework:</strong> HHS endorses the NIST Risk Assessment Framework (SP 800-30) as a best practice methodology for conducting HIPAA risk analyses.</div>
+      </div>
+      <div class="lesson-block">
+        <h3>3.2 The 6-Step Risk Analysis Process</h3>
+        <ol>
+          <li><strong>Scope:</strong> Define all systems, processes, and locations where ePHI is created, received, maintained, or transmitted. Include cloud systems, mobile devices, and remote access.</li>
+          <li><strong>Data Inventory:</strong> Identify all ePHI flows and data stores. Where does ePHI reside at rest? How does it move between systems?</li>
+          <li><strong>Threat Identification:</strong> Identify reasonably anticipated threats — both human (malicious insiders, hackers, social engineering) and environmental (floods, fires, system failures).</li>
+          <li><strong>Vulnerability Identification:</strong> For each threat, identify existing control gaps. What weaknesses could allow the threat to exploit the system?</li>
+          <li><strong>Likelihood & Impact:</strong> For each threat-vulnerability pair, estimate the likelihood (High/Medium/Low) and potential impact (High/Medium/Low). The risk level is the product of these two dimensions.</li>
+          <li><strong>Risk Register & Remediation:</strong> Document all risks in a risk register with assigned owners, remediation actions, target dates, and a residual risk determination after controls are applied.</li>
+        </ol>
+      </div>
+      <div class="lesson-block">
+        <h3>3.3 Risk Management Plan</h3>
+        <p>The Risk Management Plan (45 CFR §164.308(a)(1)(ii)(B)) translates risk findings into action. Best practices include:</p>
+        <ul>
+          <li>Prioritize risks by severity (High risks addressed within 30 days, Medium within 90 days)</li>
+          <li>Assign a named owner to every risk item</li>
+          <li>Track remediation status monthly</li>
+          <li>Report risk status to leadership quarterly</li>
+          <li>Document rationale for risks accepted rather than remediated</li>
+        </ul>
+        <div class="callout"><strong>Pro Tip:</strong> Use your risk register as a living document. Every security incident, new system deployment, or organizational change should trigger a risk register review. This demonstrates good faith to OCR.</div>
+      </div>
+      <div class="lesson-block">
+        <h3>3.4 Enterprise Risk Beyond HIPAA</h3>
+        <p>Healthcare organizations should extend their risk thinking beyond HIPAA ePHI to include operational, financial, reputational, and strategic risks. An Enterprise Risk Management (ERM) framework helps leadership make informed resource allocation decisions and demonstrates maturity to funders, insurers, and regulators.</p>
+        <div class="warning-box"><strong>Key Mistake:</strong> Treating risk analysis as a one-time event. OCR expects organizations to repeat the analysis when significant changes occur — new EHR, new service line, new location, staff changes, or any breach.</div>
+      </div>`,
+    quiz: [
+      {q:'According to HHS, which framework is endorsed for HIPAA risk analysis?',opts:['ISO 27001','SOC 2','NIST SP 800-30','PCI DSS'],correct:2},
+      {q:'Under HIPAA, risk analysis must be conducted:',opts:['Once at implementation only','Only after a breach','At implementation and after significant changes','Every 5 years'],correct:2},
+      {q:'The Risk Management Plan should prioritize High risks to be addressed within:',opts:['7 days','30 days','90 days','1 year'],correct:1},
+    ]
+  },
+  {
+    id:'m4', title:'Staff Training & Workforce Requirements', duration:'~30 min', icon:'🎓',
+    content: `
+      <div class="lesson-block">
+        <h3>4.1 HIPAA Workforce Training Requirements</h3>
+        <p>45 CFR §164.530(b) requires that all workforce members receive training on HIPAA policies and procedures upon hire and when material changes occur. Documentation of training — who was trained, when, on what, and the individual's attestation — must be retained for a minimum of 6 years.</p>
+        <p>Training must be specific to the workforce member's job function. A front desk receptionist and a clinical nurse have very different ePHI interaction profiles and should receive role-appropriate training.</p>
+      </div>
+      <div class="lesson-block">
+        <h3>4.2 Building a Training Program</h3>
+        <p>An effective HIPAA training program includes multiple components:</p>
+        <ul>
+          <li><strong>New Hire Training:</strong> Completed before the employee has access to any PHI. Must cover Privacy Rule basics, Security Rule requirements, organization-specific policies, and how to report incidents.</li>
+          <li><strong>Annual Refresher:</strong> Updated to reflect regulatory changes, new policies, and lessons from the prior year's incidents.</li>
+          <li><strong>Role-Specific Modules:</strong> Targeted training for clinical staff, IT, billing, and leadership.</li>
+          <li><strong>Just-in-Time Training:</strong> Issue-specific training triggered by an incident or policy change.</li>
+          <li><strong>Phishing Simulations:</strong> Regular simulated phishing campaigns to test and improve security awareness.</li>
+        </ul>
+        <div class="key-point"><strong>Documentation Best Practice:</strong> Use a Learning Management System (LMS) or at minimum a spreadsheet log with: employee name, date of training, course title, version, and attestation signature/electronic confirmation.</div>
+      </div>
+      <div class="lesson-block">
+        <h3>4.3 Workforce Sanctions Policy</h3>
+        <p>HIPAA requires a sanctions policy for workforce members who violate privacy or security policies (45 CFR §164.530(e) and §164.308(a)(1)(ii)(C)). The sanctions policy must:</p>
+        <ul>
+          <li>Be documented and communicated to all workforce members</li>
+          <li>Be applied consistently — a manager who violates policy must face the same sanctions as a front-line employee</li>
+          <li>Align with the severity of the violation (documented warning → suspension → termination → referral to law enforcement)</li>
+        </ul>
+        <div class="warning-box"><strong>⚠ Critical Mistake:</strong> Having a sanctions policy but failing to apply it. OCR investigators specifically look for evidence of consistent enforcement. Inconsistent application is itself a violation.</div>
+      </div>
+      <div class="lesson-block">
+        <h3>4.4 Awareness Beyond Compliance Training</h3>
+        <p>The most effective compliance cultures go beyond checkbox training. Best practices for building a compliance-first culture include:</p>
+        <ul>
+          <li>Leadership modeling compliance behaviors (CEO attends annual training)</li>
+          <li>Anonymous reporting hotlines (employees can report concerns without fear of retaliation)</li>
+          <li>Monthly security/compliance tips in staff communications</li>
+          <li>Recognizing compliance champions in the organization</li>
+          <li>Making compliance part of performance evaluations</li>
+        </ul>
+      </div>`,
+    quiz: [
+      {q:'Per HIPAA, training records must be retained for a minimum of:',opts:['2 years','3 years','5 years','6 years'],correct:3},
+      {q:'New hire HIPAA training should be completed:',opts:['Within 90 days of start','Before the employee has access to any PHI','At the annual review','Within 30 days of start'],correct:1},
+      {q:'A sanctions policy must be applied:',opts:['Only to clinical staff','Consistently across all workforce roles','Only in cases of intentional violations','At the discretion of the manager'],correct:1},
+    ]
+  },
+  {
+    id:'m5', title:'Breach Response & Incident Management', duration:'~35 min', icon:'🚨',
+    content: `
+      <div class="lesson-block">
+        <h3>5.1 What Constitutes a Breach?</h3>
+        <p>Under HIPAA's Breach Notification Rule (45 CFR Part 164, Subpart D), a breach is defined as the acquisition, access, use, or disclosure of PHI in a manner not permitted by the Privacy Rule, which compromises the security or privacy of the PHI.</p>
+        <p>Importantly, a breach is presumed unless the covered entity demonstrates a low probability that the PHI was compromised based on a risk assessment of at least four factors.</p>
+        <div class="key-point"><strong>The 4-Factor Breach Risk Assessment:</strong><br>
+        1. Nature and extent of PHI involved (types of identifiers, likelihood of re-identification)<br>
+        2. Who accessed or could have accessed the PHI<br>
+        3. Whether PHI was actually acquired or viewed<br>
+        4. Extent to which risk has been mitigated</div>
+      </div>
+      <div class="lesson-block">
+        <h3>5.2 The Incident Response Lifecycle</h3>
+        <p>A mature incident response follows a structured lifecycle. Here is the standard HIPAA-aligned 5-phase process:</p>
+        <ol>
+          <li><strong>Preparation:</strong> Before an incident — documented IRP, trained IRT, tested backups, legal and forensic vendor relationships, cyber insurance in place.</li>
+          <li><strong>Detection & Reporting:</strong> Any workforce member discovers or suspects an incident and reports immediately to the Security/Privacy Officer. All potential incidents are logged and tracked.</li>
+          <li><strong>Containment:</strong> Stop the bleeding — isolate systems, revoke credentials, quarantine affected devices. Preserve evidence for forensic analysis.</li>
+          <li><strong>Assessment:</strong> Conduct the 4-factor breach risk assessment. Engage legal counsel. Classify event (breach vs. security incident vs. near miss).</li>
+          <li><strong>Recovery & Notification:</strong> Restore systems from clean backups. Issue required notifications. Conduct root cause analysis and update controls. Document everything.</li>
+        </ol>
+      </div>
+      <div class="lesson-block">
+        <h3>5.3 Notification Timelines</h3>
+        <div class="warning-box"><strong>Notification Requirements by Breach Size:</strong><br>
+        <strong>500+ individuals (jurisdiction):</strong> Individual notice + HHS OCR + Prominent media within 60 days of discovery<br>
+        <strong>Under 500 individuals:</strong> Individual notice within 60 days + HHS annual log (due March 1 following calendar year)<br>
+        <strong>Business Associates:</strong> Must notify Covered Entity without unreasonable delay, not to exceed 60 days</div>
+        <p>Individual notification must include 6 required elements: description of what happened, description of PHI involved, steps individuals should take, what the organization is doing to contain/mitigate, contact information, and (if applicable) description of the breach and what happened to the PHI.</p>
+      </div>
+      <div class="lesson-block">
+        <h3>5.4 Emerging Threats: Ransomware & Social Engineering</h3>
+        <p>Ransomware was the #1 cybersecurity threat to healthcare organizations in 2023–2024. HHS has issued specific guidance confirming that ransomware incidents involving ePHI are presumptive breaches requiring the 4-factor assessment.</p>
+        <ul>
+          <li>Prevention: MFA on all systems, regular patching, immutable backups (3-2-1 rule)</li>
+          <li>Detection: EDR/XDR solutions, anomaly-based alerts, SIEM monitoring</li>
+          <li>Response: Never pay ransom without involving legal counsel and law enforcement</li>
+          <li>Social Engineering: 90%+ of breaches involve human error. Phishing awareness training is non-negotiable.</li>
+        </ul>
+      </div>`,
+    quiz: [
+      {q:'A breach under HIPAA is presumed to have occurred unless:',opts:['No data was copied','You can demonstrate low probability of compromise via 4-factor assessment','The system was encrypted','The incident was reported within 24 hours'],correct:1},
+      {q:'What is the notification deadline to HHS OCR for a breach affecting 600 individuals?',opts:['24 hours','30 days','60 days from discovery','Annual log submission'],correct:2},
+      {q:'Under HIPAA guidance, ransomware incidents involving ePHI are:',opts:['Not breaches if data was not exfiltrated','Always presumptive breaches requiring 4-factor assessment','Excluded from breach notification requirements','Only reportable if ransom is paid'],correct:1},
+    ]
+  },
+  {
+    id:'m6', title:'Audit Readiness & Continuous Compliance', duration:'~30 min', icon:'✅',
+    content: `
+      <div class="lesson-block">
+        <h3>6.1 How OCR Audits Work</h3>
+        <p>OCR conducts two types of HIPAA enforcement activities: <strong>Compliance Reviews</strong> (triggered by a complaint or breach report) and <strong>Audits</strong> (proactive selection, both desk audits and onsite). The Phase 2 Audit program established the current audit protocol, which includes 180 performance criteria across Privacy, Security, and Breach Notification.</p>
+        <p>Organizations selected for a desk audit typically receive a 10-day notice and are asked to produce extensive documentation. Preparation is key — organizations with organized, current documentation can respond effectively. Those without are at severe risk of findings.</p>
+        <div class="key-point"><strong>OCR Audit Protocol:</strong> The full OCR Audit Protocol is publicly available at hhs.gov/hipaa/for-professionals/compliance-enforcement. Download it and use it as your internal audit checklist.</div>
+      </div>
+      <div class="lesson-block">
+        <h3>6.2 The Documentation Imperative</h3>
+        <p>HIPAA's documentation requirements (45 CFR §164.530(j)) require that all policies and procedures must be written, retained for 6 years, and made available to employees who need them to carry out their job functions.</p>
+        <p>For an audit, you will need to produce:</p>
+        <ul>
+          <li>Written Risk Analysis and Risk Management Plan</li>
+          <li>All Privacy, Security, and Breach Notification policies and procedures</li>
+          <li>Training logs with attestations for all workforce members</li>
+          <li>BAA inventory with copies of signed agreements</li>
+          <li>Audit logs from electronic systems</li>
+          <li>Any breach log and supporting documentation</li>
+          <li>Notice of Privacy Practices (posted and distributed)</li>
+          <li>Any incident reports and resolution documentation</li>
+        </ul>
+      </div>
+      <div class="lesson-block">
+        <h3>6.3 Building a Continuous Compliance Program</h3>
+        <p>The most resilient compliance programs operate continuously rather than as annual events. A continuous compliance calendar might look like:</p>
+        <ul>
+          <li><strong>Monthly:</strong> Access log review, policy management system check, incident log review</li>
+          <li><strong>Quarterly:</strong> Risk register review, BAA status check, training completion audit, security control testing</li>
+          <li><strong>Annually:</strong> Full risk analysis, enterprise risk assessment, policy review and update cycle, workforce training refresh, tabletop incident response exercise</li>
+          <li><strong>Ongoing:</strong> Regulatory monitoring (new OCR guidance, rule changes, enforcement trends)</li>
+        </ul>
+        <div class="callout"><strong>Program Maturity Model:</strong> Compliance programs evolve through stages — from Ad Hoc (reactive) → Defined (documented) → Managed (monitored) → Optimized (continuous improvement). Your goal is Managed or Optimized.</div>
+      </div>
+      <div class="lesson-block">
+        <h3>6.4 Engaging a Compliance Partner</h3>
+        <p>Many small and mid-size healthcare organizations benefit from engaging a compliance consultant or outsourced compliance program. The value proposition is straightforward: the cost of a proactive compliance program is fraction of the cost of a breach investigation, litigation, or OCR settlement.</p>
+        <p>When selecting a compliance partner, look for:</p>
+        <ul>
+          <li>CHPC (Certified HIPAA Privacy Compliance) or CHSP (Security Professional) credentials</li>
+          <li>Experience with your specific entity type (FQHCs, Ryan White grantees, specialty practices)</li>
+          <li>A methodology that includes documentation, training, and ongoing monitoring — not just policy templates</li>
+          <li>References from organizations of similar size and complexity</li>
+        </ul>
+        <div class="key-point"><strong>NLC Compliance Services:</strong> New Level Consultants offers on-site and remote HIPAA compliance programs, risk analysis services, and ongoing compliance retainers for healthcare organizations. Contact us at info@nlcfirm.com or call 786-408-4243 to discuss your needs.</div>
+      </div>`,
+    quiz: [
+      {q:'How long must HIPAA policies and procedures be retained?',opts:['3 years','5 years','6 years','Indefinitely'],correct:2},
+      {q:'OCR proactive audits are conducted under which program?',opts:['HIPAA Phase 2 Audit Program','Medicare Conditions of Participation Surveys','Joint Commission Reviews','CMS QAPI'],correct:0},
+      {q:'A continuous compliance program should include which of the following activities monthly?',opts:['Full risk analysis','Tabletop exercise','Access log review','Policy update cycle'],correct:2},
+    ]
+  }
+];
+
+let currentModule = 0;
+let progress = JSON.parse(localStorage.getItem('hcc_progress') || '{}');
+let quizSubmitted = {};
+
+function saveProgress(moduleId, completed, score) {
+  progress[moduleId] = { completed, score, updatedAt: new Date().toISOString() };
+  localStorage.setItem('hcc_progress', JSON.stringify(progress));
+  updateSidebarProgress();
+
+  // Try to save to server if authenticated
+  const token = localStorage.getItem('nlc_client_token');
+  if (token) {
+    fetch('/api/products/course/compliance-cert/progress', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body: JSON.stringify({moduleId, completed, score})
+    }).catch(()=>{});
+  }
+}
+
+function updateSidebarProgress() {
+  const total = MODULES.length;
+  const done = MODULES.filter(m => progress[m.id] && progress[m.id].completed).length;
+  const pct = Math.round((done/total)*100);
+  document.getElementById('sidebar-progress').style.width = pct+'%';
+  document.getElementById('sidebar-pct').textContent = pct+'% Complete';
+
+  MODULES.forEach((m,i) => {
+    const item = document.getElementById('mi-'+i);
+    if (!item) return;
+    item.className = 'module-item' + (i===currentModule?' active':'') + (progress[m.id]&&progress[m.id].completed?' completed':'');
+    const check = item.querySelector('.mi-check');
+    if (check) check.style.display = (progress[m.id]&&progress[m.id].completed)?'inline':'none';
+  });
+
+  if (done === total) {
+    document.getElementById('cert-section').style.display = 'block';
+    const user = JSON.parse(localStorage.getItem('nlc_client_user')||'{}');
+    document.getElementById('cert-name').textContent = user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : 'Certificate Holder';
+    document.getElementById('cert-date').textContent = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+  }
+}
+
+function buildSidebar() {
+  document.getElementById('modules-list').innerHTML = MODULES.map((m,i) => `
+    <div class="module-item${i===currentModule?' active':''}${progress[m.id]&&progress[m.id].completed?' completed':''}" id="mi-${i}" onclick="goModule(${i})">
+      <div class="mi-num">Module ${i+1} <span class="mi-check" style="display:${progress[m.id]&&progress[m.id].completed?'inline':'none'}">✓</span></div>
+      <div class="mi-title">${m.icon} ${m.title}</div>
+      <div class="mi-duration">${m.duration}</div>
+    </div>`).join('');
+}
+
+function renderModule(idx) {
+  const m = MODULES[idx];
+  document.getElementById('top-bar-loc').textContent = `Module ${idx+1} of ${MODULES.length}: ${m.title}`;
+  document.getElementById('btn-prev-m').disabled = idx === 0;
+  document.getElementById('btn-next-m').textContent = idx===MODULES.length-1 ? 'Finish Course ✓' : 'Next →';
+
+  const isCompleted = progress[m.id] && progress[m.id].completed;
+  const completedNote = isCompleted ? `<div class="callout" style="margin-bottom:1.5rem;"><strong>✅ Module Completed</strong> — You've already passed the quiz for this module. Continue to review the content or proceed to the next module.</div>` : '';
+
+  document.getElementById('module-content-area').innerHTML = `
+    <div class="module-badge">Module ${idx+1} of ${MODULES.length}</div>
+    <h1 class="module-title">${m.icon} ${m.title}</h1>
+    <div class="module-meta">
+      <span>⏱ ${m.duration}</span>
+      <span>📚 Healthcare Compliance Certification</span>
+      <span>NLC · 2026</span>
+    </div>
+    ${completedNote}
+    ${m.content}
+    <div class="quiz-section" id="quiz-${m.id}">
+      <div class="quiz-title">📝 Module ${idx+1} Knowledge Check</div>
+      <div class="quiz-sub">Answer all questions below to complete this module and unlock the next.</div>
+      ${m.quiz.map((q,qi) => `
+        <div class="quiz-q" id="qq-${m.id}-${qi}">
+          <div class="quiz-q-text">${qi+1}. ${q.q}</div>
+          <div class="quiz-options">
+            ${q.opts.map((opt,oi) => `
+              <div class="quiz-opt" id="qo-${m.id}-${qi}-${oi}" onclick="pickQuizOpt('${m.id}',${qi},${oi},${q.correct})">
+                <div class="quiz-opt-dot"></div>
+                <span>${opt}</span>
+              </div>`).join('')}
+          </div>
+        </div>`).join('')}
+      <button class="quiz-submit" id="quiz-submit-${m.id}" onclick="submitQuiz('${m.id}',${idx})">Submit Answers</button>
+      <div class="quiz-result" id="quiz-result-${m.id}"></div>
+    </div>`;
+
+  buildSidebar();
+  window.scrollTo(0,0);
+}
+
+const quizSelections = {};
+function pickQuizOpt(moduleId, qi, oi, correct) {
+  if (quizSubmitted[moduleId]) return;
+  if (!quizSelections[moduleId]) quizSelections[moduleId] = {};
+  quizSelections[moduleId][qi] = {selected:oi, correct};
+  const group = document.querySelectorAll(`[id^="qo-${moduleId}-${qi}-"]`);
+  group.forEach(el => el.classList.remove('selected'));
+  document.getElementById(`qo-${moduleId}-${qi}-${oi}`).classList.add('selected');
+}
+
+function submitQuiz(moduleId, idx) {
+  const m = MODULES[idx];
+  const sels = quizSelections[moduleId] || {};
+  const total = m.quiz.length;
+  const answered = Object.keys(sels).length;
+  if (answered < total) { alert('Please answer all questions before submitting.'); return; }
+
+  let correct = 0;
+  m.quiz.forEach((q,qi) => {
+    const sel = sels[qi];
+    for(let oi=0;oi<q.opts.length;oi++) {
+      const el = document.getElementById(`qo-${moduleId}-${qi}-${oi}`);
+      if (!el) continue;
+      el.style.cursor='not-allowed';
+      if (oi === q.correct) el.classList.add('correct');
+      else if (oi === sel.selected && oi !== q.correct) el.classList.add('wrong');
+    }
+    if (sel.selected === q.correct) correct++;
+  });
+
+  const score = Math.round((correct/total)*100);
+  const passed = score >= 70;
+  quizSubmitted[moduleId] = true;
+
+  const result = document.getElementById(`quiz-result-${moduleId}`);
+  result.style.display = 'block';
+  result.innerHTML = `
+    <h3 style="color:${passed?'var(--green)':'#ef4444'}">${passed?'🎉 Passed!':'❌ Not Passed'}</h3>
+    <p>${correct} of ${total} correct (${score}%) ${passed?'— Great work! Module unlocked.':'— You need 70% to pass. Review the content and try again.'}</p>
+    ${passed?`<button class="btn-next-module" onclick="${idx<MODULES.length-1?`goModule(${idx+1})`:"showCert()"}">
+      ${idx<MODULES.length-1?'Continue to Module '+(idx+2)+' →':'🏆 Get Your Certificate →'}
+    </button>`:'<button class="btn-next-module" onclick="resetQuiz(\''+moduleId+'\','+idx+')">Retry Quiz</button>'}`;
+
+  document.getElementById(`quiz-submit-${moduleId}`).style.display = 'none';
+  if (passed) saveProgress(moduleId, true, score);
+}
+
+function resetQuiz(moduleId, idx) {
+  quizSubmitted[moduleId] = false;
+  quizSelections[moduleId] = {};
+  renderModule(idx);
+}
+
+function goModule(idx) {
+  currentModule = idx;
+  renderModule(idx);
+}
+
+function prevModule() { if (currentModule > 0) goModule(currentModule - 1); }
+function nextModule() { if (currentModule < MODULES.length-1) goModule(currentModule+1); else showCert(); }
+
+function showCert() {
+  document.getElementById('cert-section').scrollIntoView({behavior:'smooth'});
+}
+
+// Init
+buildSidebar();
+updateSidebarProgress();
+renderModule(0);
+</script>
+</body>
+</html>

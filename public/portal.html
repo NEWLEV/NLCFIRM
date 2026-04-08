@@ -51,6 +51,7 @@
     <aside class="sidebar">
       <ul class="sidebar-menu">
         <li><a href="#" class="active" onclick="showTab('purchases', this)">My Tools & Content</a></li>
+        <li><a href="#" onclick="showTab('courses', this)">🎓 My Courses</a></li>
         <li><a href="#" onclick="showTab('subscriptions', this)">Subscriptions</a></li>
         <li><a href="#" onclick="showTab('profile', this)">Profile Settings</a></li>
       </ul>
@@ -77,6 +78,17 @@
         </div>
         <div class="card-grid" id="subscriptions-container">
           <p>You have no active subscriptions.</p>
+        </div>
+      </section>
+
+      <!-- Courses Tab -->
+      <section id="tab-courses" class="tab-pane" style="display: none;">
+        <div class="page-header">
+          <h1 class="page-title">🎓 My Courses</h1>
+          <p>Continue your professional development. Pick up where you left off.</p>
+        </div>
+        <div id="courses-container">
+          <p>Loading your courses...</p>
         </div>
       </section>
 

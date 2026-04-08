@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HIPAA Compliance Checklist Pack — New Level Consultants</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#1a1a2e; --gold:#b8860b; --gold-light:#f4d03f; --slate:#64748b; --bg:#f8f9fa; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:#1a1a2e; line-height:1.7; }
+
+  /* Screen-only nav */
+  .dl-nav { background:var(--navy); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; print-color-adjust:exact; }
+  .dl-nav a { color:#fff; text-decoration:none; font-weight:600; font-size:1rem; }
+  .dl-nav .print-btn { background:var(--gold); color:#fff; border:none; padding:0.6rem 1.4rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.9rem; }
+  .dl-nav .print-btn:hover { background:#a07808; }
+
+  .document { max-width:850px; margin:0 auto; background:#fff; min-height:100vh; }
+  
+  /* Cover Page */
+  .cover { background:linear-gradient(135deg, var(--navy) 0%, #2d2d5f 100%); color:#fff; padding:5rem 4rem 4rem; position:relative; overflow:hidden; }
+  .cover::before { content:''; position:absolute; top:-80px; right:-80px; width:300px; height:300px; border:2px solid rgba(184,134,11,0.3); border-radius:50%; }
+  .cover::after { content:''; position:absolute; bottom:-40px; left:-40px; width:200px; height:200px; border:2px solid rgba(184,134,11,0.2); border-radius:50%; }
+  .cover-badge { display:inline-block; background:var(--gold); color:#fff; font-size:0.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:0.4rem 1rem; border-radius:4px; margin-bottom:1.5rem; }
+  .cover h1 { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:700; line-height:1.2; margin-bottom:1rem; }
+  .cover h1 em { color:var(--gold-light); font-style:normal; }
+  .cover p { font-size:1.1rem; color:rgba(255,255,255,0.85); max-width:500px; margin-bottom:2rem; }
+  .cover-meta { display:flex; gap:2rem; font-size:0.85rem; color:rgba(255,255,255,0.7); }
+  .cover-meta span { display:flex; align-items:center; gap:0.4rem; }
+
+  /* Table of Contents */
+  .toc { padding:3rem 4rem; border-bottom:1px solid #e2e8f0; }
+  .toc h2 { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--navy); margin-bottom:1.5rem; }
+  .toc-item { display:flex; align-items:baseline; justify-content:space-between; padding:0.5rem 0; border-bottom:1px dotted #e2e8f0; }
+  .toc-item:last-child { border-bottom:none; }
+  .toc-num { font-weight:700; color:var(--gold); margin-right:0.75rem; min-width:24px; }
+  .toc-title { flex:1; color:var(--navy); font-weight:500; }
+  .toc-count { font-size:0.8rem; color:var(--slate); background:#f1f5f9; padding:0.2rem 0.6rem; border-radius:20px; }
+
+  /* Section styles */
+  .section { padding:3rem 4rem; border-bottom:2px solid #f1f5f9; }
+  .section-header { display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:2px solid var(--gold); }
+  .section-num { background:var(--navy); color:#fff; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.9rem; flex-shrink:0; }
+  .section-title { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--navy); }
+  .section-desc { color:var(--slate); font-size:0.9rem; margin-bottom:1.5rem; }
+
+  /* Checklist item */
+  .checklist { list-style:none; }
+  .checklist li { display:flex; align-items:flex-start; gap:0.75rem; padding:0.75rem 0; border-bottom:1px solid #f1f5f9; }
+  .checklist li:last-child { border-bottom:none; }
+  .checkbox { width:20px; height:20px; border:2px solid #cbd5e1; border-radius:4px; flex-shrink:0; margin-top:2px; }
+  .item-body { flex:1; }
+  .item-text { font-size:0.925rem; color:#1a1a2e; font-weight:500; }
+  .item-note { font-size:0.8rem; color:var(--slate); margin-top:0.2rem; }
+  .priority-high { border-left:3px solid #ef4444; padding-left:0.75rem; }
+  .priority-med { border-left:3px solid #f59e0b; padding-left:0.75rem; }
+  .priority-low { border-left:3px solid #22c55e; padding-left:0.75rem; }
+
+  /* Legend */
+  .legend { display:flex; gap:1.5rem; margin-bottom:1.5rem; font-size:0.8rem; }
+  .legend-item { display:flex; align-items:center; gap:0.4rem; }
+  .leg-dot { width:10px; height:20px; border-radius:2px; }
+  .leg-h { background:#ef4444; } .leg-m { background:#f59e0b; } .leg-l { background:#22c55e; }
+
+  /* BAA Template section */
+  .template-box { background:#f8f9fa; border:1px solid #e2e8f0; border-radius:8px; padding:1.5rem; margin-top:1rem; }
+  .template-box h4 { color:var(--navy); margin-bottom:0.75rem; font-size:0.95rem; }
+  .template-field { background:#fff; border:1px dashed #cbd5e1; border-radius:4px; padding:0.75rem 1rem; margin-bottom:0.5rem; font-size:0.875rem; color:var(--slate); }
+  .template-field strong { color:var(--navy); }
+
+  /* Footer */
+  .doc-footer { background:var(--navy); color:rgba(255,255,255,0.7); padding:2rem 4rem; font-size:0.8rem; }
+  .doc-footer a { color:var(--gold-light); }
+
+  @media print {
+    .dl-nav { display:none; }
+    .cover { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .section { page-break-inside:avoid; }
+    body { background:#fff; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="dl-nav">
+  <a href="/portal.html">← Client Portal</a>
+  <div style="text-align:center;">
+    <span style="color:rgba(255,255,255,0.7);font-size:0.85rem;">HIPAA Compliance Checklist Pack</span>
+  </div>
+  <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+</nav>
+
+<div class="document">
+
+  <!-- COVER PAGE -->
+  <div class="cover">
+    <div class="cover-badge">Digital Product · Instant Access</div>
+    <h1>HIPAA Compliance<br><em>Checklist Pack</em></h1>
+    <p>120+ action items, templates, and worksheets to establish and maintain a complete HIPAA compliance program.</p>
+    <div class="cover-meta">
+      <span>📋 6 Sections</span>
+      <span>✅ 120+ Checklist Items</span>
+      <span>📄 BAA Template Included</span>
+      <span>📅 2026 Edition</span>
+    </div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="toc">
+    <h2>Table of Contents</h2>
+    <div class="toc-item"><span class="toc-num">1</span><span class="toc-title">Privacy Rule Requirements</span><span class="toc-count">22 items</span></div>
+    <div class="toc-item"><span class="toc-num">2</span><span class="toc-title">Security Rule — Administrative Safeguards</span><span class="toc-count">18 items</span></div>
+    <div class="toc-item"><span class="toc-num">3</span><span class="toc-title">Security Rule — Physical Safeguards</span><span class="toc-count">14 items</span></div>
+    <div class="toc-item"><span class="toc-num">4</span><span class="toc-title">Security Rule — Technical Safeguards</span><span class="toc-count">16 items</span></div>
+    <div class="toc-item"><span class="toc-num">5</span><span class="toc-title">Breach Notification & Incident Response</span><span class="toc-count">20 items</span></div>
+    <div class="toc-item"><span class="toc-num">6</span><span class="toc-title">Business Associate Agreements (BAA)</span><span class="toc-count">Template + 15 items</span></div>
+  </div>
+
+  <!-- SECTION 1: Privacy Rule -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">1</div>
+      <div class="section-title">Privacy Rule Requirements (45 CFR Part 164, Subpart E)</div>
+    </div>
+    <p class="section-desc">The Privacy Rule establishes standards for the use and disclosure of PHI. Verify each item below with your Privacy Officer.</p>
+    <div class="legend">
+      <div class="legend-item"><div class="leg-dot leg-h"></div><span>High Priority — OCR Audit Focus</span></div>
+      <div class="legend-item"><div class="leg-dot leg-m"></div><span>Medium — Implement Within 90 Days</span></div>
+      <div class="legend-item"><div class="leg-dot leg-l"></div><span>Best Practice — Ongoing</span></div>
+    </div>
+    <ul class="checklist">
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Notice of Privacy Practices (NPP) is written, current, and distributed to all patients at first service delivery</div><div class="item-note">Cite: 45 CFR §164.520 · Must be updated whenever practices change</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Privacy Officer designated and documented with defined responsibilities</div><div class="item-note">Cite: 45 CFR §164.530(a) · Must be a specific named individual</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Minimum Necessary Standard policy in place — only access/disclose the minimum PHI needed</div><div class="item-note">Cite: 45 CFR §164.514(d)</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Patient authorization forms are HIPAA-compliant for all non-TPO disclosures</div><div class="item-note">Must include: description of PHI, recipient, purpose, expiration, patient signature</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Workforce training on Privacy Rule completed and documented annually</div><div class="item-note">Cite: 45 CFR §164.530(b) · Training records retained for 6 years</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Procedure in place for patients to request access to their PHI within 30 days</div><div class="item-note">Cite: 45 CFR §164.524 · 2021 rule allows extension to 60 days once</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Procedure for patients to request amendment of incorrect PHI</div><div class="item-note">Cite: 45 CFR §164.526</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Accounting of disclosures process established for disclosures outside TPO</div><div class="item-note">Cite: 45 CFR §164.528 · Must be able to provide disclosures for past 6 years</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Restriction request process: patients can request restrictions on certain disclosures</div><div class="item-note">Mandatory for disclosures to health plans if patient paid out-of-pocket in full</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Confidential communications accommodation process documented</div><div class="item-note">e.g., patient requests contact only at specific phone number or address</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">PHI disposal policy implemented (paper shredding, secure electronic deletion)</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Incidental disclosures policy (e.g., sign-in sheets, waiting room conversations)</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Marketing: no use of PHI for marketing without explicit patient authorization</div><div class="item-note">Exceptions: treatment communications, small-value (under $15) promotional gifts</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">De-identification policy documented (Safe Harbor or Expert Determination method)</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Research disclosure process established with IRB waiver documentation</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Fundraising communications: patients given opt-out opportunity</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Complaint process in place; all privacy complaints logged and investigated</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Sanctions policy documented for workforce violations</div><div class="item-note">Must apply sanctions consistently — document every instance</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Privacy policies stored and accessible; version control maintained</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">NPP posted in physical locations (waiting rooms) and on website</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Disclosure log maintained for all PHI disclosures outside of TPO</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">All policies reviewed and updated at least every 2 years</div></div></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 2: Admin Safeguards -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">2</div>
+      <div class="section-title">Security Rule — Administrative Safeguards (45 CFR §164.308)</div>
+    </div>
+    <p class="section-desc">Administrative safeguards are policies and procedures designed to manage the selection and implementation of security measures.</p>
+    <ul class="checklist">
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Risk Analysis: comprehensive, organization-wide security risk assessment completed and documented</div><div class="item-note">Must identify all ePHI, threats, vulnerabilities, and likelihood of occurrence</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Risk Management Plan: documented plan to reduce identified risks to a reasonable level</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Security Officer designated with documented authority and responsibilities</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Sanctions policy for security violations — document and apply consistently</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Information system activity review: audit logs reviewed regularly (at minimum quarterly)</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Access authorization policy — define who can access ePHI and under what circumstances</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Access establishment and modification: formal request/approval workflow for new/changed access</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Workforce clearance procedure: background checks for roles with access to ePHI</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Termination procedures: access revoked immediately upon separation</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Security awareness training program conducted upon hire and annually thereafter</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Phishing awareness training completed and documented</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Malicious software protection training included in security awareness</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Password management training — policies on complexity, rotation, and sharing</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Security incident procedures: defined process for identifying, reporting, and responding to incidents</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Contingency plan: Data Backup, Disaster Recovery, Emergency Mode Operation plans documented</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Testing and revision procedures: contingency plans tested at least annually</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Applications and data criticality analysis completed for contingency planning</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Business associate evaluation: periodic technical and non-technical evaluations of business associates</div></div></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 3: Physical Safeguards -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">3</div>
+      <div class="section-title">Security Rule — Physical Safeguards (45 CFR §164.310)</div>
+    </div>
+    <p class="section-desc">Physical safeguards limit physical access to information systems and the facilities housing them.</p>
+    <ul class="checklist">
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Facility access controls: policies limiting physical access to systems containing ePHI</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Visitor access log maintained for all areas with ePHI systems</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Workstation use policy: rules for proper use and access to workstations accessing ePHI</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Workstation security: physically secured workstations in appropriate locations (not viewable by public)</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Device and media controls: policy for receipt/removal of hardware containing ePHI</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Media disposal policy: ePHI destroyed before hardware disposal (NIST-compliant wiping or degaussing)</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Media re-use policy: ePHI cleared before media is reused for other purposes</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Accountability records for hardware movements (laptops, tablets, servers, drives)</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Facility maintenance log: record of repairs and modifications to physical security components</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Lock policy: server rooms and areas with ePHI systems secured with key or badge access</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Contingency operations: procedures to allow facility access during emergencies</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Data backup copies stored off-site or in a separate secure location</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Clean desk policy: no PHI left visible on unattended workstations</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Screen lock policy: auto-lock after inactivity (recommended: 5–15 minutes)</div></div></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 4: Technical Safeguards -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">4</div>
+      <div class="section-title">Security Rule — Technical Safeguards (45 CFR §164.312)</div>
+    </div>
+    <p class="section-desc">Technical safeguards are the technology and policy controls that protect ePHI and control access to it.</p>
+    <ul class="checklist">
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Unique user identification: each user has a unique login ID — no shared accounts for ePHI systems</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Multi-Factor Authentication (MFA) enabled on all systems accessing ePHI</div><div class="item-note">OCR enforcement priority — especially for email, EHR, and remote access</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Encryption of ePHI at rest: all drives, databases, and backups containing PHI are encrypted</div><div class="item-note">AES-256 minimum. Encrypted = safe harbor in breach scenarios</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Encryption of ePHI in transit: all network transmissions of PHI use TLS 1.2+</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Audit controls: hardware, software, and procedural mechanisms to record and examine activity around ePHI</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Integrity controls: ePHI not improperly altered or destroyed — validation mechanisms in place</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Automatic logoff: sessions terminate after defined period of inactivity</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Emergency access procedure: defined process for obtaining ePHI during system failures</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Role-based access control (RBAC): access to ePHI limited by job function</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">VPN required for all remote access to systems containing ePHI</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Antivirus/anti-malware deployed and updated on all endpoints</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Patch management: all systems patched within 30 days of critical vulnerability disclosure</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Firewall and network segmentation separating PHI systems from general network</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Intrusion detection/prevention system (IDS/IPS) monitoring ePHI network segments</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Data Loss Prevention (DLP) tools: alerts or blocks unauthorized exfiltration of PHI</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Log retention: audit logs maintained for minimum 6 years</div></div></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 5: Breach Notification -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">5</div>
+      <div class="section-title">Breach Notification & Incident Response (45 CFR Part 164, Subpart D)</div>
+    </div>
+    <p class="section-desc">A breach is any impermissible use or disclosure that compromises the security or privacy of PHI. Follow this checklist for incident response.</p>
+    <ul class="checklist">
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Incident Response Policy documented and approved by leadership</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Incident Response Team (IRT) designated with contact list maintained and current</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Breach risk assessment process: evaluate probability PHI was compromised (4-factor test)</div><div class="item-note">Factors: Nature of PHI, unauthorized person who used or received PHI, whether PHI was viewed, extent of mitigation</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Individual notification within 60 days of discovery for breaches &gt;500 individuals</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">HHS Secretary notification: annual report for breaches &lt;500 individuals; immediate (60 days) for &gt;500</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">Media notification required for breaches &gt;500 individuals in a state or jurisdiction</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Breach notification letter template prepared and available (must include 6 required elements)</div><div class="item-note">Required: description of breach, PHI involved, steps individuals should take, what org is doing, contact info</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Breach log maintained with all incidents documented (regardless of whether breach determination is made)</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Containment procedures: steps to stop ongoing breach (credential revocation, device quarantine)</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Evidence preservation: do not alter/destroy systems before forensic analysis</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Post-incident analysis: root cause identification and corrective action plan documented</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Legal counsel notified immediately for breaches involving &gt;500 individuals or potential litigation</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">Cyber insurance carrier notified per policy terms (typically 24–72 hours)</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Tabletop exercise for breach response conducted annually</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Staff trained on how to identify and report potential incidents to IRT</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Breach response retainer with forensic investigation firm in place (for high-risk organizations)</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">HHS OCR Breach Portal bookmarked: reportbreaches.hhs.gov</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">State AG notification assessed: multiple states have additional reporting requirements</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Credit monitoring offer evaluated for breaches involving financial or sensitive personal data</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Lessons learned session conducted after each significant incident</div></div></li>
+    </ul>
+  </div>
+
+  <!-- SECTION 6: BAA Template -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-num">6</div>
+      <div class="section-title">Business Associate Agreements (BAA)</div>
+    </div>
+    <p class="section-desc">A Business Associate Agreement is required with any vendor or third party that creates, receives, maintains, or transmits PHI on your behalf.</p>
+    <ul class="checklist">
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA inventory: list of all Business Associates with signed BAAs on file</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA signed with EHR/EMR vendor</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA signed with cloud storage provider (e.g., Microsoft, Google, AWS)</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA signed with billing and coding services</div></div></li>
+      <li class="priority-high"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA signed with IT managed services provider</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA signed with transcription services</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA signed with telehealth platform vendor</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA signed with shredding/document destruction company</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA signed with email and communication platform (e.g., Microsoft 365 Healthcare)</div></div></li>
+      <li class="priority-med"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA renewal schedule tracked — review annually or upon contract renewal</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA termination procedure: process for ending relationship and ensuring PHI return/destruction</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">Subcontractor BAAs: confirm Business Associates have BAAs with their own subcontractors</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA template reviewed by HIPAA counsel within last 2 years</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA provisions include: permitted uses, reporting obligations, safeguards, breach notification timeline</div></div></li>
+      <li class="priority-low"><div class="checkbox"></div><div class="item-body"><div class="item-text">BAA dispute resolution process defined</div></div></li>
+    </ul>
+
+    <div class="template-box">
+      <h4>📄 BAA Core Required Provisions (Template Guide)</h4>
+      <p style="font-size:0.8rem;color:var(--slate);margin-bottom:1rem;">Every HIPAA-compliant BAA must include these 7 elements (per 45 CFR §164.504(e)):</p>
+      <div class="template-field"><strong>1. Permitted Uses & Disclosures</strong> — Specify exactly what the BA may do with PHI (e.g., "solely for billing services on behalf of Covered Entity")</div>
+      <div class="template-field"><strong>2. Prohibited Uses</strong> — BA shall not use or further disclose PHI other than as permitted or required by this Agreement or as required by law.</div>
+      <div class="template-field"><strong>3. Appropriate Safeguards</strong> — BA agrees to use appropriate safeguards and comply with Security Rule with respect to ePHI.</div>
+      <div class="template-field"><strong>4. Breach Reporting</strong> — BA shall report any breach of unsecured PHI to Covered Entity within [60 days / specify timeframe] of discovery.</div>
+      <div class="template-field"><strong>5. Subcontractors</strong> — BA shall ensure that any subcontractors that create, receive, maintain, or transmit PHI agree to the same restrictions.</div>
+      <div class="template-field"><strong>6. Individual Rights</strong> — BA shall make PHI available to Covered Entity to respond to individual rights requests (access, amendment, accounting).</div>
+      <div class="template-field"><strong>7. Termination</strong> — Upon termination, BA shall return or destroy all PHI. If infeasible, protections shall extend beyond termination.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+      <div>
+        <div style="font-weight:700;color:#fff;margin-bottom:0.25rem;">New Level Consultants</div>
+        <div>HIPAA Compliance Checklist Pack · 2026 Edition · Version 1.0</div>
+        <div style="margin-top:0.25rem;">Questions? <a href="mailto:info@nlcfirm.com">info@nlcfirm.com</a> · <a href="tel:+17864084243">786-408-4243</a></div>
+      </div>
+      <div style="text-align:right;">
+        <div>© 2026 New Level Consultants. All rights reserved.</div>
+        <div>This document is for the exclusive use of the purchaser.</div>
+        <div style="margin-top:0.25rem;"><a href="https://nlcfirm.com">nlcfirm.com</a></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

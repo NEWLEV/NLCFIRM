@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Readiness Score — New Level Consultants</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --navy:#1a1a2e; --gold:#b8860b; --gold-light:#f4d03f; --slate:#64748b; --bg:#0d0d1f; --card:#161630; --border:rgba(255,255,255,0.08); }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:#e2e8f0; min-height:100vh; }
+
+  .tool-nav { background:rgba(26,26,46,0.95); backdrop-filter:blur(12px); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .tool-nav a { color:#fff; text-decoration:none; font-weight:600; }
+  .tool-nav .logo-text { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--gold-light); }
+
+  .hero { text-align:center; padding:4rem 2rem 2rem; }
+  .hero-badge { display:inline-block; background:rgba(184,134,11,0.2); color:var(--gold-light); border:1px solid rgba(184,134,11,0.4); font-size:0.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:0.4rem 1rem; border-radius:20px; margin-bottom:1.5rem; }
+  .hero h1 { font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; line-height:1.2; margin-bottom:1rem; }
+  .hero h1 em { color:var(--gold-light); font-style:italic; }
+  .hero p { color:var(--slate); font-size:1.05rem; max-width:580px; margin:0 auto 2rem; }
+
+  .form-container { max-width:680px; margin:0 auto; padding:0 1.5rem 4rem; }
+  .step-indicator { display:flex; gap:0.5rem; margin-bottom:2rem; justify-content:center; }
+  .step-dot { width:32px; height:32px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; color:var(--slate); transition:0.3s; }
+  .step-dot.active { border-color:var(--gold); color:var(--gold); background:rgba(184,134,11,0.15); }
+  .step-dot.done { border-color:#22c55e; background:#22c55e; color:#fff; }
+
+  .step-panel { display:none; animation:fadeIn 0.4s ease; }
+  .step-panel.active { display:block; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+
+  .step-title { font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:0.5rem; }
+  .step-sub { color:var(--slate); font-size:0.9rem; margin-bottom:2rem; }
+
+  .form-group { margin-bottom:1.5rem; }
+  .form-label { display:block; font-size:0.85rem; font-weight:600; margin-bottom:0.5rem; color:#e2e8f0; }
+  .form-label span { color:var(--slate); font-weight:400; font-size:0.8rem; margin-left:0.5rem; }
+  .form-input, .form-select { width:100%; background:var(--card); border:1px solid var(--border); border-radius:8px; padding:0.85rem 1rem; font-size:0.95rem; color:#e2e8f0; outline:none; transition:0.2s; font-family:'Inter',sans-serif; }
+  .form-input:focus, .form-select:focus { border-color:var(--gold); }
+  .form-select option { background:#1a1a2e; }
+
+  .radio-group { display:flex; flex-direction:column; gap:0.6rem; }
+  .radio-option { background:var(--card); border:1px solid var(--border); border-radius:8px; padding:0.85rem 1.1rem; cursor:pointer; transition:0.2s; display:flex; align-items:center; gap:0.75rem; }
+  .radio-option:hover { border-color:var(--gold); }
+  .radio-option.selected { border-color:var(--gold); background:rgba(184,134,11,0.1); }
+  .radio-dot { width:18px; height:18px; border:2px solid var(--slate); border-radius:50%; flex-shrink:0; transition:0.2s; }
+  .radio-option.selected .radio-dot { border-color:var(--gold); background:var(--gold); }
+  .radio-label { font-size:0.9rem; }
+
+  .step-nav { display:flex; gap:1rem; margin-top:2rem; }
+  .btn-prev { background:transparent; border:1px solid var(--border); color:var(--slate); padding:0.75rem 1.5rem; border-radius:8px; cursor:pointer; font-size:0.9rem; transition:0.2s; }
+  .btn-prev:hover { border-color:var(--slate); color:#fff; }
+  .btn-next-step { background:linear-gradient(135deg,var(--gold),#a07808); color:#fff; border:none; padding:0.75rem 2rem; border-radius:8px; cursor:pointer; font-size:0.95rem; font-weight:600; flex:1; transition:0.2s; }
+  .btn-next-step:hover { opacity:0.9; transform:translateY(-1px); }
+
+  /* Report styles */
+  #report { display:none; max-width:900px; margin:0 auto; padding:2rem; }
+  .report-card { background:var(--card); border:1px solid var(--border); border-radius:16px; overflow:hidden; margin-bottom:1.5rem; }
+  .report-header-bar { background:linear-gradient(135deg,var(--navy),#2d2d5f); padding:2.5rem; position:relative; overflow:hidden; }
+  .report-header-bar::after { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border:2px solid rgba(184,134,11,0.2); border-radius:50%; }
+
+  .scores-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:1rem; padding:1.5rem; }
+  .score-item { text-align:center; }
+  .score-label { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--slate); margin-bottom:0.4rem; }
+  .score-val { font-size:2rem; font-weight:700; margin-bottom:0.25rem; }
+  .score-grade { font-size:0.75rem; font-weight:600; padding:0.15rem 0.5rem; border-radius:20px; display:inline-block; }
+  .grade-strong { background:rgba(34,197,94,0.2); color:#22c55e; }
+  .grade-moderate { background:rgba(245,158,11,0.2); color:#f59e0b; }
+  .grade-weak { background:rgba(239,68,68,0.2); color:#ef4444; }
+
+  .findings-section { padding:1.5rem; border-top:1px solid var(--border); }
+  .finding-item { display:flex; align-items:flex-start; gap:1rem; padding:1rem 0; border-bottom:1px solid var(--border); }
+  .finding-item:last-child { border-bottom:none; }
+  .finding-icon { font-size:1.5rem; flex-shrink:0; }
+  .finding-body h4 { font-weight:600; margin-bottom:0.3rem; }
+  .finding-body p { font-size:0.875rem; color:var(--slate); }
+
+  .next-steps { padding:1.5rem; border-top:1px solid var(--border); }
+  .next-step { display:flex; align-items:flex-start; gap:0.75rem; padding:0.75rem 0; border-bottom:1px solid var(--border); }
+  .next-step:last-child { border:none; }
+  .ns-num { background:rgba(184,134,11,0.2); color:var(--gold-light); border:1px solid rgba(184,134,11,0.4); min-width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.8rem; }
+  .ns-body h4 { font-weight:600; font-size:0.9rem; }
+  .ns-body p { font-size:0.8rem; color:var(--slate); }
+
+  .report-actions { display:flex; gap:1rem; flex-wrap:wrap; }
+  .btn-print-r { background:var(--card); border:1px solid var(--border); color:#e2e8f0; padding:0.75rem 1.5rem; border-radius:8px; cursor:pointer; font-weight:600; }
+  .btn-consult-r { background:linear-gradient(135deg,var(--gold),#a07808); color:#fff; border:none; padding:0.75rem 2rem; border-radius:8px; cursor:pointer; font-weight:600; flex:1; }
+
+  @media print {
+    .tool-nav, .step-nav, .report-actions, .hero { display:none!important; }
+    .form-container { display:none!important; }
+    #report { display:block!important; max-width:100%; }
+    body { background:#fff; color:#000; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="tool-nav">
+  <a href="/portal.html">← My Portal</a>
+  <span class="logo-text">Financial Readiness Score</span>
+  <span style="color:var(--slate);font-size:0.8rem;">Powered by NLC</span>
+</nav>
+
+<div id="assessment">
+<div class="hero">
+  <div class="hero-badge">Interactive Assessment · Instant Results</div>
+  <h1>Financial<br><em>Readiness Score</em></h1>
+  <p>In 5 sections, we'll evaluate your organization across 5 critical financial dimensions and give you a tailored action plan.</p>
+  <button onclick="startFRS()" style="background:linear-gradient(135deg,var(--gold),#a07808);color:#fff;border:none;padding:1rem 3rem;border-radius:10px;font-size:1.1rem;font-weight:700;cursor:pointer;">
+    Start Assessment →
+  </button>
+</div>
+
+<div class="form-container" id="form-area" style="display:none;">
+  <div class="step-indicator" id="step-indicators">
+    <div class="step-dot active" id="sdot-1">1</div>
+    <div class="step-dot" id="sdot-2">2</div>
+    <div class="step-dot" id="sdot-3">3</div>
+    <div class="step-dot" id="sdot-4">4</div>
+    <div class="step-dot" id="sdot-5">5</div>
+  </div>
+
+  <!-- Step 1: Cash Flow -->
+  <div class="step-panel active" id="step-1">
+    <div class="step-title">💵 Cash Flow & Liquidity</div>
+    <div class="step-sub">Understanding your actual financial position and cash management practices</div>
+
+    <div class="form-group">
+      <label class="form-label">What type of organization are you?</label>
+      <select class="form-select" id="org-type">
+        <option value="">Select...</option>
+        <option value="healthcare">Healthcare Practice / Clinic</option>
+        <option value="nonprofit">Nonprofit Organization</option>
+        <option value="business">Small / Mid-Size Business</option>
+        <option value="startup">Startup</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">How many months of operating expenses do you have in liquid cash reserves?</label>
+      <div class="radio-group" id="rg-cash-reserves">
+        <div class="radio-option" onclick="selectRadio('cash-reserves','less1',this)"><div class="radio-dot"></div><span class="radio-label">Less than 1 month — we live paycheck to paycheck</span></div>
+        <div class="radio-option" onclick="selectRadio('cash-reserves','1to2',this)"><div class="radio-dot"></div><span class="radio-label">1–2 months — bare minimum buffer</span></div>
+        <div class="radio-option" onclick="selectRadio('cash-reserves','2to3',this)"><div class="radio-dot"></div><span class="radio-label">2–3 months — moderate</span></div>
+        <div class="radio-option" onclick="selectRadio('cash-reserves','3to6',this)"><div class="radio-dot"></div><span class="radio-label">3–6 months — healthy</span></div>
+        <div class="radio-option" onclick="selectRadio('cash-reserves','over6',this)"><div class="radio-dot"></div><span class="radio-label">6+ months — excellent liquidity</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">How predictably does revenue arrive each month?</label>
+      <div class="radio-group" id="rg-revenue-predict">
+        <div class="radio-option" onclick="selectRadio('revenue-predict','unpredictable',this)"><div class="radio-dot"></div><span class="radio-label">Very unpredictable — major swings every month</span></div>
+        <div class="radio-option" onclick="selectRadio('revenue-predict','somewhat',this)"><div class="radio-dot"></div><span class="radio-label">Somewhat predictable — within ±30%</span></div>
+        <div class="radio-option" onclick="selectRadio('revenue-predict','mostly',this)"><div class="radio-dot"></div><span class="radio-label">Mostly predictable — within ±15%</span></div>
+        <div class="radio-option" onclick="selectRadio('revenue-predict','highly',this)"><div class="radio-dot"></div><span class="radio-label">Highly predictable — stable recurring revenue</span></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-next-step" onclick="goStep(2)">Continue → Cash Flow</button>
+    </div>
+  </div>
+
+  <!-- Step 2: Funding Eligibility -->
+  <div class="step-panel" id="step-2">
+    <div class="step-title">🏦 Funding & Credit Eligibility</div>
+    <div class="step-sub">Assessing your ability to access capital when needed</div>
+
+    <div class="form-group">
+      <label class="form-label">What is your organization's approximate annual revenue?</label>
+      <select class="form-select" id="annual-revenue">
+        <option value="">Select range...</option>
+        <option value="under100k">Under $100,000</option>
+        <option value="100to500k">$100,000 – $500,000</option>
+        <option value="500kto1m">$500,000 – $1,000,000</option>
+        <option value="1to3m">$1M – $3M</option>
+        <option value="3to10m">$3M – $10M</option>
+        <option value="over10m">Over $10M</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Do you have an established business credit profile or banking relationship?</label>
+      <div class="radio-group" id="rg-credit-profile">
+        <div class="radio-option" onclick="selectRadio('credit-profile','none',this)"><div class="radio-dot"></div><span class="radio-label">No — using personal credit or no established profile</span></div>
+        <div class="radio-option" onclick="selectRadio('credit-profile','basic',this)"><div class="radio-dot"></div><span class="radio-label">Basic — business checking, 2+ years relationship</span></div>
+        <div class="radio-option" onclick="selectRadio('credit-profile','established',this)"><div class="radio-dot"></div><span class="radio-label">Established — credit line, good banking history</span></div>
+        <div class="radio-option" onclick="selectRadio('credit-profile','strong',this)"><div class="radio-dot"></div><span class="radio-label">Strong — multiple credit facilities, excellent history</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Have you worked with grants, government contracts, or alternative funding?</label>
+      <div class="radio-group" id="rg-alt-funding">
+        <div class="radio-option" onclick="selectRadio('alt-funding','never',this)"><div class="radio-dot"></div><span class="radio-label">Never explored it</span></div>
+        <div class="radio-option" onclick="selectRadio('alt-funding','exploring',this)"><div class="radio-dot"></div><span class="radio-label">Currently exploring options</span></div>
+        <div class="radio-option" onclick="selectRadio('alt-funding','applied',this)"><div class="radio-dot"></div><span class="radio-label">Applied but not yet awarded</span></div>
+        <div class="radio-option" onclick="selectRadio('alt-funding','active',this)"><div class="radio-dot"></div><span class="radio-label">Active grant/contract portfolio</span></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-prev" onclick="goStep(1)">← Back</button>
+      <button class="btn-next-step" onclick="goStep(3)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Profitability -->
+  <div class="step-panel" id="step-3">
+    <div class="step-title">📊 Profitability & Margins</div>
+    <div class="step-sub">How healthy is the core financial engine of your organization?</div>
+
+    <div class="form-group">
+      <label class="form-label">What is your approximate operating margin (revenue minus operating expenses, as % of revenue)?</label>
+      <div class="radio-group" id="rg-margin">
+        <div class="radio-option" onclick="selectRadio('margin','negative',this)"><div class="radio-dot"></div><span class="radio-label">Negative — we are operating at a deficit</span></div>
+        <div class="radio-option" onclick="selectRadio('margin','0to5',this)"><div class="radio-dot"></div><span class="radio-label">0–5% — breaking even</span></div>
+        <div class="radio-option" onclick="selectRadio('margin','5to15',this)"><div class="radio-dot"></div><span class="radio-label">5–15% — modest profitability</span></div>
+        <div class="radio-option" onclick="selectRadio('margin','15to25',this)"><div class="radio-dot"></div><span class="radio-label">15–25% — strong profitability</span></div>
+        <div class="radio-option" onclick="selectRadio('margin','over25',this)"><div class="radio-dot"></div><span class="radio-label">25%+ — excellent — highly efficient operation</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">How well do you understand and track your unit economics (cost per client, revenue per service line)?</label>
+      <div class="radio-group" id="rg-unit-econ">
+        <div class="radio-option" onclick="selectRadio('unit-econ','none',this)"><div class="radio-dot"></div><span class="radio-label">We don't track this at all</span></div>
+        <div class="radio-option" onclick="selectRadio('unit-econ','basic',this)"><div class="radio-dot"></div><span class="radio-label">High level — total revenue vs total costs</span></div>
+        <div class="radio-option" onclick="selectRadio('unit-econ','moderate',this)"><div class="radio-dot"></div><span class="radio-label">By department or service line</span></div>
+        <div class="radio-option" onclick="selectRadio('unit-econ','detailed',this)"><div class="radio-dot"></div><span class="radio-label">Detailed — unit economics, CAC, LTV, margin by offering</span></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-prev" onclick="goStep(2)">← Back</button>
+      <button class="btn-next-step" onclick="goStep(4)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Financial Controls -->
+  <div class="step-panel" id="step-4">
+    <div class="step-title">🔐 Financial Controls & Compliance</div>
+    <div class="step-sub">The systems and oversight that protect your financial assets</div>
+
+    <div class="form-group">
+      <label class="form-label">How often are your financial statements (P&L, Balance Sheet, Cash Flow) reviewed?</label>
+      <div class="radio-group" id="rg-fin-review">
+        <div class="radio-option" onclick="selectRadio('fin-review','rarely',this)"><div class="radio-dot"></div><span class="radio-label">Rarely — at year-end or when there's a problem</span></div>
+        <div class="radio-option" onclick="selectRadio('fin-review','quarterly',this)"><div class="radio-dot"></div><span class="radio-label">Quarterly</span></div>
+        <div class="radio-option" onclick="selectRadio('fin-review','monthly',this)"><div class="radio-dot"></div><span class="radio-label">Monthly</span></div>
+        <div class="radio-option" onclick="selectRadio('fin-review','weekly',this)"><div class="radio-dot"></div><span class="radio-label">Weekly or real-time dashboard</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Do you have segregation of duties for financial transactions (different people authorize vs. execute payments)?</label>
+      <div class="radio-group" id="rg-segregation">
+        <div class="radio-option" onclick="selectRadio('segregation','no',this)"><div class="radio-dot"></div><span class="radio-label">No — one person controls the entire financial process</span></div>
+        <div class="radio-option" onclick="selectRadio('segregation','partial',this)"><div class="radio-dot"></div><span class="radio-label">Partially — some oversight but not systematic</span></div>
+        <div class="radio-option" onclick="selectRadio('segregation','yes',this)"><div class="radio-dot"></div><span class="radio-label">Yes — clear separation for all significant transactions</span></div>
+        <div class="radio-option" onclick="selectRadio('segregation','full',this)"><div class="radio-dot"></div><span class="radio-label">Full controls: board approval, dual signatures, audited</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Are your tax filings and statutory compliance requirements current?</label>
+      <div class="radio-group" id="rg-tax">
+        <div class="radio-option" onclick="selectRadio('tax','behind',this)"><div class="radio-dot"></div><span class="radio-label">Behind — have outstanding filings or penalties</span></div>
+        <div class="radio-option" onclick="selectRadio('tax','current',this)"><div class="radio-dot"></div><span class="radio-label">Current — always file on time</span></div>
+        <div class="radio-option" onclick="selectRadio('tax','proactive',this)"><div class="radio-dot"></div><span class="radio-label">Proactive — tax planning integrated with operations</span></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-prev" onclick="goStep(3)">← Back</button>
+      <button class="btn-next-step" onclick="goStep(5)">Continue →</button>
+    </div>
+  </div>
+
+  <!-- Step 5: Growth & Investment Readiness -->
+  <div class="step-panel" id="step-5">
+    <div class="step-title">🚀 Growth & Investment Readiness</div>
+    <div class="step-sub">Your capacity to fund growth and attract investment or financing</div>
+
+    <div class="form-group">
+      <label class="form-label">Do you have a documented financial projection (12–36 month forecast)?</label>
+      <div class="radio-group" id="rg-forecast">
+        <div class="radio-option" onclick="selectRadio('forecast','none',this)"><div class="radio-dot"></div><span class="radio-label">No financial projections</span></div>
+        <div class="radio-option" onclick="selectRadio('forecast','rough',this)"><div class="radio-dot"></div><span class="radio-label">Rough estimates, not formal models</span></div>
+        <div class="radio-option" onclick="selectRadio('forecast','annual',this)"><div class="radio-dot"></div><span class="radio-label">Annual budget with high-level assumptions</span></div>
+        <div class="radio-option" onclick="selectRadio('forecast','detailed',this)"><div class="radio-dot"></div><span class="radio-label">Detailed 3-year model with scenario analysis</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">If you needed $200K–$500K in growth capital tomorrow, how confident are you in your ability to secure it?</label>
+      <div class="radio-group" id="rg-capital-access">
+        <div class="radio-option" onclick="selectRadio('capital-access','none',this)"><div class="radio-dot"></div><span class="radio-label">Not confident — no clear path to capital</span></div>
+        <div class="radio-option" onclick="selectRadio('capital-access','low',this)"><div class="radio-dot"></div><span class="radio-label">Some options but likely to take 90+ days</span></div>
+        <div class="radio-option" onclick="selectRadio('capital-access','moderate',this)"><div class="radio-dot"></div><span class="radio-label">Moderately confident — pre-existing relationships</span></div>
+        <div class="radio-option" onclick="selectRadio('capital-access','high',this)"><div class="radio-dot"></div><span class="radio-label">Very confident — credit facility or investor relationships ready</span></div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Is your financial data organized and "investor / lender ready" (clean books, audited or reviewed statements)?</label>
+      <div class="radio-group" id="rg-investor-ready">
+        <div class="radio-option" onclick="selectRadio('investor-ready','not',this)"><div class="radio-dot"></div><span class="radio-label">No — books are behind or disorganized</span></div>
+        <div class="radio-option" onclick="selectRadio('investor-ready','basic',this)"><div class="radio-dot"></div><span class="radio-label">Basic — tax returns available but raw</span></div>
+        <div class="radio-option" onclick="selectRadio('investor-ready','compiled',this)"><div class="radio-dot"></div><span class="radio-label">Compiled financials, reasonably organized</span></div>
+        <div class="radio-option" onclick="selectRadio('investor-ready','audit',this)"><div class="radio-dot"></div><span class="radio-label">Reviewed or audited statements ready to share</span></div>
+      </div>
+    </div>
+
+    <div class="step-nav">
+      <button class="btn-prev" onclick="goStep(4)">← Back</button>
+      <button class="btn-next-step" onclick="generateReport()">🎯 Generate My Financial Score →</button>
+    </div>
+  </div>
+</div>
+</div><!-- /#assessment -->
+
+<!-- REPORT -->
+<div id="report">
+  <div class="report-card">
+    <div class="report-header-bar">
+      <div style="position:relative;z-index:1;">
+        <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;">Financial Readiness Score · New Level Consultants</div>
+        <h1 style="font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:0.75rem;">Financial Readiness Report</h1>
+        <div style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+          <div><div style="font-size:3.5rem;font-weight:700;line-height:1;" id="rpt-overall-score">0</div><div style="font-size:0.8rem;color:rgba(255,255,255,0.6);">Overall Score / 100</div></div>
+          <div><div style="font-size:1.5rem;font-weight:700;" id="rpt-grade">F</div><div style="font-size:0.75rem;color:rgba(255,255,255,0.6);">Financial Grade</div></div>
+          <div style="flex:1;min-width:200px;">
+            <div style="font-size:0.9rem;color:rgba(255,255,255,0.8);" id="rpt-summary"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scores-row" id="scores-row"></div>
+  </div>
+
+  <div class="report-card">
+    <div style="padding:1.5rem;border-bottom:1px solid var(--border);">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold-light);">📋 Key Findings</h3>
+    </div>
+    <div class="findings-section" id="findings-section"></div>
+  </div>
+
+  <div class="report-card">
+    <div style="padding:1.5rem;border-bottom:1px solid var(--border);">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--gold-light);">🎯 Recommended Next Steps</h3>
+    </div>
+    <div class="next-steps" id="next-steps"></div>
+  </div>
+
+  <div class="report-actions" style="margin-bottom:3rem;">
+    <button class="btn-print-r" onclick="window.print()">🖨️ Print / Save PDF</button>
+    <button class="btn-consult-r" onclick="window.location.href='/?consult=frs'">Book a Financial Strategy Session →</button>
+  </div>
+  <p style="text-align:center;color:var(--slate);font-size:0.8rem;padding-bottom:2rem;">Generated by New Level Consultants · nlcfirm.com · © 2026</p>
+</div>
+
+<script>
+let currentStep = 0;
+const radioAnswers = {};
+
+function startFRS() {
+  document.querySelector('.hero').style.display = 'none';
+  document.getElementById('form-area').style.display = 'block';
+  currentStep = 1;
+}
+
+function selectRadio(key, value, el) {
+  const group = el.closest('.radio-group');
+  group.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  radioAnswers[key] = value;
+}
+
+function goStep(n) {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step-' + n).classList.add('active');
+  document.querySelectorAll('.step-dot').forEach((d,i) => {
+    d.className = 'step-dot';
+    if (i + 1 < n) d.className += ' done';
+    else if (i + 1 === n) d.className += ' active';
+  });
+  currentStep = n;
+  window.scrollTo(0,0);
+}
+
+function scoreAnswer(key, scores) {
+  const val = radioAnswers[key];
+  return val !== undefined ? (scores[val] || 0) : 50;
+}
+
+function generateReport() {
+  // Score each dimension
+  const cashScore = Math.round((
+    scoreAnswer('cash-reserves', {less1:5, '1to2':25, '2to3':50, '3to6':75, over6:100}) +
+    scoreAnswer('revenue-predict', {unpredictable:10, somewhat:40, mostly:70, highly:100})
+  ) / 2);
+
+  const fundingScore = Math.round((
+    scoreAnswer('credit-profile', {none:10, basic:40, established:70, strong:100}) +
+    scoreAnswer('alt-funding', {never:20, exploring:40, applied:60, active:100})
+  ) / 2);
+
+  const profitScore = Math.round((
+    scoreAnswer('margin', {negative:0, '0to5':25, '5to15':55, '15to25':80, over25:100}) +
+    scoreAnswer('unit-econ', {none:5, basic:30, moderate:65, detailed:100})
+  ) / 2);
+
+  const controlsScore = Math.round((
+    scoreAnswer('fin-review', {rarely:10, quarterly:40, monthly:70, weekly:100}) +
+    scoreAnswer('segregation', {no:5, partial:35, yes:70, full:100}) +
+    scoreAnswer('tax', {behind:0, current:65, proactive:100})
+  ) / 3);
+
+  const growthScore = Math.round((
+    scoreAnswer('forecast', {none:5, rough:30, annual:65, detailed:100}) +
+    scoreAnswer('capital-access', {none:5, low:30, moderate:65, high:100}) +
+    scoreAnswer('investor-ready', {not:5, basic:35, compiled:65, audit:100})
+  ) / 3);
+
+  const overall = Math.round((cashScore+fundingScore+profitScore+controlsScore+growthScore)/5);
+
+  document.getElementById('assessment').style.display = 'none';
+  document.getElementById('report').style.display = 'block';
+
+  document.getElementById('rpt-overall-score').textContent = overall;
+
+  const grade = overall>=90?'A+':overall>=80?'A':overall>=70?'B':overall>=60?'C':overall>=50?'D':'F';
+  const gradeEl = document.getElementById('rpt-grade');
+  gradeEl.textContent = grade;
+  gradeEl.style.color = overall>=70?'#22c55e':overall>=50?'#f59e0b':'#ef4444';
+
+  const summaries = {
+    80:'Strong financial foundation. You have healthy reserves, solid controls, and growth readiness. Focus on optimization and strategic deployment of capital.',
+    60:'Developing financial maturity. Several areas are performing well, but targeted improvements in the gaps identified will significantly improve your financing ability and resilience.',
+    40:'Your financial readiness presents challenges. Addressing the priority items below will reduce risk and unlock growth opportunities.',
+    0:'Immediate attention required. Critical financial control and liquidity gaps should be addressed as a top priority.'
+  };
+  const sk = Object.keys(summaries).map(Number).sort((a,b)=>b-a).find(k=>overall>=k);
+  document.getElementById('rpt-summary').textContent = summaries[sk];
+
+  const dimData = [
+    {label:'Cash & Liquidity', score:cashScore},
+    {label:'Funding Eligibility', score:fundingScore},
+    {label:'Profitability', score:profitScore},
+    {label:'Controls & Compliance', score:controlsScore},
+    {label:'Growth Readiness', score:growthScore},
+  ];
+
+  document.getElementById('scores-row').innerHTML = dimData.map(d => {
+    const c = d.score>=70?'grade-strong':d.score>=50?'grade-moderate':'grade-weak';
+    const clr = d.score>=70?'#22c55e':d.score>=50?'#f59e0b':'#ef4444';
+    return `<div class="score-item"><div class="score-label">${d.label}</div><div class="score-val" style="color:${clr}">${d.score}</div><div class="score-grade ${c}">${d.score>=70?'Strong':d.score>=50?'Moderate':'Needs Work'}</div></div>`;
+  }).join('');
+
+  // Findings
+  const allFindings = [
+    {dim:'Cash & Liquidity', score:cashScore, icon:'💵', good:'Your cash reserves and revenue predictability indicate a healthy liquidity position.', weak:'Low cash reserves create vulnerability. Even a 30-day revenue disruption could create a cash crisis. Building a 3-month reserve should be your first financial priority.', action:'Implement a 13-week rolling cash flow forecast immediately.'},
+    {dim:'Funding Eligibility', score:fundingScore, icon:'🏦', good:'You have established credit relationships that will support future capital needs.', weak:'Limited credit history or lack of alternative funding sources restricts your options in a pinch. Building your credit profile now means better terms when you need them.', action:'Open a separate business credit line and explore SBA 7(a) loan pre-qualification.'},
+    {dim:'Profitability', score:profitScore, icon:'📊', good:'Your margins and unit economics indicate a well-run, profitable operation.', weak:'Thin or negative margins leave no room for investment or setbacks. Understanding your cost drivers is essential to improving the bottom line.', action:'Conduct a cost-per-service analysis and identify the top 3 expense line items for reduction.'},
+    {dim:'Controls & Compliance', score:controlsScore, icon:'🔐', good:'Strong financial controls and oversight significantly reduce fraud risk and audit exposure.', weak:'Weak financial controls create fraud risk and regulatory exposure. A single unauthorized transaction or tax penalty can have major consequences.', action:'Implement dual authorization for payments over $2,500 and monthly P&L reviews.'},
+    {dim:'Growth Readiness', score:growthScore, icon:'🚀', good:'You are well-positioned to pursue growth opportunities and access capital when needed.', weak:'Without a financial model or "investor-ready" books, you\'ll struggle to access growth capital quickly. Today\'s preparation determines tomorrow\'s opportunities.', action:'Build a 3-year financial model and ensure books are current and reconciled monthly.'},
+  ];
+
+  document.getElementById('findings-section').innerHTML = allFindings.map(f => `
+    <div class="finding-item">
+      <div class="finding-icon">${f.icon}</div>
+      <div class="finding-body">
+        <h4>${f.dim} — <span style="color:${f.score>=70?'#22c55e':f.score>=50?'#f59e0b':'#ef4444'}">${f.score}/100</span></h4>
+        <p>${f.score>=65?f.good:f.weak}</p>
+        ${f.score<65?`<p style="margin-top:0.4rem;font-weight:600;color:var(--gold-light);">→ ${f.action}</p>`:''}
+      </div>
+    </div>`).join('');
+
+  // Next steps
+  const sorted = allFindings.slice().sort((a,b)=>a.score-b.score);
+  const nextSteps = [
+    {title:'Book a Financial Strategy Session with NLC', desc:'A 60-minute session with a senior NLC financial advisor to review these results and build a 90-day improvement plan.'},
+    ...sorted.slice(0,3).map(f=>({title:`Improve ${f.dim}`, desc:f.action}))
+  ];
+
+  document.getElementById('next-steps').innerHTML = nextSteps.map((s,i)=>`
+    <div class="next-step">
+      <div class="ns-num">${i+1}</div>
+      <div class="ns-body"><h4>${s.title}</h4><p>${s.desc}</p></div>
+    </div>`).join('');
+
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>

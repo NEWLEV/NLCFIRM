@@ -181,6 +181,33 @@ async function initTables() {
     `);
 
     await db.execute(`
+      CREATE TABLE IF NOT EXISTS products (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        product_id VARCHAR(100) UNIQUE NOT NULL,
+        name VARCHAR(255) NOT NULL,
+        description TEXT,
+        price DECIMAL(10,2) NOT NULL,
+        delivery_type ENUM('download','assessment','course','bundle') NOT NULL DEFAULT 'download',
+        delivery_value TEXT COMMENT 'File path, page URL, or comma-separated product_ids for bundles',
+        is_active TINYINT(1) NOT NULL DEFAULT 1,
+        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+
+    await db.execute(`
+      CREATE TABLE IF NOT EXISTS course_enrollments (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        client_id INT NOT NULL,
+        product_id VARCHAR(100) NOT NULL,
+        progress_json TEXT COMMENT 'JSON object: {moduleId: {completed: bool, score: int}}',
+        completed_at DATETIME,
+        certificate_issued TINYINT(1) NOT NULL DEFAULT 0,
+        enrolled_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
+      )
+    `);
+
+    await db.execute(`
       CREATE TABLE IF NOT EXISTS audit_log (
         id INT AUTO_INCREMENT PRIMARY KEY,
         user_id INT,
@@ -270,6 +297,67 @@ async function seedAdmins() {
     ];
     for (const t of defaultTestimonials) {
       await pool.execute('INSERT INTO testimonials (quote, author_name, author_role, author_initials, rating, sort_order) VALUES (?, ?, ?, ?, ?, ?)', t);
+    }
+  }
+
+  // Seed Tier 1 Products
+  const [products] = await pool.execute('SELECT COUNT(*) as count FROM products');
+  if (products[0].count === 0) {
+    const tier1Products = [
+      [
+        'hipaa-checklist',
+        'HIPAA Compliance Checklist Pack',
+        '120+ action items, BAA template, staff acknowledgment forms, breach notification checklist, and a risk assessment worksheet — ready to implement immediately.',
+        67.00,
+        'download',
+        '/downloads/hipaa-compliance-checklist-pack'
+      ],
+      [
+        'sop-bundle',
+        'SOP Template Bundle',
+        '15 ready-to-use Standard Operating Procedure templates covering HR, compliance, operations, and clinical workflows — professionally formatted and fully customizable.',
+        97.00,
+        'download',
+        '/downloads/sop-template-bundle'
+      ],
+      [
+        'bha',
+        'Business Health Assessment',
+        'Scored questionnaire across 8 business dimensions — compliance, finance, operations, HR, marketing, tech, risk, and growth. Instant branded report with priority action plan.',
+        97.00,
+        'assessment',
+        '/tools/business-health-assessment'
+      ],
+      [
+        'frs',
+        'Financial Readiness Score',
+        'Form-based assessment of your financial health — cash flow, funding eligibility, credit positioning, burn rate, and investor readiness — with tailored next steps.',
+        127.00,
+        'assessment',
+        '/tools/financial-readiness-score'
+      ],
+      [
+        'compliance-cert',
+        'Healthcare Compliance Certification',
+        'Self-paced 6-module course covering HIPAA, EHE reporting, Ryan White compliance, risk assessment methodology, breach response, and audit readiness. Certificate included.',
+        297.00,
+        'course',
+        'compliance-cert'
+      ],
+      [
+        'bundle-tier1',
+        'All-in-One Tier 1 Toolkit',
+        'Every Tier 1 digital product in one purchase: HIPAA Checklist Pack, SOP Template Bundle, Business Health Assessment, Financial Readiness Score, and Healthcare Compliance Certification. Save $338.',
+        347.00,
+        'bundle',
+        'hipaa-checklist,sop-bundle,bha,frs,compliance-cert'
+      ],
+    ];
+    for (const p of tier1Products) {
+      await pool.execute(
+        'INSERT INTO products (product_id, name, description, price, delivery_type, delivery_value) VALUES (?, ?, ?, ?, ?, ?)',
+        p
+      );
     }
   }
 

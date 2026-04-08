@@ -9,9 +9,11 @@ const path = require('path');
 
 const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
-const clientRoutes = require('./routes/client'); // Added this line
+const clientRoutes = require('./routes/client');
 const paymentRoutes = require('./routes/payments');
+const productRoutes = require('./routes/products');
 const { getDb } = require('./db');
+const jwt = require('jsonwebtoken');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -92,11 +94,33 @@ app.use(express.static(path.join(__dirname, '..', 'public'), {
 // ─── ROUTES ───────────────────────────────────────────
 app.use('/auth', authLimiter, authRoutes);
 app.use('/api/client', clientRoutes);
+app.use('/api/products', productRoutes);
 // Apply strict rate limit to public lead-capture submission endpoints BEFORE general API routes
 app.use('/api/submissions', submissionLimiter);
 app.use('/api/exit-lead', submissionLimiter);
 app.use('/api/payments', paymentRoutes);
 app.use('/api', generalLimiter, apiRoutes);
+
+// ─── SECURE DOWNLOADS ─────────────────────────────────
+// /downloads/* requires a valid client JWT passed as ?token= or Authorization header
+app.use('/downloads', (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const headerToken = authHeader && authHeader.split(' ')[1];
+  const queryToken = req.query.auth;
+  const token = headerToken || queryToken;
+
+  if (!token) {
+    // Redirect to portal login with return path
+    return res.redirect(`/portal-login.html?redirect=${encodeURIComponent(req.originalUrl)}`);
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET || 'dev-secret', (err, decoded) => {
+    if (err || decoded.role !== 'client') {
+      return res.redirect(`/portal-login.html?redirect=${encodeURIComponent(req.originalUrl)}`);
+    }
+    next();
+  });
+});
 
 // ─── DYNAMIC ROUTES ───────────────────────────────────
 // Sitemap

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Health Assessment — New Level Consultants</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#1a1a2e; --gold:#b8860b; --gold-light:#f4d03f;
+    --slate:#64748b; --bg:#0d0d1f; --card:#161630;
+    --border:rgba(255,255,255,0.08);
+    --green:#22c55e; --amber:#f59e0b; --red:#ef4444;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:#e2e8f0; line-height:1.7; min-height:100vh; }
+
+  .tool-nav { background:rgba(26,26,46,0.95); backdrop-filter:blur(12px); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .tool-nav a { color:#fff; text-decoration:none; font-weight:600; font-size:0.9rem; }
+  .tool-nav .logo-text { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--gold-light); }
+
+  .hero { text-align:center; padding:4rem 2rem 2rem; }
+  .hero-badge { display:inline-block; background:rgba(184,134,11,0.2); color:var(--gold-light); border:1px solid rgba(184,134,11,0.4); font-size:0.75rem; font-weight:700; letter-spacing:2px; text-transform:uppercase; padding:0.4rem 1rem; border-radius:20px; margin-bottom:1.5rem; }
+  .hero h1 { font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700; line-height:1.2; margin-bottom:1rem; }
+  .hero h1 em { color:var(--gold-light); font-style:italic; }
+  .hero p { color:var(--slate); font-size:1.05rem; max-width:580px; margin:0 auto 1.5rem; }
+
+  /* Progress */
+  .progress-container { max-width:700px; margin:0 auto 2rem; padding:0 2rem; }
+  .progress-info { display:flex; justify-content:space-between; font-size:0.85rem; color:var(--slate); margin-bottom:0.5rem; }
+  .progress-bar { height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden; }
+  .progress-fill { height:100%; background:linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius:3px; transition:width 0.5s ease; }
+  .section-tabs { display:flex; gap:0.4rem; flex-wrap:wrap; justify-content:center; margin-bottom:2rem; }
+  .section-tab { width:36px; height:36px; border-radius:50%; border:2px solid var(--border); background:transparent; color:var(--slate); font-size:0.75rem; font-weight:700; cursor:pointer; transition:0.3s; display:flex; align-items:center; justify-content:center; }
+  .section-tab.active { border-color:var(--gold); color:var(--gold); background:rgba(184,134,11,0.15); }
+  .section-tab.done { border-color:var(--green); background:var(--green); color:#fff; }
+
+  /* Question Card */
+  .question-card { max-width:700px; margin:0 auto; padding:0 1.5rem 3rem; }
+  .q-section-label { font-size:0.75rem; font-weight:700; color:var(--gold); letter-spacing:2px; text-transform:uppercase; margin-bottom:0.5rem; }
+  .q-category { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; margin-bottom:0.25rem; }
+  .q-count { color:var(--slate); font-size:0.85rem; margin-bottom:1.5rem; }
+  .q-text { font-size:1.1rem; font-weight:500; margin-bottom:1.5rem; line-height:1.6; }
+  .q-options { display:flex; flex-direction:column; gap:0.75rem; margin-bottom:2rem; }
+  .q-option { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1rem 1.25rem; cursor:pointer; transition:0.2s; display:flex; align-items:center; gap:0.75rem; }
+  .q-option:hover { border-color:var(--gold); background:rgba(184,134,11,0.08); }
+  .q-option.selected { border-color:var(--gold); background:rgba(184,134,11,0.15); }
+  .q-option-radio { width:20px; height:20px; border:2px solid var(--slate); border-radius:50%; flex-shrink:0; transition:0.2s; }
+  .q-option.selected .q-option-radio { border-color:var(--gold); background:var(--gold); }
+  .q-option-label { font-size:0.95rem; }
+  .q-option-score { margin-left:auto; font-size:0.75rem; font-weight:700; padding:0.2rem 0.6rem; border-radius:20px; }
+  .score-0 { background:rgba(239,68,68,0.2); color:#ef4444; }
+  .score-25 { background:rgba(245,158,11,0.2); color:#f59e0b; }
+  .score-50 { background:rgba(245,158,11,0.2); color:#f59e0b; }
+  .score-75 { background:rgba(34,197,94,0.2); color:#22c55e; }
+  .score-100 { background:rgba(34,197,94,0.2); color:#22c55e; }
+
+  .q-nav { display:flex; gap:1rem; }
+  .btn-back { background:transparent; border:1px solid var(--border); color:var(--slate); padding:0.75rem 1.5rem; border-radius:8px; cursor:pointer; font-size:0.9rem; transition:0.2s; }
+  .btn-back:hover { border-color:var(--slate); color:#fff; }
+  .btn-next { background:linear-gradient(135deg, var(--gold), #a07808); color:#fff; border:none; padding:0.75rem 2rem; border-radius:8px; cursor:pointer; font-size:0.95rem; font-weight:600; transition:0.2s; flex:1; }
+  .btn-next:hover { opacity:0.9; transform:translateY(-1px); }
+  .btn-next:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
+
+  /* Report */
+  #report-section { display:none; max-width:900px; margin:0 auto; padding:2rem; }
+  .report-header { background:linear-gradient(135deg,var(--navy),#2d2d5f); border-radius:16px; padding:2.5rem; text-align:center; margin-bottom:2rem; position:relative; overflow:hidden; }
+  .report-header::before { content:''; position:absolute; top:-50px; right:-50px; width:200px; height:200px; border:2px solid rgba(184,134,11,0.2); border-radius:50%; }
+  .report-score-ring { width:140px; height:140px; border-radius:50%; margin:0 auto 1.5rem; display:flex; align-items:center; justify-content:center; flex-direction:column; position:relative; }
+  .score-circle { width:140px; height:140px; }
+  .score-circle-bg { fill:none; stroke:rgba(255,255,255,0.1); stroke-width:10; }
+  .score-circle-fill { fill:none; stroke-width:10; stroke-linecap:round; transform:rotate(-90deg); transform-origin:50% 50%; transition:stroke-dashoffset 2s ease; }
+  .report-score-num { font-size:2.5rem; font-weight:700; margin-bottom:0.25rem; }
+  .report-score-label { font-size:0.85rem; color:rgba(255,255,255,0.7); }
+  .report-name { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:0.5rem; }
+  .report-grade { display:inline-block; font-size:1.1rem; font-weight:700; padding:0.4rem 1.5rem; border-radius:6px; margin-bottom:0.5rem; }
+  .grade-a { background:rgba(34,197,94,0.2); border:1px solid #22c55e; color:#22c55e; }
+  .grade-b { background:rgba(34,197,94,0.2); border:1px solid #22c55e; color:#22c55e; }
+  .grade-c { background:rgba(245,158,11,0.2); border:1px solid #f59e0b; color:#f59e0b; }
+  .grade-d { background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#ef4444; }
+  .grade-f { background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#ef4444; }
+
+  .dimension-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:1rem; margin-bottom:2rem; }
+  .dim-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:1.25rem; }
+  .dim-name { font-size:0.75rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--slate); margin-bottom:0.5rem; }
+  .dim-score { font-size:1.8rem; font-weight:700; margin-bottom:0.5rem; }
+  .dim-bar-bg { height:4px; background:rgba(255,255,255,0.1); border-radius:2px; }
+  .dim-bar-fill { height:4px; border-radius:2px; }
+
+  .priorities-section { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:1.5rem; margin-bottom:2rem; }
+  .priorities-section h3 { font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:1rem; color:var(--gold-light); }
+  .priority-item { display:flex; align-items:flex-start; gap:1rem; padding:1rem 0; border-bottom:1px solid var(--border); }
+  .priority-item:last-child { border-bottom:none; }
+  .priority-num { background:rgba(184,134,11,0.2); color:var(--gold-light); border:1px solid rgba(184,134,11,0.4); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem; flex-shrink:0; }
+  .priority-text h4 { font-weight:600; margin-bottom:0.25rem; }
+  .priority-text p { font-size:0.875rem; color:var(--slate); }
+
+  .report-actions { display:flex; gap:1rem; flex-wrap:wrap; margin-bottom:2rem; }
+  .btn-print { background:var(--card); border:1px solid var(--border); color:#e2e8f0; padding:0.75rem 1.5rem; border-radius:8px; cursor:pointer; font-weight:600; transition:0.2s; }
+  .btn-print:hover { border-color:var(--gold); }
+  .btn-consult { background:linear-gradient(135deg,var(--gold),#a07808); color:#fff; border:none; padding:0.75rem 2rem; border-radius:8px; cursor:pointer; font-weight:600; transition:0.2s; flex:1; }
+  .btn-consult:hover { opacity:0.9; }
+
+  @media print {
+    .tool-nav, .q-nav, .btn-back, .btn-next, .report-actions, .section-tabs, .hero, .progress-container { display:none!important; }
+    #question-section { display:none!important; }
+    #report-section { display:block!important; max-width:100%; }
+    body { background:#fff; color:#000; }
+    .report-header { background:#1a1a2e!important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .dim-card { background:#f8f9fa!important; border:1px solid #e2e8f0!important; }
+    .priorities-section { background:#f8f9fa!important; border:1px solid #e2e8f0!important; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="tool-nav">
+  <a href="/portal.html">← My Portal</a>
+  <span class="logo-text">Business Health Assessment</span>
+  <span style="color:var(--slate);font-size:0.8rem;">Powered by NLC</span>
+</nav>
+
+<!-- INTRO -->
+<div class="hero" id="intro-section">
+  <div class="hero-badge">Interactive Assessment Tool</div>
+  <h1>Business Health<br><em>Assessment</em></h1>
+  <p>Answer 40 questions across 8 dimensions. Receive an instant, branded report with a prioritized action plan — tailored to your organization.</p>
+  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;">
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1.25rem;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--gold-light);">8</div><div style="font-size:0.75rem;color:var(--slate);">Dimensions</div></div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1.25rem;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--gold-light);">40</div><div style="font-size:0.75rem;color:var(--slate);">Questions</div></div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1.25rem;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--gold-light);">~10</div><div style="font-size:0.75rem;color:var(--slate);">Minutes</div></div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1.25rem;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--gold-light);">Instant</div><div style="font-size:0.75rem;color:var(--slate);">Results</div></div>
+  </div>
+  <button onclick="startAssessment()" style="background:linear-gradient(135deg,var(--gold),#a07808);color:#fff;border:none;padding:1rem 3rem;border-radius:10px;font-size:1.1rem;font-weight:700;cursor:pointer;transition:0.2s;" onmouseover="this.style.opacity=0.9" onmouseout="this.style.opacity=1">
+    Start Assessment →
+  </button>
+</div>
+
+<!-- ASSESSMENT QUESTIONS -->
+<div id="question-section" style="display:none;">
+  <div class="progress-container">
+    <div class="progress-info">
+      <span id="section-name">Section 1 of 8</span>
+      <span id="q-counter">Question 1 of 40</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:2.5%"></div></div>
+  </div>
+  <div class="section-tabs" id="section-tabs"></div>
+  <div class="question-card">
+    <div class="q-section-label" id="q-section-label"></div>
+    <div class="q-category" id="q-category"></div>
+    <div class="q-count" id="q-count"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-options" id="q-options"></div>
+    <div class="q-nav">
+      <button class="btn-back" id="btn-back" onclick="prevQuestion()">← Back</button>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()" disabled>Continue →</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT -->
+<div id="report-section">
+  <div class="report-header">
+    <div style="position:relative;z-index:1;">
+      <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;">Assessment Complete</div>
+      <div style="position:relative;display:inline-block;margin-bottom:1rem;">
+        <svg class="score-circle" viewBox="0 0 140 140">
+          <circle class="score-circle-bg" cx="70" cy="70" r="60"/>
+          <circle class="score-circle-fill" id="score-circle-fill" cx="70" cy="70" r="60" stroke="#b8860b" stroke-dasharray="377" stroke-dashoffset="377"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div class="report-score-num" id="report-overall-score">0</div>
+          <div class="report-score-label">/ 100</div>
+        </div>
+      </div>
+      <h2 class="report-name">Business Health Assessment Report</h2>
+      <div class="report-grade" id="report-grade-badge">Grade: A</div>
+      <div style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-top:0.5rem;" id="report-summary-text"></div>
+    </div>
+  </div>
+
+  <div class="dimension-grid" id="dimension-grid"></div>
+  <div class="priorities-section">
+    <h3>🎯 Your Priority Action Plan</h3>
+    <div id="priorities-list"></div>
+  </div>
+  <div class="report-actions">
+    <button class="btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
+    <button class="btn-consult" onclick="window.location.href='/?consult=bha'">Book a Free Strategy Session to Discuss These Results →</button>
+  </div>
+  <p style="text-align:center;color:var(--slate);font-size:0.8rem;padding-bottom:2rem;">Report generated by New Level Consultants · nlcfirm.com · © 2026</p>
+</div>
+
+<script>
+const SECTIONS = [
+  {
+    id: 'compliance', name: 'Compliance & Regulatory', icon: '⚖️',
+    questions: [
+      { text: 'How current is your organization\'s HIPAA compliance program?', options: [
+        {label:'No formal program in place',score:0},{label:'Basic policies exist but rarely updated',score:25},
+        {label:'Annual reviews, some documentation',score:50},{label:'Regular audits and documented policies',score:75},
+        {label:'Full program: risk analysis, training, BAAs, audits',score:100}]},
+      { text: 'How frequently does your team complete HIPAA/compliance training?', options: [
+        {label:'Never or ad-hoc only',score:0},{label:'Once when hired, not updated',score:25},
+        {label:'Annually, but not consistently documented',score:50},{label:'Annually, fully documented',score:75},
+        {label:'Ongoing training with role-specific modules and attestations',score:100}]},
+      { text: 'Do you have signed Business Associate Agreements (BAAs) with all vendors who handle PHI?', options: [
+        {label:'Don\'t know what a BAA is',score:0},{label:'Some vendors signed, others haven\'t',score:25},
+        {label:'Most major vendors covered',score:50},{label:'All vendors audited, BAAs on file',score:75},
+        {label:'Full BAA inventory with annual review cycle',score:100}]},
+      { text: 'How mature is your incident response / breach notification process?', options: [
+        {label:'No documented process',score:0},{label:'Basic awareness but no written plan',score:25},
+        {label:'Written plan, not tested',score:50},{label:'Tested annually with tabletop exercises',score:75},
+        {label:'Tested, refined post-incident, HHS portal bookmarked, legal on retainer',score:100}]},
+      { text: 'How well do you track and manage regulatory changes (new rules, state laws)?', options: [
+        {label:'We don\'t — learn about changes reactively',score:0},{label:'Occasional Google searches',score:25},
+        {label:'Subscribe to newsletters, some action taken',score:50},{label:'Compliance calendar maintained',score:75},
+        {label:'Proactive monitoring with legal review and policy updates',score:100}]}
+    ]
+  },
+  {
+    id: 'finance', name: 'Financial Health', icon: '💰',
+    questions: [
+      { text: 'How many months of operating expenses do you have in cash reserves?', options: [
+        {label:'Less than 1 month',score:0},{label:'1–2 months',score:25},{label:'2–3 months',score:50},
+        {label:'3–6 months',score:75},{label:'6+ months',score:100}]},
+      { text: 'How well do you understand your organization\'s monthly cash flow?', options: [
+        {label:'I check the bank balance occasionally',score:0},{label:'Monthly P&L review',score:25},
+        {label:'P&L + cash flow statement reviewed monthly',score:50},{label:'Full financial dashboards reviewed weekly',score:75},
+        {label:'Real-time dashboards, scenario modeling, CFO-level oversight',score:100}]},
+      { text: 'What is your current accounts receivable (AR) collection rate?', options: [
+        {label:'Below 70% — significant revenue is being lost',score:0},{label:'70–80%',score:25},
+        {label:'80–88%',score:50},{label:'88–95%',score:75},{label:'95%+ with denial tracking and appeals workflow',score:100}]},
+      { text: 'Do you have a documented annual budget with variance tracking?', options: [
+        {label:'No budget process',score:0},{label:'Rough estimates, no tracking',score:25},
+        {label:'Annual budget, reviewed quarterly',score:50},{label:'Monthly budget vs. actual review',score:75},
+        {label:'Detailed budget with line-item tracking and reforecast cycles',score:100}]},
+      { text: 'How diversified are your revenue streams?', options: [
+        {label:'Single payer or funder (100% concentration)',score:0},{label:'2–3 sources, one is 70%+',score:25},
+        {label:'Multiple payers/funders, somewhat balanced',score:50},{label:'Diversified mix of payers, grants, and fee revenue',score:75},
+        {label:'Highly diversified with growth investments and strategic reserves',score:100}]}
+    ]
+  },
+  {
+    id: 'operations', name: 'Operations & Efficiency', icon: '⚙️',
+    questions: [
+      { text: 'How well-documented are your core operational processes?', options: [
+        {label:'Nothing documented — all tribal knowledge',score:0},{label:'Some notes, but not formalized',score:25},
+        {label:'SOPs exist for key processes',score:50},{label:'Comprehensive SOPs, regularly reviewed',score:75},
+        {label:'Full SOP library, version-controlled, staff-trained',score:100}]},
+      { text: 'How do you measure team productivity and operational output?', options: [
+        {label:'We don\'t measure it',score:0},{label:'Anecdotal assessments only',score:25},
+        {label:'Some KPIs tracked informally',score:50},{label:'Formal KPI dashboard reviewed monthly',score:75},
+        {label:'Real-time operational dashboard with trend analysis and alerts',score:100}]},
+      { text: 'How much time per week is lost to manual, repetitive tasks that could be automated?', options: [
+        {label:'10+ hours per person',score:0},{label:'5–10 hours per person',score:25},
+        {label:'2–5 hours per person',score:50},{label:'Under 2 hours per person',score:75},
+        {label:'Minimal — robust automation in place',score:100}]},
+      { text: 'How quickly can your organization onboard a new team member to full productivity?', options: [
+        {label:'3+ months',score:0},{label:'6–8 weeks',score:25},{label:'3–4 weeks',score:50},
+        {label:'2–3 weeks with structured onboarding',score:75},{label:'Within 1–2 weeks with documented process',score:100}]},
+      { text: 'How effectively does your team communicate and coordinate across departments?', options: [
+        {label:'Mostly by email and hallway conversations',score:0},{label:'Regular meetings, but siloed',score:25},
+        {label:'Team collaboration tools in use',score:50},{label:'Structured meetings + documentation',score:75},
+        {label:'Seamless cross-functional communication with clear accountability',score:100}]}
+    ]
+  },
+  {
+    id: 'hr', name: 'HR & Workforce', icon: '👥',
+    questions: [
+      { text: 'How would you rate your current employee retention rate?', options: [
+        {label:'High turnover — 40%+ annual',score:0},{label:'25–40% annual turnover',score:25},
+        {label:'15–25% annual turnover',score:50},{label:'Below 15% annual turnover',score:75},
+        {label:'Below 10% — strong culture and retention',score:100}]},
+      { text: 'Do you have a formal performance review process?', options: [
+        {label:'No structured reviews',score:0},{label:'Ad-hoc conversations',score:25},
+        {label:'Annual reviews, inconsistently executed',score:50},{label:'Annual reviews with goal-setting',score:75},
+        {label:'Quarterly reviews, 360 feedback, tied to development plans',score:100}]},
+      { text: 'How satisfied are your employees (last survey or pulse check)?', options: [
+        {label:'Never measured',score:0},{label:'Measured once, not acted on',score:25},
+        {label:'Annual survey with some follow-through',score:50},{label:'Regular pulse surveys with transparent results',score:75},
+        {label:'Continuous feedback culture with demonstrable improvements',score:100}]},
+      { text: 'How well-defined are your hiring processes and job descriptions?', options: [
+        {label:'Informal — no standard process',score:0},{label:'Basic interviews, no structured criteria',score:25},
+        {label:'Job descriptions exist, interviews somewhat structured',score:50},{label:'Competency-based interviews, written JDs',score:75},
+        {label:'Full talent pipeline with structured interviews, JDs, and competency frameworks',score:100}]},
+      { text: 'Does your organization have a succession plan for key roles?', options: [
+        {label:'No succession planning',score:0},{label:'Informal thoughts, not documented',score:25},
+        {label:'Identified successors for some key roles',score:50},{label:'Documented succession plan, reviewed annually',score:75},
+        {label:'Full talent development pipeline for all critical roles',score:100}]}
+    ]
+  },
+  {
+    id: 'marketing', name: 'Marketing & Growth', icon: '📈',
+    questions: [
+      { text: 'How would you describe your organization\'s online presence and digital visibility?', options: [
+        {label:'No website or outdated site',score:0},{label:'Basic website, minimal traffic',score:25},
+        {label:'Functional website with moderate traffic',score:50},{label:'SEO-optimized site with consistent leads',score:75},
+        {label:'Strong digital presence with multi-channel lead generation',score:100}]},
+      { text: 'How do most new clients or patients find you?', options: [
+        {label:'Word of mouth only — no marketing',score:0},{label:'Mostly referrals, some online',score:25},
+        {label:'Mix of referrals, search, and some paid',score:50},{label:'Diversified channels with tracking',score:75},
+        {label:'Data-driven acquisition with CAC and LTV tracking',score:100}]},
+      { text: 'Do you have a documented marketing strategy or plan?', options: [
+        {label:'No marketing plan',score:0},{label:'Informal ideas, not documented',score:25},
+        {label:'Annual plan, not consistently executed',score:50},{label:'12-month plan with quarterly reviews',score:75},
+        {label:'Living marketing strategy tied to revenue goals',score:100}]},
+      { text: 'How consistently do you collect and publish client testimonials and case studies?', options: [
+        {label:'Never',score:0},{label:'Occasionally, ad-hoc',score:25},
+        {label:'A few on the website, not systematized',score:50},{label:'Regular collection with approval workflow',score:75},
+        {label:'Continuous testimonial program with video and written case studies',score:100}]},
+      { text: 'How would you rate your brand consistency across all channels?', options: [
+        {label:'No brand guidelines',score:0},{label:'Inconsistent — varies by channel',score:25},
+        {label:'Basic guidelines, partially followed',score:50},{label:'Brand guide exists and is mostly followed',score:75},
+        {label:'Full brand system consistently applied across all touchpoints',score:100}]}
+    ]
+  },
+  {
+    id: 'technology', name: 'Technology & AI', icon: '💻',
+    questions: [
+      { text: 'How modern and integrated is your current technology stack?', options: [
+        {label:'Legacy systems, lots of manual workarounds',score:0},{label:'Mix of old and new, poor integration',score:25},
+        {label:'Core systems modern, some integration gaps',score:50},{label:'Well-integrated systems with APIs',score:75},
+        {label:'Fully integrated cloud-first stack with automation',score:100}]},
+      { text: 'Are you using AI or automation tools in your operations today?', options: [
+        {label:'No AI or automation anywhere',score:0},{label:'Exploring but not implemented',score:25},
+        {label:'1–2 tools in use (e.g., scheduling, email)',score:50},{label:'Multiple AI tools integrated into workflows',score:75},
+        {label:'AI strategy with measurable ROI across multiple functions',score:100}]},
+      { text: 'How secure is your cybersecurity posture?', options: [
+        {label:'No security measures beyond antivirus',score:0},{label:'Basic security, no formal assessment',score:25},
+        {label:'MFA on key systems, some policies',score:50},{label:'Formal assessment done, most gaps addressed',score:75},
+        {label:'Continuous monitoring, annual pen testing, SOC/SIEM',score:100}]},
+      { text: 'How reliable is your data backup and disaster recovery process?', options: [
+        {label:'No formal backups',score:0},{label:'Sporadic backups, never tested',score:25},
+        {label:'Regular backups, not tested',score:50},{label:'Tested backups with documented RTO/RPO',score:75},
+        {label:'Automated, tested recovery with offsite redundancy',score:100}]},
+      { text: 'Do your staff have the digital skills needed to use your technology effectively?', options: [
+        {label:'Low confidence — many workarounds',score:0},{label:'Basic proficiency, significant training gaps',score:25},
+        {label:'Most staff proficient with core tools',score:50},{label:'Regular digital skills training in place',score:75},
+        {label:'Digital literacy program with ongoing development',score:100}]}
+    ]
+  },
+  {
+    id: 'risk', name: 'Risk Management', icon: '🔍',
+    questions: [
+      { text: 'Has your organization conducted a formal enterprise risk assessment in the past 2 years?', options: [
+        {label:'Never',score:0},{label:'Informal — not documented',score:25},
+        {label:'One was done but not updated',score:50},{label:'Annual risk assessment with heat map',score:75},
+        {label:'Continuous risk monitoring with board reporting',score:100}]},
+      { text: 'Do you have adequate insurance coverage for your risk profile?', options: [
+        {label:'Basic general liability only',score:0},{label:'Some coverage, not fully assessed',score:25},
+        {label:'Standard coverage, reviewed occasionally',score:50},{label:'Comprehensive coverage reviewed annually',score:75},
+        {label:'Full risk transfer strategy: GL, cyber, D&O, E&O, EPLI',score:100}]},
+      { text: 'How well do you manage vendor and third-party risk?', options: [
+        {label:'No vendor risk management process',score:0},{label:'Contracts executed but not reviewed',score:25},
+        {label:'Key vendors assessed, contracts reviewed',score:50},{label:'Vendor risk tiering with annual reviews',score:75},
+        {label:'Full TPRM program with continuous monitoring',score:100}]},
+      { text: 'Are your key contracts, agreements, and legal documents current and properly stored?', options: [
+        {label:'Contracts scattered or missing',score:0},{label:'Physical files, inconsistently maintained',score:25},
+        {label:'Digital storage, some gaps',score:50},{label:'Organized contract repository with renewals tracked',score:75},
+        {label:'Contract lifecycle management with automated alerts',score:100}]},
+      { text: 'Does leadership actively discuss risk at regular intervals?', options: [
+        {label:'Risk is only discussed after a problem occurs',score:0},{label:'Occasionally mentioned in meetings',score:25},
+        {label:'Quarterly risk reviews',score:50},{label:'Monthly risk committee or standing agenda item',score:75},
+        {label:'Board-level risk committee with formal charter and metrics',score:100}]}
+    ]
+  },
+  {
+    id: 'growth', name: 'Strategic Growth', icon: '🚀',
+    questions: [
+      { text: 'Does your organization have a documented 3–5 year strategic plan?', options: [
+        {label:'No strategic plan',score:0},{label:'General vision, nothing documented',score:25},
+        {label:'Written plan, rarely referenced',score:50},{label:'Annual plan with quarterly OKR reviews',score:75},
+        {label:'Living strategy with KPIs, cascaded goals, and board alignment',score:100}]},
+      { text: 'How strong is your pipeline of new clients or revenue opportunities?', options: [
+        {label:'No visibility into pipeline',score:0},{label:'Informal list of prospects',score:25},
+        {label:'CRM in use with basic pipeline',score:50},{label:'Active pipeline with conversion tracking',score:75},
+        {label:'Predictable pipeline with 90-day revenue visibility',score:100}]},
+      { text: 'How effectively do you leverage partnerships and referral networks?', options: [
+        {label:'No formal partnerships',score:0},{label:'A few informal relationships',score:25},
+        {label:'Some partnerships, not systematized',score:50},{label:'Active referral network, tracked',score:75},
+        {label:'Strategic partnership portfolio with MOUs and revenue attribution',score:100}]},
+      { text: 'How well does your leadership team set and cascade organizational goals?', options: [
+        {label:'Goals are not set or communicated',score:0},{label:'Leader sets goals, not shared broadly',score:25},
+        {label:'Goals set, communicated but not tracked',score:50},{label:'All-staff goals with quarterly check-ins',score:75},
+        {label:'OKR/balanced scorecard with full transparency and accountability',score:100}]},
+      { text: 'How confident are you in your organization\'s ability to scale?', options: [
+        {label:'Not scalable — too much manual and siloed',score:0},{label:'Would struggle to grow 20%',score:25},
+        {label:'Could grow 30–50% with significant effort',score:50},{label:'Infrastructure ready for 50–100% growth',score:75},
+        {label:'Highly scalable — systems, team, and processes ready for rapid growth',score:100}]}
+    ]
+  }
+];
+
+let currentSection = 0;
+let currentQuestion = 0;
+let answers = {}; // {sectionId_qIndex: score}
+let selectedScore = null;
+
+function startAssessment() {
+  document.getElementById('intro-section').style.display = 'none';
+  document.getElementById('question-section').style.display = 'block';
+  buildSectionTabs();
+  renderQuestion();
+}
+
+function buildSectionTabs() {
+  const tabs = document.getElementById('section-tabs');
+  tabs.innerHTML = SECTIONS.map((s,i) => `<div class="section-tab ${i===0?'active':''}" id="tab-${i}" onclick="">${i+1}</div>`).join('');
+}
+
+function renderQuestion() {
+  const s = SECTIONS[currentSection];
+  const q = s.questions[currentQuestion];
+  const totalQ = currentSection * 5 + currentQuestion + 1;
+
+  document.getElementById('q-section-label').textContent = `Section ${currentSection+1} of 8`;
+  document.getElementById('q-category').textContent = `${s.icon} ${s.name}`;
+  document.getElementById('q-count').textContent = `Question ${currentQuestion+1} of 5 in this section`;
+  document.getElementById('q-counter').textContent = `Question ${totalQ} of 40`;
+  document.getElementById('section-name').textContent = `${s.name}`;
+
+  const pct = (totalQ / 40) * 100;
+  document.getElementById('progress-fill').style.width = pct + '%';
+
+  // Update tabs
+  SECTIONS.forEach((_,i) => {
+    const tab = document.getElementById('tab-' + i);
+    if (!tab) return;
+    tab.className = 'section-tab';
+    if (i < currentSection) tab.className += ' done';
+    else if (i === currentSection) tab.className += ' active';
+  });
+
+  const key = `${s.id}_${currentQuestion}`;
+  selectedScore = answers[key] !== undefined ? answers[key] : null;
+
+  document.getElementById('q-text').textContent = q.text;
+  document.getElementById('q-options').innerHTML = q.options.map((o,i) => {
+    const isSelected = selectedScore === o.score && answers[key] === o.score;
+    const scoreMap = {0:'score-0',25:'score-25',50:'score-50',75:'score-75',100:'score-100'};
+    return `<div class="q-option ${isSelected?'selected':''}" onclick="selectOption(${o.score}, this, '${s.id}_${currentQuestion}')">
+      <div class="q-option-radio"></div>
+      <div class="q-option-label">${o.label}</div>
+      <div class="q-option-score ${scoreMap[o.score]}">${o.score}pts</div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('btn-back').disabled = (currentSection === 0 && currentQuestion === 0);
+  document.getElementById('btn-next').disabled = selectedScore === null;
+  document.getElementById('btn-next').textContent = (currentSection === 7 && currentQuestion === 4) ? '🎯 View My Results →' : 'Continue →';
+}
+
+function selectOption(score, el, key) {
+  document.querySelectorAll('.q-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedScore = score;
+  answers[key] = score;
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQuestion() {
+  if (currentQuestion < 4) {
+    currentQuestion++;
+  } else if (currentSection < 7) {
+    currentSection++;
+    currentQuestion = 0;
+  } else {
+    showReport();
+    return;
+  }
+  selectedScore = null;
+  renderQuestion();
+}
+
+function prevQuestion() {
+  if (currentQuestion > 0) {
+    currentQuestion--;
+  } else if (currentSection > 0) {
+    currentSection--;
+    currentQuestion = 4;
+  }
+  const key = `${SECTIONS[currentSection].id}_${currentQuestion}`;
+  selectedScore = answers[key] !== undefined ? answers[key] : null;
+  renderQuestion();
+}
+
+function showReport() {
+  document.getElementById('question-section').style.display = 'none';
+  document.getElementById('report-section').style.display = 'block';
+
+  // Compute scores
+  const dimScores = {};
+  let total = 0;
+  SECTIONS.forEach(s => {
+    let sTotal = 0, sCount = 0;
+    s.questions.forEach((_,i) => {
+      const key = `${s.id}_${i}`;
+      if (answers[key] !== undefined) { sTotal += answers[key]; sCount++; }
+    });
+    dimScores[s.id] = sCount > 0 ? Math.round(sTotal / sCount) : 0;
+    total += dimScores[s.id];
+  });
+  const overall = Math.round(total / 8);
+
+  // Overall score
+  document.getElementById('report-overall-score').textContent = overall;
+  const offset = 377 - (377 * overall / 100);
+  setTimeout(() => { document.getElementById('score-circle-fill').style.strokeDashoffset = offset; }, 100);
+
+  const grade = overall >= 90 ? 'A+' : overall >= 80 ? 'A' : overall >= 70 ? 'B' : overall >= 60 ? 'C' : overall >= 50 ? 'D' : 'F';
+  const gradeClass = overall >= 70 ? 'grade-a' : overall >= 60 ? 'grade-c' : 'grade-d';
+  const badge = document.getElementById('report-grade-badge');
+  badge.textContent = `Grade: ${grade}`;
+  badge.className = `report-grade ${gradeClass}`;
+
+  const summaries = {
+    90: 'Exceptional — You are operating at elite organizational health. Focus on maintaining excellence and innovation.',
+    75: 'Strong — Your organization is performing well across most dimensions. Target the identified gaps for significant impact.',
+    60: 'Moderate — Several dimensions need attention. Prioritized action on the items below will yield strong returns.',
+    40: 'Developing — There are meaningful gaps across multiple areas. A structured improvement plan is highly recommended.',
+    0:  'Critical — Urgent attention is needed in several areas. We recommend booking a consultation immediately.'
+  };
+  const summaryKey = Object.keys(summaries).map(Number).sort((a,b)=>b-a).find(k => overall >= k);
+  document.getElementById('report-summary-text').textContent = summaries[summaryKey];
+
+  // Dimension grid
+  const colorMap = s => s >= 75 ? '#22c55e' : s >= 50 ? '#f59e0b' : '#ef4444';
+  document.getElementById('dimension-grid').innerHTML = SECTIONS.map(s => {
+    const sc = dimScores[s.id];
+    return `<div class="dim-card">
+      <div class="dim-name">${s.icon} ${s.name}</div>
+      <div class="dim-score" style="color:${colorMap(sc)}">${sc}/100</div>
+      <div class="dim-bar-bg"><div class="dim-bar-fill" style="width:${sc}%;background:${colorMap(sc)}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Priority actions — lowest scoring dimensions first
+  const sorted = Object.entries(dimScores).sort((a,b) => a[1]-b[1]);
+  const recommendations = {
+    compliance: { title:'Strengthen Your Compliance Program', desc:'Engage a HIPAA compliance consultant to conduct a risk analysis, update your Policy & Procedure library, and establish a BAA management process. Target 0 audit findings.' },
+    finance: { title:'Improve Financial Visibility & Controls', desc:'Implement monthly financial dashboards, AR aging reports, and a cash flow projection model. Consider a financial controller or outsourced CFO.' },
+    operations: { title:'Document & Automate Core Processes', desc:'Build an SOP library for your top 10 processes. Identify repetitive tasks for automation. Implement an OKR or KPI tracking system.' },
+    hr: { title:'Invest in People & Culture', desc:'Launch an employee engagement survey. Implement quarterly performance conversations. Define a succession plan for the top 3 key roles.' },
+    marketing: { title:'Build a Systematic Growth Engine', desc:'Develop a 12-month marketing plan with defined channels. Implement a CRM for referral tracking. Launch a testimonial collection program.' },
+    technology: { title:'Modernize Your Technology Stack', desc:'Conduct a technology audit. Implement MFA on all systems. Explore AI automation for the top 3 highest-volume manual tasks.' },
+    risk: { title:'Build a Risk Management Framework', desc:'Conduct an enterprise risk assessment. Review insurance coverage. Implement a vendor risk management process with annual reviews.' },
+    growth: { title:'Develop a Clear Strategic Direction', desc:'Facilitate a leadership strategic planning session. Define 3-year goals with annual milestones. Build a predictable new client pipeline.' }
+  };
+
+  document.getElementById('priorities-list').innerHTML = sorted.slice(0,5).map(([ id, sc], i) => {
+    const rec = recommendations[id] || { title: 'Improve ' + id, desc: 'Focus on this dimension for maximum impact.' };
+    return `<div class="priority-item">
+      <div class="priority-num">${i+1}</div>
+      <div class="priority-text">
+        <h4>${rec.title} <span style="font-weight:400;color:var(--slate);font-size:0.8rem;">(Current: ${sc}/100)</span></h4>
+        <p>${rec.desc}</p>
+      </div>
+    </div>`;
+  }).join('');
+
+  window.scrollTo(0,0);
+}
+</script>
+</body>
+</html>
