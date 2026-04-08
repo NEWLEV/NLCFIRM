@@ -1,7 +1,6 @@
 # NLCFirm — Healthcare & Business Consulting
 
-This repository contains the source code for the New Level Consultants website, a premium Node.js-based web application with an Express backend and an SQLite database.
-
+This repository contains the source code for the New Level Consultants website, a premium Node.js-based web application with an Express backend and a MySQL database.
 ## 🚀 Deployment to Hostinger
 
 This project is configured for seamless deployment on Hostinger's Node.js hosting.
@@ -21,6 +20,8 @@ You must set up the following variables in the Hostinger Node.js panel or via a 
 - `ADMIN_DEFAULT_PASSWORD` (For initial seed)
 - `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` (For email notifications)
 - `PAYPAL_CLIENT_ID` & `PAYPAL_CLIENT_SECRET` (For payments)
+- `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASS`, `DB_NAME` (For MySQL connection)
+
 
 ### 3. Installation & Startup
 1. Upload all files (excluding `node_modules`, `.git`, and `*.db`).
@@ -30,7 +31,7 @@ You must set up the following variables in the Hostinger Node.js panel or via a 
    - **Manual**: Run `pm2 start ecosystem.config.js`.
 
 ### 4. Database
-The application uses SQLite (`better-sqlite3`). The database file `nlcfirm.db` will be automatically created and seeded with default values (Admins, services, and testimonials) upon the first server start.
+The application uses MySQL (`mysql2` package without native bindings). This is natively supported by Hostinger's standard cPanel interface. Tables and default data will be automatically seeded on first startup.
 
 ---
 **Note**: The root `index.html` has been removed as it is a redundant backup. The live landing page is managed at `public/index.html`.
