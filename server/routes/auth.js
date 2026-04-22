@@ -20,8 +20,9 @@ router.post('/login', [
   const { email, password } = req.body;
   
   try {
-    const db = getDb();
-    const user = db.prepare('SELECT * FROM admin_users WHERE email = ?').get(email);
+    const db = await getDb();
+    const [rows] = await db.execute('SELECT * FROM admin_users WHERE email = ?', [email]);
+    const user = rows[0];
     
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
@@ -37,12 +38,13 @@ router.post('/login', [
     }
 
     // Update last login time
-    db.prepare("UPDATE admin_users SET last_login = datetime('now') WHERE id = ?").run(user.id);
+    await db.execute("UPDATE admin_users SET last_login = NOW() WHERE id = ?", [user.id]);
 
     // Log the login
-    db.prepare(
-      'INSERT INTO audit_log (user_id, user_email, action, details, ip_address) VALUES (?, ?, ?, ?, ?)'
-    ).run(user.id, user.email, 'login', 'User logged in', req.ip);
+    await db.execute(
+      'INSERT INTO audit_log (user_id, user_email, action, details, ip_address) VALUES (?, ?, ?, ?, ?)',
+      [user.id, user.email, 'login', 'User logged in', req.ip]
+    );
 
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
@@ -68,10 +70,12 @@ router.post('/login', [
 // GET /auth/me
 router.get('/me', authenticateToken, async (req, res) => {
   try {
-    const db = getDb();
-    const user = db.prepare(
-      'SELECT id, email, role, display_name, created_at, last_login FROM admin_users WHERE id = ?'
-    ).get(req.user.id);
+    const db = await getDb();
+    const [rows] = await db.execute(
+      'SELECT id, email, role, display_name, created_at, last_login FROM admin_users WHERE id = ?',
+      [req.user.id]
+    );
+    const user = rows[0];
     if (!user) return res.status(404).json({ error: 'User not found' });
     res.json({ user });
   } catch (err) {
@@ -92,20 +96,22 @@ router.post('/change-password', authenticateToken, [
   const { currentPassword, newPassword } = req.body;
   
   try {
-    const db = getDb();
-    const user = db.prepare('SELECT * FROM admin_users WHERE id = ?').get(req.user.id);
+    const db = await getDb();
+    const [rows] = await db.execute('SELECT * FROM admin_users WHERE id = ?', [req.user.id]);
+    const user = rows[0];
     
     if (!user || !(await bcrypt.compare(currentPassword, user.password_hash))) {
       return res.status(401).json({ error: 'Current password is incorrect' });
     }
 
     const hash = await bcrypt.hash(newPassword, 12);
-    db.prepare("UPDATE admin_users SET password_hash = ?, updated_at = datetime('now') WHERE id = ?").run(hash, req.user.id);
+    await db.execute("UPDATE admin_users SET password_hash = ?, updated_at = NOW() WHERE id = ?", [hash, req.user.id]);
 
     // Audit log
-    db.prepare(
-      'INSERT INTO audit_log (user_id, user_email, action, details) VALUES (?, ?, ?, ?)'
-    ).run(req.user.id, req.user.email, 'change_password', 'Password changed');
+    await db.execute(
+      'INSERT INTO audit_log (user_id, user_email, action, details) VALUES (?, ?, ?, ?)',
+      [req.user.id, req.user.email, 'change_password', 'Password changed']
+    );
 
     res.json({ message: 'Password updated successfully' });
   } catch (err) {
@@ -123,11 +129,11 @@ router.post('/update-profile', authenticateToken, [
   }
 
   try {
-    const db = getDb();
-    db.prepare("UPDATE admin_users SET display_name = ?, updated_at = datetime('now') WHERE id = ?").run(
+    const db = await getDb();
+    await db.execute("UPDATE admin_users SET display_name = ?, updated_at = NOW() WHERE id = ?", [
       req.body.displayName,
       req.user.id
-    );
+    ]);
 
     res.json({ message: 'Profile updated successfully' });
   } catch (err) {
@@ -138,10 +144,10 @@ router.post('/update-profile', authenticateToken, [
 // GET /auth/users — super_admin only
 router.get('/users', authenticateToken, requireRole('super_admin'), async (req, res) => {
   try {
-    const db = getDb();
-    const users = db.prepare(
+    const db = await getDb();
+    const [users] = await db.execute(
       'SELECT id, email, display_name, role, is_active, last_login, created_at FROM admin_users ORDER BY created_at ASC'
-    ).all();
+    );
     res.json({ users });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch users' });
@@ -163,24 +169,27 @@ router.post('/users', authenticateToken, requireRole('super_admin'), [
   const { email, password, displayName, role } = req.body;
   
   try {
-    const db = getDb();
-    const existing = db.prepare('SELECT id FROM admin_users WHERE email = ?').get(email);
-    if (existing) {
+    const db = await getDb();
+    const [existingRows] = await db.execute('SELECT id FROM admin_users WHERE email = ?', [email]);
+    if (existingRows.length > 0) {
       return res.status(409).json({ error: 'An account with this email already exists' });
     }
 
     const hash = await bcrypt.hash(password, 12);
-    const result = db.prepare(
-      'INSERT INTO admin_users (email, password_hash, display_name, role) VALUES (?, ?, ?, ?)'
-    ).run(email, hash, displayName, role);
+    const [result] = await db.execute(
+      'INSERT INTO admin_users (email, password_hash, display_name, role) VALUES (?, ?, ?, ?)',
+      [email, hash, displayName, role]
+    );
 
     // Audit
-    db.prepare(
-      'INSERT INTO audit_log (user_id, user_email, action, entity_type, entity_id, details) VALUES (?, ?, ?, ?, ?, ?)'
-    ).run(req.user.id, req.user.email, 'create_user', 'admin_users', result.lastInsertRowid, `Created user: ${email}`);
+    await db.execute(
+      'INSERT INTO audit_log (user_id, user_email, action, entity_type, entity_id, details) VALUES (?, ?, ?, ?, ?, ?)',
+      [req.user.id, req.user.email, 'create_user', 'admin_users', result.insertId, `Created user: ${email}`]
+    );
 
-    res.status(201).json({ message: 'User created successfully', id: result.lastInsertRowid });
+    res.status(201).json({ message: 'User created successfully', id: result.insertId });
   } catch (err) {
+    console.error('Create user error:', err);
     res.status(500).json({ error: 'Failed to create user' });
   }
 });
@@ -212,18 +221,18 @@ router.patch('/users/:id', authenticateToken, requireRole('super_admin'), async 
     return res.status(400).json({ error: 'No updates provided' });
   }
 
-  updates.push("updated_at = datetime('now')");
+  updates.push("updated_at = NOW()");
   
   try {
     const db = await getDb();
-    const result = await db.run(`UPDATE admin_users SET ${updates.join(', ')} WHERE id = ?`, [...params, userId]);
+    const [result] = await db.execute(`UPDATE admin_users SET ${updates.join(', ')} WHERE id = ?`, [...params, userId]);
 
-    if (result.changes === 0) {
+    if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'User not found' });
     }
 
     // Audit
-    await db.run(
+    await db.execute(
       'INSERT INTO audit_log (user_id, user_email, action, entity_type, entity_id, details) VALUES (?, ?, ?, ?, ?, ?)',
       [req.user.id, req.user.email, 'update_user', 'admin_users', userId, JSON.stringify(req.body)]
     );
