@@ -221,7 +221,7 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 .audit-entity { font-size: 0.65rem; color: var(--text-muted); }
 
 /* ─── MODAL ────────────────────────────────────────── */
-.admin-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; }
+.admin-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; }
 .admin-modal-overlay.open { display: flex; }
 .admin-modal { background: var(--bg-card); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); width: 90%; max-width: 520px; max-height: 80vh; overflow-y: auto; }
 .admin-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); }
@@ -276,3 +276,19 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
   .admin-header { padding: 0.5rem 0.75rem; }
   .page-title-row { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
 }
+
+/* ─── UTILITIES ─────────────────────────────────────── */
+.u-flex-column-between { display: flex !important; flex-direction: column !important; justify-content: space-between !important; }
+.u-padding-lg { padding: 1.5rem !important; }
+.u-margin-top-md { margin-top: 1rem !important; }
+.u-margin-top-lg { margin-top: 1.5rem !important; }
+.u-flex-gap-sm { display: flex !important; gap: 0.5rem !important; align-items: center !important; flex-wrap: wrap !important; }
+.u-flex-gap-sm-nowrap { display: flex !important; gap: 0.5rem !important; }
+.u-flex-1 { flex: 1 !important; }
+.u-flex-2 { flex: 2 !important; }
+.u-flex-gap-lg { display: flex !important; gap: 2rem !important; }
+.u-max-width-300 { max-width: 300px !important; }
+.u-border-right { border-right: 1px solid var(--border) !important; }
+.u-padding-right-md { padding-right: 1rem !important; }
+.u-text-center { text-align: center !important; }
+.u-hidden { display: none !important; }

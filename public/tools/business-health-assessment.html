@@ -16,7 +16,7 @@
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:'Inter',sans-serif; background:var(--bg); color:#e2e8f0; line-height:1.7; min-height:100vh; }
 
-  .tool-nav { background:rgba(26,26,46,0.95); backdrop-filter:blur(12px); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
+  .tool-nav { background:rgba(26,26,46,0.95); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100; }
   .tool-nav a { color:#fff; text-decoration:none; font-weight:600; font-size:0.9rem; }
   .tool-nav .logo-text { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--gold-light); }
 
@@ -118,7 +118,7 @@
 <nav class="tool-nav">
   <a href="/portal.html">← My Portal</a>
   <span class="logo-text">Business Health Assessment</span>
-  <span style="color:var(--slate);font-size:0.8rem;">Powered by NLC</span>
+  <span class="u-text-dim u-text-sm">Powered by NLC</span>
 </nav>
 
 <!-- INTRO -->
@@ -126,25 +126,25 @@
   <div class="hero-badge">Interactive Assessment Tool</div>
   <h1>Business Health<br><em>Assessment</em></h1>
   <p>Answer 40 questions across 8 dimensions. Receive an instant, branded report with a prioritized action plan — tailored to your organization.</p>
-  <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;">
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1.25rem;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--gold-light);">8</div><div style="font-size:0.75rem;color:var(--slate);">Dimensions</div></div>
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1.25rem;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--gold-light);">40</div><div style="font-size:0.75rem;color:var(--slate);">Questions</div></div>
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1.25rem;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--gold-light);">~10</div><div style="font-size:0.75rem;color:var(--slate);">Minutes</div></div>
-    <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0.75rem 1.25rem;text-align:center;"><div style="font-size:1.5rem;font-weight:700;color:var(--gold-light);">Instant</div><div style="font-size:0.75rem;color:var(--slate);">Results</div></div>
+  <div class="u-flex-center u-flex-gap-1 u-flex-wrap u-margin-bottom-md">
+    <div class="u-bg-card u-border u-radius-8 u-padding-0-75-1-25 u-text-center"><div class="u-font-size-1-5 u-font-weight-700 u-color-gold-light">8</div><div class="u-font-size-0-75 u-color-slate">Dimensions</div></div>
+    <div class="u-bg-card u-border u-radius-8 u-padding-0-75-1-25 u-text-center"><div class="u-font-size-1-5 u-font-weight-700 u-color-gold-light">40</div><div class="u-font-size-0-75 u-color-slate">Questions</div></div>
+    <div class="u-bg-card u-border u-radius-8 u-padding-0-75-1-25 u-text-center"><div class="u-font-size-1-5 u-font-weight-700 u-color-gold-light">~10</div><div class="u-font-size-0-75 u-color-slate">Minutes</div></div>
+    <div class="u-bg-card u-border u-radius-8 u-padding-0-75-1-25 u-text-center"><div class="u-font-size-1-5 u-font-weight-700 u-color-gold-light">Instant</div><div class="u-font-size-0-75 u-color-slate">Results</div></div>
   </div>
-  <button onclick="startAssessment()" style="background:linear-gradient(135deg,var(--gold),#a07808);color:#fff;border:none;padding:1rem 3rem;border-radius:10px;font-size:1.1rem;font-weight:700;cursor:pointer;transition:0.2s;" onmouseover="this.style.opacity=0.9" onmouseout="this.style.opacity=1">
+  <button onclick="startAssessment()" class="btn btn-gold u-font-weight-700 u-font-size-1-1">
     Start Assessment →
   </button>
 </div>
 
 <!-- ASSESSMENT QUESTIONS -->
-<div id="question-section" style="display:none;">
+<div id="question-section" class="u-hidden">
   <div class="progress-container">
     <div class="progress-info">
       <span id="section-name">Section 1 of 8</span>
       <span id="q-counter">Question 1 of 40</span>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:2.5%"></div></div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
   </div>
   <div class="section-tabs" id="section-tabs"></div>
   <div class="question-card">
@@ -163,21 +163,21 @@
 <!-- REPORT -->
 <div id="report-section">
   <div class="report-header">
-    <div style="position:relative;z-index:1;">
-      <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;">Assessment Complete</div>
-      <div style="position:relative;display:inline-block;margin-bottom:1rem;">
+    <div class="u-position-relative u-z-index-1">
+      <div class="u-text-sm u-text-uppercase u-letter-spacing-3 u-margin-bottom-sm">Assessment Complete</div>
+      <div class="u-position-relative u-display-inline-block u-margin-bottom-1">
         <svg class="score-circle" viewBox="0 0 140 140">
           <circle class="score-circle-bg" cx="70" cy="70" r="60"/>
           <circle class="score-circle-fill" id="score-circle-fill" cx="70" cy="70" r="60" stroke="#b8860b" stroke-dasharray="377" stroke-dashoffset="377"/>
         </svg>
-        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div class="u-position-absolute u-inset-0 u-flex-center u-flex-col">
           <div class="report-score-num" id="report-overall-score">0</div>
           <div class="report-score-label">/ 100</div>
         </div>
       </div>
       <h2 class="report-name">Business Health Assessment Report</h2>
       <div class="report-grade" id="report-grade-badge">Grade: A</div>
-      <div style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-top:0.5rem;" id="report-summary-text"></div>
+      <div class="u-color-white-80 u-font-size-0-9 u-margin-top-0-5" id="report-summary-text"></div>
     </div>
   </div>
 
@@ -190,7 +190,7 @@
     <button class="btn-print" onclick="window.print()">🖨️ Print / Save PDF</button>
     <button class="btn-consult" onclick="window.location.href='/?consult=bha'">Book a Free Strategy Session to Discuss These Results →</button>
   </div>
-  <p style="text-align:center;color:var(--slate);font-size:0.8rem;padding-bottom:2rem;">Report generated by New Level Consultants · nlcfirm.com · © 2026</p>
+  <p class="u-text-center u-color-slate u-font-size-0-8 u-padding-bottom-2">Report generated by New Level Consultants · nlcfirm.com · © 2026</p>
 </div>
 
 <script>

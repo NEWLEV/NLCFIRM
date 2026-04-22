@@ -37,7 +37,7 @@
 
   /* Main */
   .main-content { overflow-y:auto; }
-  .top-bar { background:rgba(13,13,31,0.9); backdrop-filter:blur(12px); padding:1rem 2rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
+  .top-bar { background:rgba(13,13,31,0.9); -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px); padding:1rem 2rem; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:50; }
   .top-bar a { color:var(--slate); text-decoration:none; font-size:0.85rem; }
   .top-bar a:hover { color:#fff; }
   .lesson-nav-btn { background:linear-gradient(135deg,var(--gold),#a07808); color:#fff; border:none; padding:0.6rem 1.2rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.85rem; transition:0.2s; }
@@ -116,7 +116,7 @@
     </div>
     <div class="course-progress-wrap">
       <div class="cp-label">Your Progress</div>
-      <div class="cp-bar"><div class="cp-fill" id="sidebar-progress" style="width:0%"></div></div>
+      <div class="cp-bar"><div class="cp-fill" id="sidebar-progress"></div></div>
       <div class="cp-pct" id="sidebar-pct">0% Complete</div>
     </div>
     <div class="modules-list" id="modules-list"></div>
@@ -125,9 +125,9 @@
   <!-- MAIN -->
   <main class="main-content" id="main-content">
     <div class="top-bar">
-      <div style="display:flex;gap:1rem;align-items:center;">
+      <div class="u-flex-center u-flex-gap-1">
         <button class="lesson-nav-btn secondary" onclick="prevModule()" id="btn-prev-m">← Previous</button>
-        <span style="color:var(--slate);font-size:0.85rem;" id="top-bar-loc">Module 1 of 6</span>
+        <span class="u-text-dim u-text-sm" id="top-bar-loc">Module 1 of 6</span>
         <button class="lesson-nav-btn" onclick="nextModule()" id="btn-next-m">Next →</button>
       </div>
       <button class="lesson-nav-btn secondary" onclick="window.print()">🖨️ Print Certificate</button>
@@ -137,26 +137,26 @@
     <div id="cert-section">
       <div class="cert-card">
         <div class="cert-header">
-          <div style="font-family:'Playfair Display',serif;font-size:1rem;color:rgba(255,255,255,0.7);letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Certificate of Completion</div>
-          <div style="font-size:2.5rem;font-weight:700;color:var(--gold-light);margin-bottom:0.25rem;">🏆</div>
-          <div style="font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:#fff;margin-bottom:0.5rem;">Healthcare Compliance Certification</div>
-          <div style="font-size:0.85rem;color:rgba(255,255,255,0.6);">6-Module Professional Certification Program</div>
+          <div class="u-text-center u-text-uppercase u-letter-spacing-3 u-margin-bottom-sm u-font-display u-font-size-inherit u-color-white-60">Certificate of Completion</div>
+          <div class="u-font-size-2-5 u-font-weight-700 u-color-gold-light u-margin-bottom-0-25">🏆</div>
+          <div class="u-font-display u-font-size-2 u-font-weight-700 u-margin-bottom-0-5 u-color-white">Healthcare Compliance Certification</div>
+          <div class="u-font-size-0-85 u-color-white-60">6-Module Professional Certification Program</div>
         </div>
         <div class="cert-body">
-          <p style="color:#666;font-size:0.9rem;margin-bottom:0.5rem;">This certifies that</p>
-          <h2 style="font-family:'Playfair Display',serif;font-size:2rem;color:#1a1a2e;margin-bottom:0.5rem;" id="cert-name">Certificate Holder</h2>
-          <p style="color:#666;font-size:0.9rem;margin-bottom:1rem;">has successfully completed the</p>
-          <p style="font-size:1.1rem;font-weight:700;color:#1a1a2e;margin-bottom:0.5rem;">Healthcare Compliance Certification Program</p>
-          <p style="color:#666;font-size:0.85rem;margin-bottom:2rem;">Demonstrating competency in HIPAA Privacy & Security, EHE & Ryan White Compliance, Risk Assessment, Workforce Training, Breach Response, and Audit Readiness</p>
-          <div style="display:flex;justify-content:space-between;padding:1rem 2rem;border-top:2px solid #f1f5f9;">
-            <div style="text-align:center;"><div style="font-size:0.75rem;color:#999;margin-bottom:0.25rem;">Issued By</div><div style="font-weight:700;color:#1a1a2e;">New Level Consultants</div></div>
-            <div style="text-align:center;"><div style="font-size:0.75rem;color:#999;margin-bottom:0.25rem;">Completion Date</div><div style="font-weight:700;color:#1a1a2e;" id="cert-date"></div></div>
-            <div style="text-align:center;"><div style="font-size:0.75rem;color:#999;margin-bottom:0.25rem;">CEU Credits</div><div style="font-weight:700;color:#1a1a2e;">6 Hours</div></div>
+          <p class="u-font-size-0-9 u-margin-bottom-0-5 u-color-666">This certifies that</p>
+          <h2 class="u-font-display u-font-size-2 u-margin-bottom-0-5 u-color-1a1a2e" id="cert-name">Certificate Holder</h2>
+          <p class="u-font-size-0-9 u-margin-bottom-1 u-color-666">has successfully completed the</p>
+          <p class="u-font-size-1-1 u-font-weight-700 u-margin-bottom-0-5 u-color-1a1a2e">Healthcare Compliance Certification Program</p>
+          <p class="u-font-size-0-85 u-margin-bottom-2 u-color-666">Demonstrating competency in HIPAA Privacy & Security, EHE & Ryan White Compliance, Risk Assessment, Workforce Training, Breach Response, and Audit Readiness</p>
+          <div class="u-flex-center u-border-top-f1f5f9-2 u-justify-space-between u-padding-1-2">
+            <div class="u-text-center"><div class="u-font-size-0-75 u-margin-bottom-0-25 u-color-999">Issued By</div><div class="u-font-weight-700 u-color-1a1a2e">New Level Consultants</div></div>
+            <div class="u-text-center"><div class="u-font-size-0-75 u-margin-bottom-0-25 u-color-999">Completion Date</div><div class="u-font-weight-700 u-color-1a1a2e" id="cert-date"></div></div>
+            <div class="u-text-center"><div class="u-font-size-0-75 u-margin-bottom-0-25 u-color-999">CEU Credits</div><div class="u-font-weight-700 u-color-1a1a2e">6 Hours</div></div>
           </div>
         </div>
       </div>
-      <div style="text-align:center;margin-top:1.5rem;padding-bottom:3rem;">
-        <button onclick="window.print()" style="background:linear-gradient(135deg,var(--gold),#a07808);color:#fff;border:none;padding:0.85rem 2.5rem;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;">🖨️ Print Your Certificate</button>
+      <div class="u-text-center u-margin-top-1-5 u-padding-bottom-3">
+        <button onclick="window.print()" class="btn btn-gold u-font-size-1 u-font-weight-700 u-padding-0-85-2-5 u-radius-8">🖨️ Print Your Certificate</button>
       </div>
     </div>
   </main>

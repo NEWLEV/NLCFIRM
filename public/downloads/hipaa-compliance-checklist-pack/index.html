@@ -12,7 +12,7 @@
   body { font-family:'Inter',sans-serif; background:var(--bg); color:#1a1a2e; line-height:1.7; }
 
   /* Screen-only nav */
-  .dl-nav { background:var(--navy); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; print-color-adjust:exact; }
+  .dl-nav { background:var(--navy); padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
   .dl-nav a { color:#fff; text-decoration:none; font-weight:600; font-size:1rem; }
   .dl-nav .print-btn { background:var(--gold); color:#fff; border:none; padding:0.6rem 1.4rem; border-radius:6px; cursor:pointer; font-weight:600; font-size:0.9rem; }
   .dl-nav .print-btn:hover { background:#a07808; }
@@ -86,8 +86,8 @@
 
 <nav class="dl-nav">
   <a href="/portal.html">← Client Portal</a>
-  <div style="text-align:center;">
-    <span style="color:rgba(255,255,255,0.7);font-size:0.85rem;">HIPAA Compliance Checklist Pack</span>
+  <div class="u-text-center">
+    <span class="u-text-dim u-text-sm">HIPAA Compliance Checklist Pack</span>
   </div>
   <button class="print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
 </nav>
@@ -295,7 +295,7 @@
 
     <div class="template-box">
       <h4>📄 BAA Core Required Provisions (Template Guide)</h4>
-      <p style="font-size:0.8rem;color:var(--slate);margin-bottom:1rem;">Every HIPAA-compliant BAA must include these 7 elements (per 45 CFR §164.504(e)):</p>
+      <p class="u-text-sm u-text-dim u-margin-bottom-1">Every HIPAA-compliant BAA must include these 7 elements (per 45 CFR §164.504(e)):</p>
       <div class="template-field"><strong>1. Permitted Uses & Disclosures</strong> — Specify exactly what the BA may do with PHI (e.g., "solely for billing services on behalf of Covered Entity")</div>
       <div class="template-field"><strong>2. Prohibited Uses</strong> — BA shall not use or further disclose PHI other than as permitted or required by this Agreement or as required by law.</div>
       <div class="template-field"><strong>3. Appropriate Safeguards</strong> — BA agrees to use appropriate safeguards and comply with Security Rule with respect to ePHI.</div>
@@ -308,16 +308,16 @@
 
   <!-- FOOTER -->
   <div class="doc-footer">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+    <div class="u-flex-center u-flex-gap-1 u-flex-wrap">
       <div>
-        <div style="font-weight:700;color:#fff;margin-bottom:0.25rem;">New Level Consultants</div>
+        <div class="u-font-weight-700 u-margin-bottom-0-25 u-color-white">New Level Consultants</div>
         <div>HIPAA Compliance Checklist Pack · 2026 Edition · Version 1.0</div>
-        <div style="margin-top:0.25rem;">Questions? <a href="mailto:info@nlcfirm.com">info@nlcfirm.com</a> · <a href="tel:+17864084243">786-408-4243</a></div>
+        <div class="u-margin-top-0-25">Questions? <a href="mailto:info@nlcfirm.com">info@nlcfirm.com</a> · <a href="tel:+17864084243">786-408-4243</a></div>
       </div>
-      <div style="text-align:right;">
+      <div class="u-text-right">
         <div>© 2026 New Level Consultants. All rights reserved.</div>
         <div>This document is for the exclusive use of the purchaser.</div>
-        <div style="margin-top:0.25rem;"><a href="https://nlcfirm.com">nlcfirm.com</a></div>
+        <div class="u-margin-top-0-25"><a href="https://nlcfirm.com">nlcfirm.com</a></div>
       </div>
     </div>
   </div>

@@ -304,20 +304,9 @@
     document.body.classList.toggle('chatbot-open', chatOpen);
   };
 
-  var chatResponses = {
-    pricing: 'Our retainer plans start at $797/mo (Starter), $1,497/mo (Growth), and $2,997/mo (Enterprise). Annual plans save 15%. We also have instant tools from $67-$197.',
-    hipaa: 'Our HIPAA Compliance Program Setup is $1,200 (one-time) and covers policies, BAA templates, training plans, and risk assessment. Ongoing monitoring is $497/month.',
-    services: 'We offer Healthcare Consulting, Compliance & Risk, Operations, Technology & AI, HR, and Marketing services. Browse the full catalog at transparent pricing — no discovery call needed.',
-    plans: 'Starter ($797/mo): 2 sessions/month + compliance support. Growth ($1,497/mo): 4 sessions/month + dedicated advisor. Enterprise ($2,997/mo): Unlimited sessions + full advisory.',
-    tools: 'We have instant tools: Business Health Assessment ($97), SEO Audit ($147), Financial Readiness Score ($127), HIPAA Checklist ($67), SOP Templates ($97), and AI Content Agent ($197/mo). Bundle all 5 for $347.',
-    ai: 'Our AI Automation Strategy service ($2,800) identifies opportunities, selects tools, builds workflows, and trains your staff. We also offer AI Chatbot Setup for Healthcare ($1,900 + $197/mo).',
-    consult: 'Book a free 20-minute discovery call! No sales pressure — just clarity on your best next step. Click "Get Started" in the top nav or type "book" to start.',
-    book: 'Great! Let me open the booking form for you.',
-    hello: 'Hello! 👋 How can I help you today? I can answer questions about our services, pricing, compliance, AI automation, or help you book a call.',
-    default: "Thanks for your question! For detailed inquiries, I'd recommend booking a free 20-minute discovery call with one of our senior consultants. Would you like me to help you with that?"
-  };
+  var chatHistory = [];
 
-  window.sendChat = function () {
+  window.sendChat = async function () {
     var input = document.getElementById('chat-input');
     var msg = input.value.trim();
     if (!msg) return;
@@ -325,24 +314,36 @@
     logChat('user', msg);
     input.value = '';
 
-    setTimeout(function () {
-      var lower = msg.toLowerCase();
-      var response = chatResponses.default;
-      if (lower.includes('pric') || lower.includes('cost') || lower.includes('how much')) response = chatResponses.pricing;
-      else if (lower.includes('hipaa') || lower.includes('compliance')) response = chatResponses.hipaa;
-      else if (lower.includes('service')) response = chatResponses.services;
-      else if (lower.includes('plan') || lower.includes('retainer')) response = chatResponses.plans;
-      else if (lower.includes('tool') || lower.includes('instant') || lower.includes('download')) response = chatResponses.tools;
-      else if (lower.includes('ai') || lower.includes('automat')) response = chatResponses.ai;
-      else if (lower.includes('consult') || lower.includes('call') || lower.includes('free')) response = chatResponses.consult;
-      else if (lower.includes('book') || lower.includes('start') || lower.includes('sign up')) {
-        response = chatResponses.book;
-        setTimeout(function () { openModal('consult'); }, 800);
+    // Add loading indicator
+    var loadingDiv = document.createElement('div');
+    loadingDiv.className = 'chat-msg bot loading-msg';
+    loadingDiv.textContent = 'Thinking...';
+    document.getElementById('chat-messages').appendChild(loadingDiv);
+    loadingDiv.scrollIntoView({ behavior: 'smooth' });
+
+    try {
+      var response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: msg, history: chatHistory })
+      });
+      
+      loadingDiv.remove();
+
+      if (response.ok) {
+        var data = await response.json();
+        var reply = data.reply;
+        appendChat(reply, 'bot');
+        logChat('bot', reply);
+        chatHistory.push({ role: 'user', content: msg });
+        chatHistory.push({ role: 'assistant', content: reply });
+      } else {
+        appendChat("Sorry, I'm having trouble connecting right now. Please try again later.", 'bot');
       }
-      else if (lower.includes('hello') || lower.includes('hi') || lower.includes('hey')) response = chatResponses.hello;
-      appendChat(response, 'bot');
-      logChat('bot', response);
-    }, 600);
+    } catch (e) {
+      loadingDiv.remove();
+      appendChat("Sorry, I'm having trouble connecting right now. Please try again later.", 'bot');
+    }
   };
 
   function appendChat(text, role) {

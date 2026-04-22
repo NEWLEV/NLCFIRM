@@ -90,9 +90,27 @@ async function sendPasswordReset(clientEmail, resetLink) {
   return sendEmail({ to: clientEmail, subject, html });
 }
 
+/**
+ * Sends the HIPAA Quick-Start Checklist to a new lead
+ */
+async function sendChecklistEmail(leadEmail) {
+  const subject = `Your HIPAA Quick-Start Checklist is Here!`;
+  const html = `
+    <h2>Welcome to New Level Consultants!</h2>
+    <p>Thank you for requesting our HIPAA Quick-Start Checklist.</p>
+    <p>You can download your free 25-point checklist using the link below:</p>
+    <p><a href="https://nlcfirm.com/downloads/hipaa-compliance-checklist-pack">Download HIPAA Checklist</a></p>
+    <br>
+    <p>If you have any questions or need further assistance with your compliance program, feel free to reply directly to this email or book a free discovery call on our website.</p>
+    <p>- The NLC Firm Team</p>
+  `;
+  return sendEmail({ to: leadEmail, subject, html });
+}
+
 module.exports = {
   sendEmail,
   notifyAdminNewLead,
   sendClientWelcome,
-  sendPasswordReset
+  sendPasswordReset,
+  sendChecklistEmail
 };

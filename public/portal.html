@@ -37,11 +37,11 @@
 <body>
 
   <header class="portal-nav">
-    <div style="display: flex; align-items: center; gap: 1rem;">
-      <a href="/"><img src="/assets/images/logo-stacked.png" alt="NLC" height="40" style="filter: brightness(0) invert(1);"></a>
-      <span style="font-size: 1.1rem; font-weight: 600; padding-left: 1rem; border-left: 1px solid rgba(255,255,255,0.2);">Client Portal</span>
+    <div class="u-flex-center u-flex-gap-1">
+      <a href="/"><img src="/assets/images/logo-stacked.png" alt="NLC" height="40" class="u-filter-white"></a>
+      <span class="u-font-size-1-1 u-font-weight-600 u-padding-left-1-25 u-border-left-light">Client Portal</span>
     </div>
-    <div style="display: flex; align-items: center; gap: 1.5rem;">
+    <div class="u-flex-center u-flex-gap-1-5">
       <span id="user-greeting">Welcome</span>
       <button class="logout-btn" onclick="logout()">Sign Out</button>
     </div>
@@ -60,7 +60,7 @@
     <main class="main-content">
       
       <!-- Purchases Tab -->
-      <section id="tab-purchases" class="tab-pane active" style="display: block;">
+      <section id="tab-purchases" class="tab-pane active u-display-block">
         <div class="page-header">
           <h1 class="page-title">My Tools & Content</h1>
           <p>Access your purchased digital products, assessments, and downloads.</p>
@@ -71,7 +71,7 @@
       </section>
 
       <!-- Subscriptions Tab -->
-      <section id="tab-subscriptions" class="tab-pane" style="display: none;">
+      <section id="tab-subscriptions" class="tab-pane u-display-none">
         <div class="page-header">
           <h1 class="page-title">Active Subscriptions</h1>
           <p>Manage your retainers and recurring services.</p>
@@ -82,7 +82,7 @@
       </section>
 
       <!-- Courses Tab -->
-      <section id="tab-courses" class="tab-pane" style="display: none;">
+      <section id="tab-courses" class="tab-pane u-display-none">
         <div class="page-header">
           <h1 class="page-title">🎓 My Courses</h1>
           <p>Continue your professional development. Pick up where you left off.</p>
@@ -93,12 +93,12 @@
       </section>
 
       <!-- Profile Tab -->
-      <section id="tab-profile" class="tab-pane" style="display: none;">
+      <section id="tab-profile" class="tab-pane u-display-none">
         <div class="page-header">
           <h1 class="page-title">Profile Settings</h1>
         </div>
-        <div style="background: #fff; padding: 2rem; border-radius: 8px; border: 1px solid #e2e8f0; max-width: 600px;">
-          <h3 style="margin-bottom: 1rem;">Account Details</h3>
+        <div class="u-bg-card u-padding-bottom-2 u-padding-top-1 u-padding-left-1-25 u-radius-8 u-border-e2e8f0 u-max-width-600">
+          <h3 class="u-margin-bottom-1">Account Details</h3>
           <p><strong>Name:</strong> <span id="profile-name"></span></p>
           <p><strong>Email:</strong> <span id="profile-email"></span></p>
           <p><strong>Company:</strong> <span id="profile-company"></span></p>
@@ -111,9 +111,14 @@
   <script src="/assets/js/portal.js"></script>
   <script>
     function showTab(tabId, el) {
-      document.querySelectorAll('.tab-pane').forEach(el => el.style.display = 'none');
-      document.querySelectorAll('.sidebar-menu a').forEach(el => el.classList.remove('active'));
-      document.getElementById('tab-' + tabId).style.display = 'block';
+      document.querySelectorAll('.tab-pane').forEach(pane => {
+        pane.classList.remove('u-display-block');
+        pane.classList.add('u-display-none');
+      });
+      document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
+      const activeTab = document.getElementById('tab-' + tabId);
+      activeTab.classList.remove('u-display-none');
+      activeTab.classList.add('u-display-block');
       el.classList.add('active');
     }
   </script>

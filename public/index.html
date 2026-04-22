@@ -154,10 +154,10 @@
 
 <!-- FIND YOUR SOLUTION — Psychology-driven guided quiz -->
 <section class="section section-dark" id="solution-finder">
-  <div class="anim section-header" style="text-align:center">
+  <div class="anim section-header u-text-center">
     <div class="section-tag section-tag-center">Not Sure Where to Start?</div>
     <h2 class="section-title section-title-center">Find Your <em>Perfect Solution</em> in 30 Seconds</h2>
-    <p class="section-body" style="margin:0 auto">Answer 3 quick questions and we'll recommend exactly what you need — no call required.</p>
+    <p class="section-body u-margin-auto">Answer 3 quick questions and we'll recommend exactly what you need — no call required.</p>
   </div>
   <div class="quiz-container anim" id="quiz-container">
     <div class="quiz-progress"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
@@ -188,7 +188,7 @@
         <button class="quiz-option" onclick="quizSelect(3,'project')"><span class="quiz-icon">📋</span>One-time project budget</button>
       </div>
     </div>
-    <div class="quiz-step" id="quiz-result" style="display:none">
+    <div class="quiz-step" id="quiz-result" class="u-hidden">
       <div class="quiz-result-card" id="quiz-result-card">
         <div class="quiz-result-tag">Your Recommended Path</div>
         <div class="quiz-result-title" id="quiz-result-title"></div>
@@ -204,10 +204,10 @@
 
 <!-- INDUSTRIES WE SERVE -->
 <section class="section" id="industries">
-  <div class="anim section-header" style="text-align:center">
+  <div class="anim section-header u-text-center">
     <div class="section-tag section-tag-center">Who We Serve</div>
     <h2 class="section-title section-title-center">Trusted Across <em>Industries</em></h2>
-    <p class="section-body" style="margin:0 auto">Whether you're a community health center or a scaling tech startup, we speak your language and understand your regulatory landscape.</p>
+    <p class="section-body u-margin-auto">Whether you're a community health center or a scaling tech startup, we speak your language and understand your regulatory landscape.</p>
   </div>
   <div class="industries-grid anim">
     <div class="industry-card"><div class="industry-icon">🏥</div><div class="industry-name">Healthcare</div><div class="industry-desc">Clinics, hospitals, community health centers, behavioral health, and telehealth practices.</div></div>
@@ -221,7 +221,7 @@
 
 <!-- HOW IT WORKS — Editorial Timeline -->
 <section class="section section-warm" id="process">
-  <div class="two-col anim" style="align-items:start">
+  <div class="two-col anim u-flex-start">
     <div>
       <div class="section-tag">How It Works</div>
       <h2 class="section-title">Simple. Transparent.<br><em>Results-Driven.</em></h2>
@@ -479,9 +479,9 @@
   <div class="bundle-card anim">
     <div class="bundle-info">
       <div class="section-tag">Bundle &amp; Save — 51% Off</div>
-      <div class="product-name" style="font-size:1.9rem">All-in-One Tier 1 Toolkit — <span style="color:var(--gold)">$347</span> <span style="font-size:1rem;text-decoration:line-through;color:var(--text-muted)">$685</span></div>
-      <p class="product-desc" style="margin-top:0.5rem;">Save $338. Includes every Tier 1 digital product:</p>
-      <ul style="margin-top:0.5rem;padding-left:1.25rem;color:var(--text-muted);font-size:0.9rem;line-height:2;">
+      <div class="product-name u-font-size-1-9">All-in-One Tier 1 Toolkit — <span class="u-color-gold">$347</span> <span class="u-font-size-1 u-text-line-through u-text-muted">$685</span></div>
+      <p class="product-desc u-margin-top-0-5">Save $338. Includes every Tier 1 digital product:</p>
+      <ul class="u-margin-top-0-5 u-padding-left-1-25 u-text-muted u-font-size-0-9 u-line-height-2">
         <li>✅ HIPAA Compliance Checklist Pack ($67)</li>
         <li>✅ SOP Template Bundle ($97)</li>
         <li>✅ Business Health Assessment ($97)</li>
@@ -504,19 +504,19 @@
       <p class="section-body">Use our interactive calculator to estimate the potential return on investment from working with NLC. Adjust the sliders to match your organization.</p>
     </div>
     <div class="roi-calc anim">
-      <div class="roi-field"><label>Number of Employees</label><div class="range-val" id="roi-emp-val">25</div><input type="range" min="5" max="200" value="25" id="roi-emp" oninput="calcROI()"></div>
-      <div class="roi-field"><label>Monthly Compliance Spend ($)</label><div class="range-val" id="roi-comp-val">$3,000</div><input type="range" min="500" max="20000" step="500" value="3000" id="roi-comp" oninput="calcROI()"></div>
-      <div class="roi-field"><label>Estimated Hours Lost to Inefficiency / Week</label><div class="range-val" id="roi-hrs-val">15</div><input type="range" min="2" max="60" value="15" id="roi-hrs" oninput="calcROI()"></div>
+      <div class="roi-field"><label for="roi-emp">Number of Employees</label><div class="range-val" id="roi-emp-val">25</div><input type="range" min="5" max="200" value="25" id="roi-emp" oninput="calcROI()"></div>
+      <div class="roi-field"><label for="roi-comp">Monthly Compliance Spend ($)</label><div class="range-val" id="roi-comp-val">$3,000</div><input type="range" min="500" max="20000" step="500" value="3000" id="roi-comp" oninput="calcROI()"></div>
+      <div class="roi-field"><label for="roi-hrs">Estimated Hours Lost to Inefficiency / Week</label><div class="range-val" id="roi-hrs-val">15</div><input type="range" min="2" max="60" value="15" id="roi-hrs" oninput="calcROI()"></div>
       <div class="roi-result">
         <div>Estimated Annual Savings</div>
         <div class="big" id="roi-total">$62,400</div>
         <div class="sub">Based on industry averages and NLC client outcomes</div>
       </div>
-      <div style="margin-top:1rem;display:flex;gap:0.5rem;align-items:center;">
-        <input type="email" id="roi-email" placeholder="Email me this report" style="flex:1;padding:0.65rem 1rem;border:1px solid var(--color-gold-opacity);border-radius:8px;font-size:0.9rem;outline:none;" onfocus="this.style.borderColor='var(--color-gold)'" onblur="this.style.borderColor='var(--color-gold-opacity)'">
-        <button class="btn btn-gold" onclick="submitROIReport()" style="white-space:nowrap;padding:0.65rem 1.2rem;">Send Report</button>
+      <div class="u-margin-top-1 u-flex-center u-flex-gap-0-5">
+        <input type="email" id="roi-email" class="u-flex-1 u-padding-0-65-1 u-border-e2e8f0 u-radius-8 u-font-size-0-9 u-outline-none" placeholder="Email me this report">
+        <button class="btn btn-gold u-white-space-nowrap u-padding-0-65-1-2" onclick="submitROIReport()">Send Report</button>
       </div>
-      <button class="btn btn-dark full-width" style="margin-top:0.75rem" onclick="openModal('consult')">Discuss Your ROI — Free Call</button>
+      <button class="btn btn-dark full-width u-margin-top-0-75" onclick="openModal('consult')">Discuss Your ROI — Free Call</button>
     </div>
 
   </div>
@@ -538,10 +538,10 @@
 
 <!-- CASE STUDIES / RESULTS -->
 <section class="section section-dark" id="case-studies">
-  <div class="section-header anim" style="text-align:center">
+  <div class="section-header anim u-text-center">
     <div class="section-tag section-tag-center">Proven Results</div>
     <h2 class="section-title section-title-center">Real Organizations. <em>Real Outcomes.</em></h2>
-    <p class="section-body" style="margin:0 auto">These aren't hypothetical numbers. These are documented results from clients who trusted us with their biggest challenges.</p>
+    <p class="section-body u-margin-auto">These aren't hypothetical numbers. These are documented results from clients who trusted us with their biggest challenges.</p>
   </div>
   <div class="case-studies-grid anim">
     <div class="case-card">
@@ -582,7 +582,7 @@
 
 <!-- TESTIMONIALS — Enhanced Marquee -->
 <section class="section">
-  <div class="section-header anim" style="text-align:center">
+  <div class="section-header anim u-text-center">
     <div class="section-tag section-tag-center">Client Testimonials</div>
     <h2 class="section-title section-title-center">What Our Clients <em>Say & Achieve</em></h2>
   </div>
@@ -596,7 +596,7 @@
       <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-quote">"Best investment we made this year. The cybersecurity assessment identified 14 critical vulnerabilities our IT team missed. Could have prevented a breach."</div><div class="tcard-meta"><div class="tcard-avatar">MR</div><div><div class="tcard-name">Michael R.</div><div class="tcard-role">CTO, Healthcare Startup</div></div></div></div>
     </div>
   </div>
-  <div id="testimonials-container" style="display:none"></div>
+  <div id="testimonials-container" class="u-hidden"></div>
 </section>
 
 <!-- NEWSLETTER LEAD GEN -->
@@ -780,15 +780,15 @@
 
   <!-- PAYPAL CHECKOUT MODAL -->
   <div id="checkout-modal" class="modal">
-    <div class="modal-content" style="max-width: 400px; text-align: center;">
+    <div class="modal-content u-max-width-400 u-text-center">
       <span class="close" onclick="closeCheckoutModal()">&times;</span>
-      <h3 style="margin-bottom: 0.5rem; font-family: 'Playfair Display', serif; font-size: 1.5rem;">Secure Checkout</h3>
-      <p style="color: var(--color-slate); margin-bottom: 2rem;">You are purchasing <strong id="checkout-product-name" style="color:var(--color-navy)">Item</strong> for <strong id="checkout-product-price" style="color:var(--color-gold)">$0</strong>.</p>
+      <h3 class="u-margin-bottom-0-5 u-font-display u-font-size-1-5">Secure Checkout</h3>
+      <p class="u-color-slate u-margin-bottom-2">You are purchasing <strong id="checkout-product-name" class="u-color-navy">Item</strong> for <strong id="checkout-product-price" class="u-color-gold">$0</strong>.</p>
       
       <!-- PayPal Button Container -->
       <div id="paypal-button-container"></div>
       
-      <p style="font-size: 0.8rem; color: var(--color-slate); margin-top: 1.5rem; border-top: 1px solid #e2e8f0; padding-top: 1rem;">
+      <p class="u-font-size-0-8 u-color-slate u-margin-top-1-5 u-border-top-e2e8f0 u-padding-top-1">
         By continuing, you agree to our Terms of Service and Privacy Policy. Upon successful payment, a secure Client Portal account will be automatically created for you to access your digital downloads.
       </p>
     </div>
