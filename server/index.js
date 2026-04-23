@@ -156,7 +156,10 @@ app.use((err, req, res, next) => {
 
 // ─── START ────────────────────────────────────────────
 // Initialize database before starting server
-getDb();
+getDb().catch(err => {
+  console.error('❌ DATABASE CONNECTION FAILED:', err.message);
+  console.error('Ensure your MySQL credentials are set correctly in .env');
+});
 
 app.listen(PORT, () => {
   console.log('');
