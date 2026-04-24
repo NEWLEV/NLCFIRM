@@ -108,7 +108,10 @@ router.post('/exit-lead', [
     const db = await getDb();
     const [existing] = await db.execute('SELECT id FROM exit_leads WHERE email = ?', [req.body.email]);
     if (existing.length === 0) {
-      await db.execute('INSERT INTO exit_leads (email) VALUES (?)', [req.body.email]);
+      await db.execute(
+        'INSERT INTO exit_leads (email, source, notes) VALUES (?, ?, ?)',
+        [req.body.email, req.body.source || 'exit-popup', req.body.notes || null]
+      );
     }
     
     // Send the checklist email to the user non-blocking

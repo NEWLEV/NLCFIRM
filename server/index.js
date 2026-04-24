@@ -122,7 +122,34 @@ app.use('/downloads', (req, res, next) => {
   });
 });
 
+// ─── DYNAMIC HTML DELIVERY (Injection) ────────────────
+const fs = require('fs');
+function sendInjectedHtml(req, res, filePath) {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) return res.status(500).send('Error loading page');
+    
+    // Replace EJS-style placeholders with env variables
+    const injected = data.replace(/<%= PAYPAL_CLIENT_ID %>/g, process.env.PAYPAL_CLIENT_ID || 'AZqVCL__cDUGrTbkSoagrKi6wd8KOqDJ_vGY5YR-IATzoZPnbBDkzIc7HbTzQSfAiPxIUycDxQoBjlyp');
+    
+    res.send(injected);
+  });
+}
+
+app.get('/', (req, res) => {
+  sendInjectedHtml(req, res, path.join(__dirname, '..', 'public', 'index.html'));
+});
+
 // ─── DYNAMIC ROUTES ───────────────────────────────────
+app.get('/api/health', async (req, res) => {
+  try {
+    const db = await getDb();
+    await db.execute('SELECT 1');
+    res.json({ status: 'ok', database: 'connected' });
+  } catch (e) {
+    res.status(500).json({ status: 'error', database: 'disconnected', message: e.message });
+  }
+});
+
 // Sitemap
 app.get('/sitemap.xml', (req, res) => {
   const baseUrl = process.env.BASE_URL || `http://localhost:${PORT}`;
@@ -140,12 +167,16 @@ app.get('/robots.txt', (req, res) => {
 });
 
 // ─── SPA FALLBACK ─────────────────────────────────────
-// Serve index.html for any non-API, non-file route
 app.get('*', (req, res) => {
   if (req.path.startsWith('/api') || req.path.startsWith('/auth')) {
     return res.status(404).json({ error: 'Not found' });
   }
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+  const filePath = path.join(__dirname, '..', 'public', req.path === '/' ? 'index.html' : req.path);
+  if (fs.existsSync(filePath) && filePath.endsWith('.html')) {
+    sendInjectedHtml(req, res, filePath);
+  } else {
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+  }
 });
 
 // ─── ERROR HANDLER ────────────────────────────────────

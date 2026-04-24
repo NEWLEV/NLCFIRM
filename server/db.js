@@ -3,13 +3,13 @@ const bcrypt = require('bcryptjs');
 const path = require('path');
 
 let pool;
+let initialized = false;
 
 /**
  * Get the database connection pool (initializes if necessary)
  */
 async function getDb() {
   if (!pool) {
-    // Hostinger production environment variables
     const config = {
       host: process.env.DB_HOST || 'localhost',
       port: process.env.DB_PORT || 3306,
@@ -23,17 +23,24 @@ async function getDb() {
       keepAliveInitialDelay: 0
     };
 
-    // If local and no DB credentials, we'd normally fallback to SQLite, 
-    // but the current requirement is Hostinger compliance with mysql2.
     if (!config.user || !config.database) {
       console.warn("⚠️ MySQL credentials missing. Ensure DB_USER and DB_NAME are set in .env.");
     }
 
     pool = mysql.createPool(config);
-    
-    await initTables();
-    await seedAdmins();
   }
+
+  if (!initialized) {
+    try {
+      await initTables();
+      await seedAdmins();
+      initialized = true;
+    } catch (err) {
+      console.error("❌ Database Initialization Error:", err.message);
+      throw err; // Re-throw so callers know it failed
+    }
+  }
+
   return pool;
 }
 
@@ -81,6 +88,8 @@ async function initTables() {
       CREATE TABLE IF NOT EXISTS exit_leads (
         id INT AUTO_INCREMENT PRIMARY KEY,
         email VARCHAR(255) NOT NULL,
+        source VARCHAR(255),
+        notes TEXT,
         created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
     `);
