@@ -12,6 +12,7 @@ const apiRoutes = require('./routes/api');
 const clientRoutes = require('./routes/client');
 const paymentRoutes = require('./routes/payments');
 const productRoutes = require('./routes/products');
+const contactRoutes = require('./routes/contact');
 const { getDb } = require('./db');
 const jwt = require('jsonwebtoken');
 
@@ -98,6 +99,7 @@ app.use('/api/products', productRoutes);
 // Apply strict rate limit to public lead-capture submission endpoints BEFORE general API routes
 app.use('/api/submissions', submissionLimiter);
 app.use('/api/exit-lead', submissionLimiter);
+app.use('/send-email', submissionLimiter, contactRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api', generalLimiter, apiRoutes);
 

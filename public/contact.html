@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us | New Level Consultants</title>
+    <meta name="description" content="Get in touch with New Level Consultants. We're ready to help your healthcare or business organization reach its next level." />
+    <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <style>
+      .page-hero { padding: 10rem 6rem 5rem; text-align: center; position: relative; overflow: hidden; }
+      .page-hero::before { content: ''; position: absolute; top: -50%; left: -30%; width: 800px; height: 800px; background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%); pointer-events: none; }
+      .page-hero h1 { margin-bottom: 1.2rem; }
+      .page-hero p { max-width: 60ch; margin: 0 auto; color: var(--text-dim); font-size: 1.05rem; line-height: 1.8; }
+
+      .contact-section { padding: 4rem 1.5rem 8rem; display: flex; justify-content: center; }
+      .contact-container {
+        background: var(--bg-glass);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 3rem;
+        max-width: 600px;
+        width: 100%;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      }
+
+      .contact-form .form-row { display: flex; gap: 1rem; margin-bottom: 1.2rem; }
+      .contact-form .form-row .form-field { flex: 1; margin-bottom: 0; }
+      
+      .form-field { margin-bottom: 1.2rem; }
+      .form-field label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 500; color: var(--text); }
+      .form-field input, .form-field textarea {
+        width: 100%;
+        padding: 0.8rem 1rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        background: #fff;
+        font-family: inherit;
+        transition: border-color 0.2s;
+      }
+      .form-field input:focus, .form-field textarea:focus { outline: none; border-color: var(--gold); }
+      .form-field textarea { min-height: 150px; resize: vertical; }
+
+      .btn-submit { width: 100%; padding: 1rem; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; border-radius: 4px; background: var(--gold); color: #fff; transition: opacity 0.2s; }
+      .btn-submit:hover { opacity: 0.9; }
+      .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+
+      #form-status { margin-top: 1.5rem; padding: 1rem; border-radius: 4px; font-size: 0.9rem; display: none; }
+      #form-status.success { display: block; background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+      #form-status.error { display: block; background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+
+      /* Honeypot field - visually hidden */
+      .visually-hidden { position: absolute; left: -9999px; }
+
+      @media (max-width: 768px) {
+        .page-hero { padding: 8rem 1.5rem 3rem; }
+        .contact-form .form-row { flex-direction: column; gap: 0; }
+        .contact-form .form-row .form-field { margin-bottom: 1.2rem; }
+        .contact-container { padding: 2rem 1.5rem; }
+      }
+    </style>
+  </head>
+  <body>
+
+<!-- NAV -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="New Level Consultants Home">
+    <img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants" width="180" height="40">
+  </a>
+  <ul class="nav-links">
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/#plans">Plans</a></li>
+    <li><a href="/#products">Instant Tools</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/case-studies.html">Results</a></li>
+    <li><a href="/resources.html">Resources</a></li>
+    <li><a href="tel:+17864084243" class="nav-phone" aria-label="Call us">📞 786-408-4243</a></li>
+    <li><a href="/contact.html" class="active nav-cta">Get Started Free</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="/#services" onclick="toggleDrawer()">Services</a>
+  <a href="/#plans" onclick="toggleDrawer()">Plans</a>
+  <a href="/about.html" onclick="toggleDrawer()">About</a>
+  <a href="/case-studies.html" onclick="toggleDrawer()">Results</a>
+  <a href="/resources.html" onclick="toggleDrawer()">Resources</a>
+  <a href="/contact.html" onclick="toggleDrawer()" class="nav-cta">Get Started Free →</a>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="eyebrow u-flex-center">Contact Us</div>
+  <h1>Let's Connect</h1>
+  <p>Fill out the form below and our team will get back to you within one business day.</p>
+</section>
+
+<!-- CONTACT FORM SECTION -->
+<section class="contact-section">
+  <div class="contact-container anim">
+    <form id="contactForm" class="contact-form" action="/send-email" method="POST">
+      
+      <!-- Honeypot -->
+      <div class="visually-hidden" aria-hidden="true">
+        <label for="_gotcha">Leave this field blank</label>
+        <input type="text" name="_gotcha" id="_gotcha" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="name">Full Name *</label>
+          <input type="text" id="name" name="name" required placeholder="Jane Doe">
+        </div>
+        <div class="form-field">
+          <label for="email">Email Address *</label>
+          <input type="email" id="email" name="email" required placeholder="jane@example.com">
+        </div>
+      </div>
+      
+      <div class="form-field">
+        <label for="subject">Subject *</label>
+        <input type="text" id="subject" name="subject" required placeholder="How can we help?">
+      </div>
+      
+      <div class="form-field">
+        <label for="message">Message *</label>
+        <textarea id="message" name="message" required placeholder="Tell us about your organization and challenges..."></textarea>
+      </div>
+      
+      <button type="submit" id="submitBtn" class="btn-submit">Send Message →</button>
+      
+      <div id="form-status"></div>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand"><img src="/assets/images/logo-dark-bg.png" alt="NLC" width="120" height="28"></div>
+      <p class="footer-tagline">Healthcare and business consulting for organizations that refuse to stay at the same level.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Services</div>
+      <ul class="footer-links">
+        <li><a href="/#services">Healthcare Consulting</a></li>
+        <li><a href="/#services">Compliance & Risk</a></li>
+        <li><a href="/#services">Technology & AI</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="/about.html">About NLC</a></li>
+        <li><a href="/case-studies.html">Case Studies</a></li>
+        <li><a href="/resources.html">Resources</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Get Started</div>
+      <ul class="footer-links">
+        <li><a href="/#plans">Retainer Plans</a></li>
+        <li><a href="/#products">Instant Tools</a></li>
+        <li><a href="tel:+17864084243">📞 786-408-4243</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 New Level Consultants. All rights reserved.</span>
+    <span><a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Service</a> · <a href="/hipaa-notice.html">HIPAA Notice</a></span>
+  </div>
+</footer>
+
+<script>
+  // Mobile nav drawer
+  function toggleDrawer() {
+    document.getElementById('mobile-drawer').classList.toggle('open');
+    document.getElementById('drawer-overlay').classList.toggle('active');
+    document.getElementById('hamburger').classList.toggle('active');
+  }
+
+  // Handle form submission via fetch
+  document.getElementById('contactForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const form = e.target;
+    const submitBtn = document.getElementById('submitBtn');
+    const statusDiv = document.getElementById('form-status');
+    
+    // Disable button, show loading state
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    statusDiv.className = '';
+    statusDiv.style.display = 'none';
+    
+    try {
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      
+      const response = await fetch(form.action, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok && result.success) {
+        statusDiv.textContent = result.message || 'Message sent successfully!';
+        statusDiv.className = 'success';
+        form.reset();
+      } else {
+        const errorMsg = result.errors ? result.errors.join(', ') : (result.message || 'Error sending message.');
+        statusDiv.textContent = errorMsg;
+        statusDiv.className = 'error';
+      }
+    } catch (err) {
+      console.error('Submission error:', err);
+      statusDiv.textContent = 'A network error occurred. Please try again.';
+      statusDiv.className = 'error';
+    } finally {
+      statusDiv.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send Message →';
+    }
+  });
+
+  // Simple animation on scroll trigger
+  document.addEventListener("DOMContentLoaded", () => {
+    const anims = document.querySelectorAll('.anim');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = 1;
+          e.target.style.transform = 'translateY(0)';
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    anims.forEach(a => {
+      a.style.opacity = 0;
+      a.style.transform = 'translateY(20px)';
+      a.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+      observer.observe(a);
+    });
+  });
+</script>
+</body>
+</html>

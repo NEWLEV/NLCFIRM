@@ -61,25 +61,29 @@ if (isConfigured) {
  * Sends a generic email.
  * @returns {Promise<boolean>} true on success, false on failure
  */
-async function sendEmail({ to, subject, text, html }) {
+async function sendEmail({ to, subject, text, html, replyTo }) {
   if (!isConfigured) {
     // Mock — log to console so you can still see it during development
     console.log('─────────────────────────────────────');
     console.log('[Email Mock] SMTP not configured — would have sent:');
     console.log('  To:     ', to);
     console.log('  Subject:', subject);
+    if (replyTo) console.log('  ReplyTo:', replyTo);
     console.log('─────────────────────────────────────');
     return true;
   }
 
   try {
-    const info = await getTransporter().sendMail({
+    const mailOptions = {
       from:    DEFAULT_FROM,
       to,
       subject,
       text:    text || subject,
       html,
-    });
+    };
+    if (replyTo) mailOptions.replyTo = replyTo;
+
+    const info = await getTransporter().sendMail(mailOptions);
     console.log(`✅ Email sent to ${to} | MessageId: ${info.messageId}`);
     return true;
   } catch (error) {
