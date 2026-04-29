@@ -86,10 +86,35 @@ app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 // ─── PERFORMANCE ──────────────────────────────────────
 app.use(compression());
 
+// ─── DYNAMIC HTML DELIVERY (Injection) ────────────────
+const fs = require('fs');
+function sendInjectedHtml(req, res, filePath) {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) return res.status(500).send('Error loading page');
+    
+    // Replace EJS-style placeholders with env variables
+    const injected = data.replace(/<%= PAYPAL_CLIENT_ID %>/g, process.env.PAYPAL_CLIENT_ID || 'AZqVCL__cDUGrTbkSoagrKi6wd8KOqDJ_vGY5YR-IATzoZPnbBDkzIc7HbTzQSfAiPxIUycDxQoBjlyp');
+    
+    res.send(injected);
+  });
+}
+
+// Intercept HTML requests to inject variables
+app.use((req, res, next) => {
+  if (req.path === '/' || req.path.endsWith('.html')) {
+    const filePath = path.join(__dirname, '..', 'public', req.path === '/' ? 'index.html' : req.path);
+    if (fs.existsSync(filePath)) {
+      return sendInjectedHtml(req, res, filePath);
+    }
+  }
+  next();
+});
+
 // ─── STATIC FILES ─────────────────────────────────────
 app.use(express.static(path.join(__dirname, '..', 'public'), {
   maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0,
   etag: true,
+  index: false,
 }));
 
 // ─── ROUTES ───────────────────────────────────────────
@@ -122,23 +147,6 @@ app.use('/downloads', (req, res, next) => {
     }
     next();
   });
-});
-
-// ─── DYNAMIC HTML DELIVERY (Injection) ────────────────
-const fs = require('fs');
-function sendInjectedHtml(req, res, filePath) {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) return res.status(500).send('Error loading page');
-    
-    // Replace EJS-style placeholders with env variables
-    const injected = data.replace(/<%= PAYPAL_CLIENT_ID %>/g, process.env.PAYPAL_CLIENT_ID || 'AZqVCL__cDUGrTbkSoagrKi6wd8KOqDJ_vGY5YR-IATzoZPnbBDkzIc7HbTzQSfAiPxIUycDxQoBjlyp');
-    
-    res.send(injected);
-  });
-}
-
-app.get('/', (req, res) => {
-  sendInjectedHtml(req, res, path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 // ─── DYNAMIC ROUTES ───────────────────────────────────
