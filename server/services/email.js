@@ -155,6 +155,23 @@ async function notifyAdminNewLead(leadDetails) {
 }
 
 /**
+ * Send auto-response to a prospective customer who submitted the contact form
+ */
+async function sendLeadAutoResponse(leadDetails) {
+  const subject = `Request Received: We will be in touch shortly`;
+  const html = wrapTemplate(`
+    <h2>Hi ${leadDetails.firstName},</h2>
+    <p>Thank you for reaching out to New Level Consultants.</p>
+    <p>We have successfully received your inquiry. A member of our team is reviewing your details and will be in touch within 1 business day.</p>
+    <div class="divider"></div>
+    <p>In the meantime, feel free to explore our <a href="https://nlcfirm.com/resources.html" style="color: #c9a84c; text-decoration: none; font-weight: bold;">Resources Page</a> for guides, templates, and insights on compliance, operations, and AI strategy.</p>
+    <p>We look forward to connecting with you soon!</p>
+    <p>Best regards,<br>The NLC Firm Team</p>
+  `);
+  return sendEmail({ to: leadDetails.email, subject, html });
+}
+
+/**
  * Send HIPAA checklist email to a lead who submitted the exit popup
  */
 async function sendChecklistEmail(leadEmail) {
@@ -222,4 +239,5 @@ module.exports = {
   sendChecklistEmail,
   sendClientWelcome,
   sendPasswordReset,
+  sendLeadAutoResponse,
 };

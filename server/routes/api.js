@@ -2,7 +2,7 @@ const express = require('express');
 const { body, validationResult } = require('express-validator');
 const { getDb } = require('../db');
 const { authenticateToken, requireRole } = require('../middleware/auth');
-const { notifyAdminNewLead, sendChecklistEmail } = require('../services/email');
+const { notifyAdminNewLead, sendChecklistEmail, sendLeadAutoResponse } = require('../services/email');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -87,6 +87,7 @@ router.post('/submissions', [
 
     // Send email notification non-blocking
     notifyAdminNewLead({ firstName, lastName, email, organization, serviceType, message }).catch(err => console.error("Email notify error:", err));
+    sendLeadAutoResponse({ firstName, lastName, email }).catch(err => console.error("Auto response error:", err));
 
     res.status(201).json({ message: 'Submission received successfully', id: result.insertId });
   } catch (err) {
