@@ -2798,3 +2798,77 @@ body.chatbot-open .sticky-cta {
 .u-padding-1-2 { padding: 1rem 2rem !important; }
 .u-padding-0-85-2-5 { padding: 0.85rem 2.5rem !important; }
 
+/* ─── NEW HOMEPAGE: DIAGNOSTIC CARDS ─────────────── */
+.diag-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.diag-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold) !important;
+  box-shadow: 0 10px 30px rgba(201, 168, 76, 0.1);
+}
+
+/* ─── NEW HOMEPAGE: DIFF TABLE ───────────────────── */
+.diff-table {
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+/* ─── NEW HOMEPAGE: SOCIAL PROOF TOAST ───────────── */
+.social-proof-toast {
+  position: fixed;
+  bottom: 5rem;
+  left: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.8rem 1.2rem;
+  max-width: 320px;
+  z-index: 180;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.4s ease;
+  pointer-events: none;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+.social-proof-toast.show {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.spt-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.spt-text {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.spt-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+.spt-time {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+
+/* ─── NEW HOMEPAGE: LEAD FORM ────────────────────── */
+.lead-form input:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 0 3px var(--gold-glow);
+}
+
