@@ -86,7 +86,7 @@
 
   <!-- HERO -->
   <header class="hero">
-    <canvas id="hero-canvas" style="position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
+    <canvas id="hero-canvas" class="hero-canvas"></canvas>
     <div class="hero-left">
       <div class="eyebrow" id="hero-eyebrow">Strategic Implementation Partner</div>
       <h1 id="hero-title">Practical <em>compliance</em>, operations, and AI guidance.</h1>
@@ -99,7 +99,7 @@
     <div class="hero-right">
       <div class="hero-geo"></div>
       <div class="hero-geo2"></div>
-      <div class="hero-cards" style="z-index:1;">
+      <div class="hero-cards hero-cards-container">
         <div class="hero-card">
           <div class="hc-tag">Diagnostic</div>
           <div class="hc-title">Business Health Assessment</div>
@@ -132,29 +132,29 @@
   <section id="solutions" class="section section-dark">
     <div class="section-header anim">
       <div class="section-tag section-tag-center">What's your focus?</div>
-      <h2 class="section-title section-title-center" style="text-align:center;">Identify your <em>challenge</em> to find your path.</h2>
-      <p class="section-body" style="margin: 0 auto; text-align:center;">Select the area where your organization needs the most clarity right now.</p>
+      <h2 class="section-title section-title-center">Identify your <em>challenge</em> to find your path.</h2>
+      <p class="section-body section-body-center">Select the area where your organization needs the most clarity right now.</p>
     </div>
     
-    <div class="two-col" style="gap:2rem;">
-      <div class="diag-card anim" style="background:var(--bg-elevated); padding:2rem; border-radius:var(--radius); border:1px solid var(--border);">
-        <h3 style="color:var(--gold); font-size:1.2rem; margin-bottom:1rem;">Get HIPAA-Ready</h3>
-        <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:1.5rem;">Symptom: You have software, but don't know if your policies, BAAs, or training are actually compliant.</p>
+    <div class="two-col u-flex-gap-2">
+      <div class="diag-card diag-card-elevated anim">
+        <h3 class="diag-card-title">Get HIPAA-Ready</h3>
+        <p class="diag-card-desc">Symptom: You have software, but don't know if your policies, BAAs, or training are actually compliant.</p>
         <button class="btn btn-outline btn-sm full-width" onclick="openModal('hipaa')">View HIPAA Solutions</button>
       </div>
-      <div class="diag-card anim" style="background:var(--bg-elevated); padding:2rem; border-radius:var(--radius); border:1px solid var(--border);">
-        <h3 style="color:var(--gold); font-size:1.2rem; margin-bottom:1rem;">Improve SOPs & Workflows</h3>
-        <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:1.5rem;">Symptom: Your team is inconsistent, knowledge is siloed, and training new hires takes too long.</p>
+      <div class="diag-card diag-card-elevated anim">
+        <h3 class="diag-card-title">Improve SOPs & Workflows</h3>
+        <p class="diag-card-desc">Symptom: Your team is inconsistent, knowledge is siloed, and training new hires takes too long.</p>
         <button class="btn btn-outline btn-sm full-width" onclick="openModal('consult')">View Operations Solutions</button>
       </div>
-      <div class="diag-card anim" style="background:var(--bg-elevated); padding:2rem; border-radius:var(--radius); border:1px solid var(--border);">
-        <h3 style="color:var(--gold); font-size:1.2rem; margin-bottom:1rem;">Use AI Safely</h3>
-        <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:1.5rem;">Symptom: Your staff is using ChatGPT, but you have no policies, governance, or PHI safeguards in place.</p>
+      <div class="diag-card diag-card-elevated anim">
+        <h3 class="diag-card-title">Use AI Safely</h3>
+        <p class="diag-card-desc">Symptom: Your staff is using ChatGPT, but you have no policies, governance, or PHI safeguards in place.</p>
         <button class="btn btn-outline btn-sm full-width" onclick="openModal('ai-content')">View AI Solutions</button>
       </div>
-      <div class="diag-card anim" style="background:var(--bg-elevated); padding:2rem; border-radius:var(--radius); border:1px solid var(--border);">
-        <h3 style="color:var(--gold); font-size:1.2rem; margin-bottom:1rem;">Strengthen Leadership</h3>
-        <p style="color:var(--text-dim); font-size:0.9rem; margin-bottom:1.5rem;">Symptom: You're growing too fast, missing KPIs, and need fractional executive support to scale.</p>
+      <div class="diag-card diag-card-elevated anim">
+        <h3 class="diag-card-title">Strengthen Leadership</h3>
+        <p class="diag-card-desc">Symptom: You're growing too fast, missing KPIs, and need fractional executive support to scale.</p>
         <button class="btn btn-outline btn-sm full-width" onclick="openModal('coaching')">View Growth Solutions</button>
       </div>
     </div>
@@ -164,83 +164,83 @@
   <section class="section section-warm">
     <div class="section-header anim">
       <div class="section-tag section-tag-center">The NLC Difference</div>
-      <h2 class="section-title section-title-center" style="text-align:center;">Why software isn't <em>enough</em>.</h2>
-      <p class="section-body" style="margin: 0 auto; text-align:center;">Compliance platforms give you tools. Enterprise consultants give you invoices. We give you implementation.</p>
+      <h2 class="section-title section-title-center">Why software isn't <em>enough</em>.</h2>
+      <p class="section-body section-body-center">Compliance platforms give you tools. Enterprise consultants give you invoices. We give you implementation.</p>
     </div>
     
-    <div class="diff-table anim" style="overflow-x:auto; margin-top:2rem;">
-      <table class="compare-table" style="width:100%; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border); overflow:hidden;">
+    <div class="compare-table-container anim">
+      <table class="compare-table">
         <thead>
           <tr>
-            <th style="width:30%;">Capability</th>
-            <th style="text-align:center;">Software-Only</th>
-            <th style="text-align:center;">In-House DIY</th>
-            <th style="text-align:center;">Big Firms</th>
-            <th style="text-align:center; background:rgba(201,168,76,0.08); border-bottom:2px solid var(--gold);">New Level ✦</th>
+            <th>Capability</th>
+            <th class="u-text-center">Software-Only</th>
+            <th class="u-text-center">In-House DIY</th>
+            <th class="u-text-center">Big Firms</th>
+            <th class="u-text-center nlc-col">New Level ✦</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>Customized risk assessment</td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;"><span class="check">✓</span></td>
-            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center"><span class="check">✓</span></td>
+            <td class="u-text-center nlc-col"><span class="check">✓</span></td>
           </tr>
           <tr>
             <td>Policy & SOP documentation</td>
-            <td style="text-align:center;"><span class="cross">✕</span> <small style="color:var(--text-muted);">templates only</small></td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;"><span class="check">✓</span></td>
-            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+            <td class="u-text-center"><span class="cross">✕</span> <small class="u-text-muted">templates only</small></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center"><span class="check">✓</span></td>
+            <td class="u-text-center nlc-col"><span class="check">✓</span></td>
           </tr>
           <tr>
             <td>Hands-on implementation</td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;"><span class="cross">✕</span> <small style="color:var(--text-muted);">advice only</small></td>
-            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center"><span class="cross">✕</span> <small class="u-text-muted">advice only</small></td>
+            <td class="u-text-center nlc-col"><span class="check">✓</span></td>
           </tr>
           <tr>
             <td>Staff training & adoption</td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;"><span class="check">✓</span> <small style="color:var(--text-muted);">if time exists</small></td>
-            <td style="text-align:center;"><span class="check">✓</span></td>
-            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center"><span class="check">✓</span> <small class="u-text-muted">if time exists</small></td>
+            <td class="u-text-center"><span class="check">✓</span></td>
+            <td class="u-text-center nlc-col"><span class="check">✓</span></td>
           </tr>
           <tr>
             <td>Ongoing compliance monitoring</td>
-            <td style="text-align:center;"><span class="check">✓</span> <small style="color:var(--text-muted);">automated</small></td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;"><span class="check">✓</span></td>
-            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+            <td class="u-text-center"><span class="check">✓</span> <small class="u-text-muted">automated</small></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center"><span class="check">✓</span></td>
+            <td class="u-text-center nlc-col"><span class="check">✓</span></td>
           </tr>
           <tr>
             <td>AI & automation strategy</td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center nlc-col"><span class="check">✓</span></td>
           </tr>
           <tr>
             <td>Named account manager</td>
-            <td style="text-align:center;"><span class="cross">✕</span></td>
-            <td style="text-align:center;">N/A</td>
-            <td style="text-align:center;"><span class="check">✓</span></td>
-            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+            <td class="u-text-center"><span class="cross">✕</span></td>
+            <td class="u-text-center">N/A</td>
+            <td class="u-text-center"><span class="check">✓</span></td>
+            <td class="u-text-center nlc-col"><span class="check">✓</span></td>
           </tr>
-          <tr style="border-top:2px solid var(--border);">
-            <td style="font-weight:600; color:var(--text);">Typical monthly cost</td>
-            <td style="text-align:center; color:var(--text-dim);">$50–$300</td>
-            <td style="text-align:center; color:var(--text-dim);">$0 + staff time</td>
-            <td style="text-align:center; color:var(--text-dim);">$10,000+</td>
-            <td style="text-align:center; background:rgba(201,168,76,0.08); color:var(--gold); font-weight:700;">$797–$2,997</td>
+          <tr class="u-border-top">
+            <td class="u-font-weight-600 u-color-white">Typical monthly cost</td>
+            <td class="u-text-center u-text-dim">$50–$300</td>
+            <td class="u-text-center u-text-dim">$0 + staff time</td>
+            <td class="u-text-center u-text-dim">$10,000+</td>
+            <td class="u-text-center nlc-col">$797–$2,997</td>
           </tr>
         </tbody>
       </table>
     </div>
     
-    <div style="text-align:center; margin-top:2rem;" class="anim">
+    <div class="u-text-center u-margin-top-md anim">
       <button class="btn btn-gold" onclick="openModal('consult')">See Which Path Fits You →</button>
     </div>
   </section>
@@ -282,46 +282,46 @@
         <div class="section-tag">Free Resources</div>
         <h2 class="section-title">Get our <em>HIPAA</em> Quick-Start Checklist.</h2>
         <p class="section-body">Join hundreds of healthcare professionals receiving our actionable compliance and operations insights.</p>
-        <div class="lead-form" style="display:flex; gap:0.5rem; max-width:400px; margin-bottom:1rem;">
-          <input type="email" id="lm-email" placeholder="Enter your work email" style="flex:1; padding:0.8rem; border-radius:var(--radius); border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:var(--font);">
+        <div class="lead-magnet-form">
+          <input type="email" id="lm-email" placeholder="Enter your work email" class="lead-magnet-input">
           <button class="btn btn-gold" onclick="submitExit()">Send It</button>
         </div>
-        <p style="font-size:0.7rem; color:var(--text-muted);">*We respect your privacy. Unsubscribe anytime.</p>
+        <p class="u-font-size-0-7-muted">*We respect your privacy. Unsubscribe anytime.</p>
       </div>
-      <div class="anim" style="text-align:center;">
-        <img src="/assets/images/logo-stacked.png" alt="Resources" style="max-width:250px; opacity:0.8; margin:0 auto; filter:grayscale(1) brightness(1.5);">
+      <div class="anim lead-magnet-img-container">
+        <img src="/assets/images/logo-stacked.png" alt="Resources" class="lead-magnet-img">
       </div>
     </div>
   </section>
 
   <!-- PRICING / PATHS -->
   <section id="pricing" class="section section-dark">
-    <div class="section-header anim" style="text-align:center;">
+    <div class="section-header anim section-title-center">
       <div class="section-tag section-tag-center">Engagement Models</div>
       <h2 class="section-title">Choose your <em>path</em>.</h2>
-      <p class="section-body" style="margin: 0 auto;">From instant downloads to enterprise partnerships, we meet you where you are.</p>
+      <p class="section-body section-body-center">From instant downloads to enterprise partnerships, we meet you where you are.</p>
     </div>
     
-    <div class="three-col anim" style="gap:2rem;">
-      <div style="background:var(--bg-elevated); padding:2rem; border-radius:var(--radius); border:1px solid var(--border); text-align:center;">
-        <h3 style="color:var(--text); font-size:1.2rem; margin-bottom:0.5rem;">Self-Guided</h3>
-        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:1.5rem; min-height:40px;">Templates, checklists, and automated audits.</p>
-        <div style="font-family:var(--font-display); font-size:2rem; color:var(--gold); margin-bottom:1.5rem;">$67+</div>
+    <div class="three-col anim u-flex-gap-2">
+      <div class="pricing-card pricing-card-elevated">
+        <h3 class="pricing-card-title">Self-Guided</h3>
+        <p class="pricing-card-desc">Templates, checklists, and automated audits.</p>
+        <div class="pricing-card-amount">$67+</div>
         <button class="btn btn-outline full-width" onclick="openModal('bundle')">View Products</button>
       </div>
       
-      <div style="background:var(--bg-card); padding:2rem; border-radius:var(--radius); border:1px solid var(--gold); text-align:center; position:relative;">
-        <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--gold); color:var(--bg); font-size:0.7rem; font-weight:700; padding:0.2rem 1rem; border-radius:12px; text-transform:uppercase; letter-spacing:0.05em;">Most Popular</div>
-        <h3 style="color:var(--text); font-size:1.2rem; margin-bottom:0.5rem;">Retainer</h3>
-        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:1.5rem; min-height:40px;">Ongoing advisory, compliance monitoring & support.</p>
-        <div style="font-family:var(--font-display); font-size:2rem; color:var(--gold); margin-bottom:1.5rem;">$797<span style="font-size:1rem;font-family:var(--font);color:var(--text-muted);">/mo</span></div>
+      <div class="pricing-card pricing-card-featured">
+        <div class="pricing-card-badge">Most Popular</div>
+        <h3 class="pricing-card-title">Retainer</h3>
+        <p class="pricing-card-desc">Ongoing advisory, compliance monitoring & support.</p>
+        <div class="pricing-card-amount">$797<span class="u-text-sm-muted">/mo</span></div>
         <button class="btn btn-gold full-width" onclick="openModal('starter')">Explore Plans</button>
       </div>
       
-      <div style="background:var(--bg-elevated); padding:2rem; border-radius:var(--radius); border:1px solid var(--border); text-align:center;">
-        <h3 style="color:var(--text); font-size:1.2rem; margin-bottom:0.5rem;">Project-Based</h3>
-        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:1.5rem; min-height:40px;">HIPAA setup, workflow rebuilds, AI strategy.</p>
-        <div style="font-family:var(--font-display); font-size:2rem; color:var(--gold); margin-bottom:1.5rem;">$1,200+</div>
+      <div class="pricing-card pricing-card-elevated">
+        <h3 class="pricing-card-title">Project-Based</h3>
+        <p class="pricing-card-desc">HIPAA setup, workflow rebuilds, AI strategy.</p>
+        <div class="pricing-card-amount">$1,200+</div>
         <button class="btn btn-outline full-width" onclick="openModal('hipaa')">Request Quote</button>
       </div>
     </div>
@@ -329,48 +329,48 @@
 
   <!-- FAQ -->
   <section id="faq" class="section section-warm">
-    <div class="section-header anim" style="text-align:center;">
+    <div class="section-header anim section-title-center">
       <div class="section-tag section-tag-center">Questions & Answers</div>
       <h2 class="section-title">Frequently Asked <em>Questions</em></h2>
     </div>
-    <div class="faq-container anim" id="faq-container" style="max-width:800px; margin:0 auto;">
+    <div class="faq-container anim faq-container-centered" id="faq-container">
       <!-- Dynamic FAQ content loaded here -->
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer style="background:#050608; border-top:1px solid var(--border); padding:4rem 6rem 2rem;">
-    <div style="display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:3rem; margin-bottom:4rem;">
+  <footer class="footer-main">
+    <div class="footer-grid-4col">
       <div>
         <div class="footer-brand"><img src="/assets/images/logo-dark-bg.png" alt="NLC" width="120" height="28"></div>
         <p class="footer-tagline" id="footer-tagline">Healthcare and business consulting for organizations that refuse to stay at the same level.</p>
       </div>
       <div>
-        <h4 style="color:var(--text); font-size:0.95rem; margin-bottom:1.2rem;">Solutions</h4>
-        <ul style="list-style:none; padding:0; margin:0; font-size:0.85rem;">
-          <li style="margin-bottom:0.6rem;"><a href="#" onclick="openModal('hipaa')" style="color:var(--text-dim); text-decoration:none;">HIPAA Compliance</a></li>
-          <li style="margin-bottom:0.6rem;"><a href="#" onclick="openModal('consult')" style="color:var(--text-dim); text-decoration:none;">Operations & SOPs</a></li>
-          <li style="margin-bottom:0.6rem;"><a href="#" onclick="openModal('ai-content')" style="color:var(--text-dim); text-decoration:none;">AI Strategy</a></li>
+        <h4 class="footer-heading-sm">Solutions</h4>
+        <ul class="footer-link-list">
+          <li class="footer-link-item"><a href="#" onclick="openModal('hipaa')" class="footer-link-a">HIPAA Compliance</a></li>
+          <li class="footer-link-item"><a href="#" onclick="openModal('consult')" class="footer-link-a">Operations & SOPs</a></li>
+          <li class="footer-link-item"><a href="#" onclick="openModal('ai-content')" class="footer-link-a">AI Strategy</a></li>
         </ul>
       </div>
       <div>
-        <h4 style="color:var(--text); font-size:0.95rem; margin-bottom:1.2rem;">Company</h4>
-        <ul style="list-style:none; padding:0; margin:0; font-size:0.85rem;">
-          <li style="margin-bottom:0.6rem;"><a href="/about.html" style="color:var(--text-dim); text-decoration:none;">About Us</a></li>
-          <li style="margin-bottom:0.6rem;"><a href="#pricing" style="color:var(--text-dim); text-decoration:none;">Pricing</a></li>
-          <li style="margin-bottom:0.6rem;"><a href="/contact.html" style="color:var(--text-dim); text-decoration:none;">Contact</a></li>
+        <h4 class="footer-heading-sm">Company</h4>
+        <ul class="footer-link-list">
+          <li class="footer-link-item"><a href="/about.html" class="footer-link-a">About Us</a></li>
+          <li class="footer-link-item"><a href="#pricing" class="footer-link-a">Pricing</a></li>
+          <li class="footer-link-item"><a href="/contact.html" class="footer-link-a">Contact</a></li>
         </ul>
       </div>
       <div>
-        <h4 style="color:var(--text); font-size:0.95rem; margin-bottom:1.2rem;">Contact</h4>
-        <p style="color:var(--text-dim); font-size:0.85rem; line-height:1.6;">info@nlcfirm.com<br>786-408-4243</p>
+        <h4 class="footer-heading-sm">Contact</h4>
+        <p class="footer-contact-text">info@nlcfirm.com<br>786-408-4243</p>
       </div>
     </div>
-    <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:2rem; display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--text-muted);">
+    <div class="footer-bottom-row">
       <div>&copy; 2026 New Level Consultants. All rights reserved.</div>
-      <div style="display:flex; gap:1.5rem;">
-        <a href="/privacy-policy.html" style="color:inherit; text-decoration:none;">Privacy Policy</a>
-        <a href="/terms.html" style="color:inherit; text-decoration:none;">Terms of Service</a>
+      <div class="footer-bottom-links">
+        <a href="/privacy-policy.html" class="u-text-decoration-none">Privacy Policy</a>
+        <a href="/terms.html" class="u-text-decoration-none">Terms of Service</a>
       </div>
     </div>
   </footer>
@@ -387,11 +387,11 @@
   <div id="chatbot-trigger" class="chatbot-trigger" onclick="toggleChat()">💬</div>
   <div id="chatbot-window" class="chatbot-window">
     <div class="chatbot-header">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div style="width:10px; height:10px; background:#4ade80; border-radius:50%; box-shadow:0 0 10px #4ade80;"></div>
-        <div style="font-size:0.9rem; font-weight:600;">NLC Assistant</div>
+      <div class="chatbot-header-status">
+        <div class="chatbot-status-dot"></div>
+        <div class="chatbot-status-text">NLC Assistant</div>
       </div>
-      <button class="modal-close" style="position:static; font-size:1.2rem; color:var(--text);" onclick="toggleChat()">&times;</button>
+      <button class="modal-close chatbot-header-close" onclick="toggleChat()">&times;</button>
     </div>
     <div id="chat-messages" class="chatbot-messages">
       <div class="chat-msg bot">Hello! I can help you find the right consulting plan, answer HIPAA questions, or connect you with a specialist. What's on your mind?</div>
@@ -403,15 +403,15 @@
   </div>
 
   <!-- EXIT INTENT -->
-  <div id="exit-overlay" class="drawer-overlay" style="z-index:900;" onclick="closeExit()"></div>
-  <div id="exit-modal" class="modal" style="z-index:901; top:20%;">
+  <div id="exit-overlay" class="drawer-overlay exit-overlay-z" onclick="closeExit()"></div>
+  <div id="exit-modal" class="modal exit-modal-z">
     <button class="modal-close" onclick="closeExit()">&times;</button>
-    <div style="text-align:center; padding:1rem;">
-      <h3 style="color:var(--gold); font-size:1.5rem; margin-bottom:1rem; font-family:var(--font-display);">Wait! Before you go...</h3>
-      <p style="color:var(--text-dim); margin-bottom:1.5rem;">Don't leave empty-handed. Enter your email to instantly download our <strong>HIPAA Quick-Start Checklist</strong> and identify your critical compliance gaps in 5 minutes.</p>
-      <input type="email" id="exit-email" class="form-input" placeholder="Enter your work email" style="margin-bottom:1rem;">
-      <button class="btn btn-gold full-width" onclick="submitExit()">Send My Checklist</button>
-      <p style="font-size:0.7rem; color:var(--text-muted); margin-top:1rem;">*We never share your information.</p>
+    <div class="exit-modal-content">
+      <h3 class="exit-modal-title">Wait! Before you go...</h3>
+      <p class="exit-modal-desc">Don't leave empty-handed. Enter your email to instantly download our <strong>HIPAA Quick-Start Checklist</strong> and identify your critical compliance gaps in 5 minutes.</p>
+      <input type="email" id="exit-email" class="form-input" placeholder="Enter your work email">
+      <button class="btn btn-gold full-width u-mt-1" onclick="submitExit()">Send My Checklist</button>
+      <p class="u-font-size-0-7-muted u-mt-1">*We never share your information.</p>
     </div>
   </div>
 
@@ -422,7 +422,7 @@
       <div class="modal-header">
         <div class="modal-title" id="modal-title">Get in Touch</div>
         <div class="modal-sub" id="modal-sub">We'll be in touch within 1 business day.</div>
-        <p style="font-size:0.75rem; color:var(--danger); font-weight:600; margin-top:0.5rem; border:1px solid var(--danger); padding:0.3rem; border-radius:4px; display:inline-block;">*Do not submit protected health information (PHI) through this form.</p>
+        <p class="phi-note">*Do not submit protected health information (PHI) through this form.</p>
       </div>
 
       <div class="step-indicators">
@@ -445,7 +445,7 @@
           <label for="f-email">Work Email *</label>
           <input type="email" id="f-email" placeholder="jane@organization.com">
         </div>
-        <button class="btn btn-gold full-width" style="margin-top:1rem;" onclick="nextStep(2)">Continue</button>
+        <button class="btn btn-gold full-width u-mt-1" onclick="nextStep(2)">Continue</button>
       </div>
 
       <!-- Step 2: Details -->
@@ -472,7 +472,7 @@
             <option value="other">Other Business</option>
           </select>
         </div>
-        <div style="display:flex; gap:1rem; margin-top:1rem;">
+        <div class="u-flex-gap-1 u-mt-1">
           <button class="btn btn-outline full-width" onclick="nextStep(1)">Back</button>
           <button class="btn btn-gold full-width" onclick="nextStep(3)">Continue</button>
         </div>
@@ -492,7 +492,7 @@
           <label for="f-msg">How can we help? (Optional)</label>
           <textarea id="f-msg" rows="4" placeholder="Briefly describe your current challenges..."></textarea>
         </div>
-        <div style="display:flex; gap:1rem; margin-top:1rem;">
+        <div class="u-flex-gap-1 u-mt-1">
           <button class="btn btn-outline full-width" onclick="nextStep(2)">Back</button>
           <button class="btn btn-gold full-width" onclick="submitModal()">Submit Request</button>
         </div>
