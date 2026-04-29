@@ -169,32 +169,79 @@
     </div>
     
     <div class="diff-table anim" style="overflow-x:auto; margin-top:2rem;">
-      <table style="width:100%; border-collapse:collapse; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border);">
+      <table class="compare-table" style="width:100%; background:var(--bg-card); border-radius:var(--radius); border:1px solid var(--border); overflow:hidden;">
         <thead>
-          <tr style="border-bottom:1px solid var(--border); background:rgba(255,255,255,0.02);">
-            <th style="padding:1.5rem; text-align:left; color:var(--text); font-weight:600;">Approach</th>
-            <th style="padding:1.5rem; text-align:left; color:var(--text); font-weight:600;">Pros</th>
-            <th style="padding:1.5rem; text-align:left; color:var(--text); font-weight:600;">Cons</th>
+          <tr>
+            <th style="width:30%;">Capability</th>
+            <th style="text-align:center;">Software-Only</th>
+            <th style="text-align:center;">In-House DIY</th>
+            <th style="text-align:center;">Big Firms</th>
+            <th style="text-align:center; background:rgba(201,168,76,0.08); border-bottom:2px solid var(--gold);">New Level ✦</th>
           </tr>
         </thead>
         <tbody>
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:1.5rem; color:var(--gold); font-weight:600;">Software-Only Platforms</td>
-            <td style="padding:1.5rem; color:var(--text-dim); font-size:0.9rem;">Cheap, automated tracking</td>
-            <td style="padding:1.5rem; color:var(--text-dim); font-size:0.9rem;">No implementation help, false sense of security</td>
+          <tr>
+            <td>Customized risk assessment</td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;"><span class="check">✓</span></td>
+            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
           </tr>
-          <tr style="border-bottom:1px solid var(--border);">
-            <td style="padding:1.5rem; color:var(--gold); font-weight:600;">Big Enterprise Consultants</td>
-            <td style="padding:1.5rem; color:var(--text-dim); font-size:0.9rem;">Brand name, deep resources</td>
-            <td style="padding:1.5rem; color:var(--text-dim); font-size:0.9rem;">$10k+ monthly minimums, slow moving</td>
+          <tr>
+            <td>Policy & SOP documentation</td>
+            <td style="text-align:center;"><span class="cross">✕</span> <small style="color:var(--text-muted);">templates only</small></td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;"><span class="check">✓</span></td>
+            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
           </tr>
-          <tr style="background:var(--bg-elevated);">
-            <td style="padding:1.5rem; color:var(--success); font-weight:700;">New Level Consultants</td>
-            <td style="padding:1.5rem; color:var(--text); font-size:0.9rem;">Hands-on implementation, customized frameworks</td>
-            <td style="padding:1.5rem; color:var(--text); font-size:0.9rem;">We don't sell software licenses</td>
+          <tr>
+            <td>Hands-on implementation</td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;"><span class="cross">✕</span> <small style="color:var(--text-muted);">advice only</small></td>
+            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Staff training & adoption</td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;"><span class="check">✓</span> <small style="color:var(--text-muted);">if time exists</small></td>
+            <td style="text-align:center;"><span class="check">✓</span></td>
+            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Ongoing compliance monitoring</td>
+            <td style="text-align:center;"><span class="check">✓</span> <small style="color:var(--text-muted);">automated</small></td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;"><span class="check">✓</span></td>
+            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>AI & automation strategy</td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+          </tr>
+          <tr>
+            <td>Named account manager</td>
+            <td style="text-align:center;"><span class="cross">✕</span></td>
+            <td style="text-align:center;">N/A</td>
+            <td style="text-align:center;"><span class="check">✓</span></td>
+            <td style="text-align:center; background:rgba(201,168,76,0.04);"><span class="check">✓</span></td>
+          </tr>
+          <tr style="border-top:2px solid var(--border);">
+            <td style="font-weight:600; color:var(--text);">Typical monthly cost</td>
+            <td style="text-align:center; color:var(--text-dim);">$50–$300</td>
+            <td style="text-align:center; color:var(--text-dim);">$0 + staff time</td>
+            <td style="text-align:center; color:var(--text-dim);">$10,000+</td>
+            <td style="text-align:center; background:rgba(201,168,76,0.08); color:var(--gold); font-weight:700;">$797–$2,997</td>
           </tr>
         </tbody>
       </table>
+    </div>
+    
+    <div style="text-align:center; margin-top:2rem;" class="anim">
+      <button class="btn btn-gold" onclick="openModal('consult')">See Which Path Fits You →</button>
     </div>
   </section>
 
