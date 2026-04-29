@@ -3181,9 +3181,6 @@ body.chatbot-open .sticky-cta {
   .footer-grid-4col { grid-template-columns: 1fr; }
 }
 
-@ m e d i a   ( p r e f e r s - r e d u c e d - m o t i o n :   r e d u c e )   {   * ,   : : b e f o r e ,   : : a f t e r   {   a n i m a t i o n - d e l a y :   - 1 m s   ! i m p o r t a n t ;   a n i m a t i o n - d u r a t i o n :   1 m s   ! i m p o r t a n t ;   a n i m a t i o n - i t e r a t i o n - c o u n t :   1   ! i m p o r t a n t ;   b a c k g r o u n d - a t t a c h m e n t :   i n i t i a l   ! i m p o r t a n t ;   s c r o l l - b e h a v i o r :   a u t o   ! i m p o r t a n t ;   t r a n s i t i o n - d u r a t i o n :   0 s   ! i m p o r t a n t ;   t r a n s i t i o n - d e l a y :   0 s   ! i m p o r t a n t ;   }   }  
- 
-
 /* Comparison Table */
 .compare-table-container {
   overflow-x: auto;
@@ -3333,6 +3330,18 @@ body.chatbot-open .sticky-cta {
   font-size: 2rem;
   color: var(--gold);
   margin-bottom: 1.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
