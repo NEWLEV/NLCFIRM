@@ -403,15 +403,16 @@
   </div>
 
   <!-- EXIT INTENT -->
-  <div id="exit-overlay" class="drawer-overlay exit-overlay-z" onclick="closeExit()"></div>
-  <div id="exit-modal" class="modal exit-modal-z">
-    <button class="modal-close" onclick="closeExit()">&times;</button>
-    <div class="exit-modal-content">
-      <h3 class="exit-modal-title">Wait! Before you go...</h3>
-      <p class="exit-modal-desc">Don't leave empty-handed. Enter your email to instantly download our <strong>HIPAA Quick-Start Checklist</strong> and identify your critical compliance gaps in 5 minutes.</p>
-      <input type="email" id="exit-email" class="form-input" placeholder="Enter your work email">
-      <button class="btn btn-gold full-width u-mt-1" onclick="submitExit()">Send My Checklist</button>
-      <p class="u-font-size-0-7-muted u-mt-1">*We never share your information.</p>
+  <div id="exit-overlay" class="exit-overlay exit-overlay-z" onclick="if(event.target === this) closeExit()">
+    <div id="exit-modal" class="modal exit-modal-z">
+      <button class="modal-close" onclick="closeExit()">&times;</button>
+      <div class="exit-modal-content">
+        <h3 class="exit-modal-title">Wait! Before you go...</h3>
+        <p class="exit-modal-desc">Don't leave empty-handed. Enter your email to instantly download our <strong>HIPAA Quick-Start Checklist</strong> and identify your critical compliance gaps in 5 minutes.</p>
+        <input type="email" id="exit-email" class="form-input" placeholder="Enter your work email">
+        <button class="btn btn-gold full-width u-mt-1" onclick="submitExit()">Send My Checklist</button>
+        <p class="u-font-size-0-7-muted u-mt-1">*We never share your information.</p>
+      </div>
     </div>
   </div>
 
@@ -494,7 +495,7 @@
         </div>
         <div class="u-flex-gap-1 u-mt-1">
           <button class="btn btn-outline full-width" onclick="nextStep(2)">Back</button>
-          <button class="btn btn-gold full-width" onclick="submitModal()">Submit Request</button>
+          <button class="btn btn-gold full-width" onclick="submitModal()">Get Started Now</button>
         </div>
       </div>
 

@@ -3118,6 +3118,25 @@ body.chatbot-open .sticky-cta {
   gap: 1.5rem;
 }
 
+.footer-bottom-links a {
+  color: var(--text-dim);
+  transition: color 0.2s;
+}
+
+.footer-bottom-links a:hover {
+  color: var(--gold);
+}
+
+.cookie-text a {
+  color: var(--gold);
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.cookie-text a:hover {
+  color: var(--gold-light);
+}
+
 /* Chatbot Status */
 .chatbot-header-status {
   display: flex;
@@ -3151,7 +3170,7 @@ body.chatbot-open .sticky-cta {
 
 .exit-modal-z {
   z-index: 901 !important;
-  top: 20% !important;
+
 }
 
 .exit-modal-content {
