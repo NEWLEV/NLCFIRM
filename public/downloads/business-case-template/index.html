@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Case Template — New Level Consultants</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0f1724; --navy-mid:#1a2744;
+    --gold:#c9a84c; --gold-light:#e8d5a3; --gold-dark:#9a7a2e;
+    --slate:#64748b; --text:#1e293b;
+    --bg:#f8f9fb; --white:#ffffff;
+    --border:#e2e8f0; --border-gold:rgba(201,168,76,0.3);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+
+  .dl-nav{background:var(--navy);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .dl-nav a{color:#fff;text-decoration:none;font-size:0.82rem;font-weight:500;opacity:0.8;}
+  .dl-nav a:hover{opacity:1;}
+  .dl-nav-title{color:var(--gold);font-size:0.82rem;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;}
+  .print-btn{background:var(--gold);color:var(--navy);border:none;padding:0.5rem 1.2rem;border-radius:4px;font-size:0.75rem;font-weight:700;cursor:pointer;}
+  .print-btn:hover{background:var(--gold-light);}
+
+  .document{max-width:960px;margin:0 auto;background:var(--white);min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,0.06);}
+
+  .cover{background:linear-gradient(145deg,var(--navy),var(--navy-mid));color:#fff;padding:5rem 4rem 4rem;position:relative;overflow:hidden;}
+  .cover::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border:2px solid var(--border-gold);border-radius:50%;opacity:0.4;}
+  .cover-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--gold);color:var(--navy);font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.35rem 1rem;border-radius:3px;margin-bottom:1.5rem;}
+  .cover h1{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;line-height:1.15;margin-bottom:1rem;}
+  .cover h1 em{color:var(--gold-light);font-style:italic;}
+  .cover-desc{font-size:1rem;color:rgba(255,255,255,0.75);max-width:520px;margin-bottom:2.5rem;line-height:1.8;}
+  .cover-meta{display:flex;gap:2rem;flex-wrap:wrap;}
+  .cover-meta-label{font-size:0.65rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.2rem;}
+  .cover-meta-value{font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.9);}
+
+  .intro-block{padding:3rem 4rem;background:#fef9ec;border-bottom:1px solid #fde68a;}
+  .intro-block h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:0.8rem;}
+  .intro-block ol{padding-left:1.4rem;}
+  .intro-block li{font-size:0.85rem;color:var(--slate);margin-bottom:0.4rem;}
+  .intro-block strong{color:var(--text);}
+
+  .tpl-section{padding:3rem 4rem;border-bottom:1px solid var(--border);}
+
+  .sec-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem;}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--gold);font-weight:700;letter-spacing:0.1em;background:rgba(201,168,76,0.1);padding:0.2rem 0.6rem;border-radius:3px;flex-shrink:0;}
+  .sec-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--navy);}
+  .sec-desc{font-size:0.82rem;color:var(--slate);margin-top:0.3rem;line-height:1.7;}
+
+  .field-group{margin-bottom:1.5rem;}
+  .field-label{font-size:0.72rem;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;display:block;}
+  .field-hint{font-size:0.73rem;color:#94a3b8;margin-bottom:0.5rem;font-style:italic;}
+  .field-box{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:0.85rem 1rem;font-size:0.85rem;color:#94a3b8;min-height:44px;font-style:italic;margin-bottom:0.5rem;}
+  .field-box.tall{min-height:80px;}
+  .field-box.xl{min-height:120px;}
+  .field-example{font-size:0.73rem;color:var(--gold-dark);margin-top:0.4rem;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1rem;}
+  .field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}
+
+  .tpl-table{width:100%;border-collapse:collapse;font-size:0.78rem;margin-bottom:1rem;}
+  .tpl-table th{background:var(--navy);color:var(--gold-light);text-align:left;padding:0.65rem 0.8rem;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;}
+  .tpl-table td{padding:0.65rem 0.8rem;border-bottom:1px solid var(--border);color:#94a3b8;font-style:italic;vertical-align:top;}
+  .tpl-table tr:last-child td{border-bottom:none;}
+  .tpl-table tr:nth-child(even) td{background:#fafcff;}
+  .tpl-table td strong{color:var(--text);font-style:normal;}
+
+  /* EXEC SUMMARY BOX */
+  .exec-summary{background:linear-gradient(135deg,rgba(201,168,76,0.07),#fff);border:2px solid var(--border-gold);border-radius:8px;padding:2.5rem;margin-bottom:1rem;}
+  .exec-summary-grid{display:grid;grid-template-columns:2fr 1fr;gap:2rem;}
+  .exec-metric-boxes{display:grid;grid-template-columns:1fr;gap:0.8rem;}
+  .exec-metric{background:var(--white);border:1px solid var(--border);border-radius:5px;padding:0.8rem 1rem;}
+  .exec-metric-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--slate);margin-bottom:0.2rem;}
+  .exec-metric-value{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);}
+  .exec-rec-box{background:var(--navy);color:#fff;border-radius:6px;padding:1.5rem;text-align:center;}
+  .exec-rec-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-bottom:0.5rem;}
+  .exec-rec-value{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--gold-light);margin-bottom:0.5rem;}
+  .exec-rec-note{font-size:0.75rem;color:rgba(255,255,255,0.6);line-height:1.6;}
+
+  /* FINANCIALS */
+  .fin-table{width:100%;border-collapse:collapse;font-size:0.79rem;margin-bottom:1rem;}
+  .fin-table th{background:var(--navy);color:var(--gold-light);text-align:left;padding:0.65rem 0.8rem;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;}
+  .fin-table th.right{text-align:right;}
+  .fin-table td{padding:0.65rem 0.8rem;border-bottom:1px solid var(--border);vertical-align:top;}
+  .fin-table td.right{text-align:right;}
+  .fin-table tr:nth-child(even) td{background:#fafcff;}
+  .fin-table tr.subtotal td{background:#f1f5f9;font-weight:700;border-top:1px solid #cbd5e1;}
+  .fin-table tr.total td{background:var(--navy);color:#fff;font-weight:700;}
+  .fin-table .cell-calc{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#15803d;background:#f0fdf4;border:1px solid #bbf7d0;padding:0.1rem 0.4rem;border-radius:2px;}
+  .fin-table .cell-placeholder{color:#94a3b8;font-style:italic;}
+
+  /* ALTERNATIVES */
+  .alt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.2rem;}
+  .alt-card{border:1px solid var(--border);border-radius:6px;overflow:hidden;}
+  .alt-head{padding:0.8rem 1rem;font-weight:700;font-size:0.82rem;text-align:center;}
+  .alt-head.option1{background:var(--bg);color:var(--slate);}
+  .alt-head.option2{background:var(--navy);color:#fff;}
+  .alt-head.option3{background:#f1f5f9;color:var(--navy);}
+  .alt-body{padding:1rem;}
+  .alt-row{display:flex;justify-content:space-between;font-size:0.75rem;padding:0.25rem 0;border-bottom:1px dashed var(--border);}
+  .alt-row:last-child{border-bottom:none;}
+  .alt-key{color:var(--slate);}
+  .alt-val{color:#94a3b8;font-style:italic;}
+
+  /* RISK */
+  .risk-high{color:#991b1b;background:#fee2e2;padding:0.1rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+  .risk-med{color:#92400e;background:#fef3c7;padding:0.1rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+  .risk-low{color:#166534;background:#dcfce7;padding:0.1rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+
+  /* IMPL PHASES */
+  .phase-cards{display:flex;flex-direction:column;gap:1rem;}
+  .phase-card{border:1px solid var(--border-gold);border-radius:6px;overflow:hidden;}
+  .phase-head{background:var(--navy);color:#fff;padding:0.75rem 1.2rem;display:flex;gap:1rem;align-items:center;}
+  .phase-num{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--gold);font-weight:700;}
+  .phase-name{font-size:0.9rem;font-weight:600;}
+  .phase-dur{font-size:0.75rem;color:rgba(255,255,255,0.6);margin-left:auto;}
+  .phase-body{padding:1.2rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .phase-col-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--slate);margin-bottom:0.4rem;}
+  .phase-items{list-style:none;padding:0;}
+  .phase-items li{font-size:0.78rem;color:#94a3b8;font-style:italic;padding:0.25rem 0;border-bottom:1px dashed var(--border);}
+  .phase-items li:last-child{border-bottom:none;}
+  .phase-items li::before{content:'→  ';color:var(--gold);font-style:normal;}
+
+  /* SUCCESS METRICS */
+  .metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+  .metric-card{border:1px solid var(--border);border-radius:6px;padding:1.2rem;}
+  .metric-type{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--gold);font-weight:700;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.5rem;}
+  .metric-name{font-weight:700;color:var(--navy);font-size:0.88rem;margin-bottom:0.3rem;}
+  .metric-def{font-size:0.75rem;color:var(--slate);margin-bottom:0.4rem;}
+  .metric-target{font-size:0.72rem;background:var(--bg);border:1px solid var(--border);border-radius:3px;padding:0.2rem 0.6rem;display:inline-block;color:#94a3b8;font-style:italic;}
+
+  /* RECOMMENDATION */
+  .rec-box{background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:#fff;border-radius:8px;padding:2.5rem;margin-bottom:1rem;}
+  .rec-label{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.5rem;}
+  .rec-title{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold-light);margin-bottom:1rem;}
+  .rec-body{font-size:0.85rem;color:rgba(255,255,255,0.75);line-height:1.9;margin-bottom:1.5rem;}
+  .rec-next-steps{background:rgba(255,255,255,0.08);border-radius:5px;padding:1.2rem;}
+  .rec-next-label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--gold-light);margin-bottom:0.8rem;}
+  .rec-next-item{font-size:0.8rem;color:rgba(255,255,255,0.7);padding:0.3rem 0;border-bottom:1px dashed rgba(255,255,255,0.1);}
+  .rec-next-item:last-child{border-bottom:none;}
+  .rec-next-item::before{content:'□  ';color:var(--gold);}
+  .rec-deadline{display:inline-flex;align-items:center;gap:0.5rem;background:rgba(201,168,76,0.2);border:1px solid var(--border-gold);border-radius:4px;padding:0.5rem 1rem;font-size:0.8rem;color:var(--gold-light);margin-top:1rem;}
+
+  .tip-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:5px;padding:1rem 1.2rem;margin-bottom:1.2rem;font-size:0.8rem;color:#0c4a6e;}
+  .tip-box strong{color:#075985;}
+
+  .cta-block{background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:#fff;padding:3rem 4rem;text-align:center;}
+  .cta-block h2{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:0.8rem;}
+  .cta-block p{font-size:0.88rem;color:rgba(255,255,255,0.7);max-width:480px;margin:0 auto 2rem;line-height:1.8;}
+  .cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn-gold{background:var(--gold);color:var(--navy);padding:0.75rem 1.8rem;border-radius:4px;text-decoration:none;font-weight:700;font-size:0.82rem;letter-spacing:0.04em;}
+  .btn-gold:hover{background:var(--gold-light);}
+  .btn-outline{background:transparent;color:#fff;padding:0.75rem 1.8rem;border-radius:4px;text-decoration:none;font-weight:600;font-size:0.82rem;border:1px solid rgba(255,255,255,0.3);}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .doc-footer{background:var(--bg);border-top:2px solid var(--border);padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:var(--slate);}
+  .doc-footer a{color:var(--gold-dark);text-decoration:none;}
+
+  @media print{.dl-nav,.cta-block{display:none;} .tpl-section{page-break-inside:avoid;} body{background:#fff;} .document{box-shadow:none;}}
+  @media(max-width:700px){
+    .cover,.tpl-section,.intro-block{padding:2rem 1.5rem;}
+    .field-row,.field-row-3{grid-template-columns:1fr;}
+    .exec-summary-grid{grid-template-columns:1fr;}
+    .alt-grid{grid-template-columns:1fr;}
+    .phase-body{grid-template-columns:1fr;}
+    .metrics-grid{grid-template-columns:1fr;}
+    .doc-footer{flex-direction:column;gap:0.5rem;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<script>
+(function(){
+  if(!localStorage.getItem('nlc_client_token')){
+    window.location.replace('/portal-login.html?redirect='+encodeURIComponent(window.location.pathname));
+  }
+})();
+</script>
+
+<nav class="dl-nav">
+  <a href="/portal.html">← Back to Dashboard</a>
+  <span class="dl-nav-title">Business Case Template</span>
+  <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</nav>
+
+<div class="document">
+
+  <div class="cover">
+    <div class="cover-badge">💼 Free Template · Decision-Making</div>
+    <h1>Business Case <em>Template</em></h1>
+    <p class="cover-desc">A board-ready, 11-section business case framework covering every element from problem statement through financial analysis to implementation plan and recommendation. Built for leaders who need stakeholder buy-in fast.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Initiative</div><div class="cover-meta-value">[Initiative / Project Name]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Prepared By</div><div class="cover-meta-value">[Name · Title]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Date</div><div class="cover-meta-value">[Date]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Decision Required By</div><div class="cover-meta-value">[Date]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Requested Investment</div><div class="cover-meta-value">$[X]</div></div>
+    </div>
+  </div>
+
+  <div class="intro-block">
+    <h2>How to Write a Winning Business Case</h2>
+    <ol>
+      <li><strong>Write Section 11 (Recommendation) first.</strong> If you can't state your recommendation before you build the case, you're not ready to write it. Clarity on the conclusion makes all other sections sharper.</li>
+      <li><strong>Lead with the problem, not the solution.</strong> Decision-makers approve business cases when they first believe the problem is real and costly. Section 2 is your most important section.</li>
+      <li><strong>Quantify everything you can.</strong> "Significant time savings" is weak. "$87K in annual labor cost reclaimed" is compelling. Use hard numbers wherever possible.</li>
+      <li><strong>Be honest about risks and alternatives.</strong> A business case that acknowledges risks and considered alternatives is more credible than one that doesn't. Decision-makers know risks exist.</li>
+      <li><strong>Keep the Executive Summary to one page.</strong> If a busy executive reads nothing else, the Executive Summary must tell the complete story.</li>
+    </ol>
+  </div>
+
+  <!-- SECTION 1: EXECUTIVE SUMMARY -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">01</span>
+      <div>
+        <div class="sec-title">Executive Summary</div>
+        <div class="sec-desc">A one-page summary of the complete business case. Written last, presented first. If a decision-maker reads only this section, they should understand the problem, solution, financial impact, risk level, and recommendation.</div>
+      </div>
+    </div>
+    <div class="exec-summary">
+      <div class="exec-summary-grid">
+        <div>
+          <span class="field-label">Summary Statement (2–3 sentences)</span>
+          <div class="field-box tall">This business case recommends [specific action] to address [specific problem], with an estimated investment of $[X] and an expected return of $[Y] over [time period].
+
+[Provide a 2–3 sentence plain-language summary of what you're proposing and why it matters to the organization. A busy executive should understand the full picture from this paragraph alone.]</div>
+          <span class="field-label">Problem in One Sentence</span>
+          <div class="field-box">[State the problem clearly: "We are currently losing $[X] annually / [N] hours per month / [Y%] of clients due to [root cause]."]</div>
+          <span class="field-label">Proposed Solution in One Sentence</span>
+          <div class="field-box">[State the solution: "We propose [specific action] which will [specific outcome] by [date]."]</div>
+        </div>
+        <div>
+          <div class="exec-metric-boxes">
+            <div class="exec-metric">
+              <div class="exec-metric-label">Total Investment Required</div>
+              <div class="exec-metric-value">$[X]</div>
+            </div>
+            <div class="exec-metric">
+              <div class="exec-metric-label">Expected Annual Benefit</div>
+              <div class="exec-metric-value">$[Y]</div>
+            </div>
+            <div class="exec-metric">
+              <div class="exec-metric-label">Payback Period</div>
+              <div class="exec-metric-value">[N] months</div>
+            </div>
+            <div class="exec-metric">
+              <div class="exec-metric-label">3-Year ROI</div>
+              <div class="exec-metric-value">[X]%</div>
+            </div>
+            <div class="exec-metric">
+              <div class="exec-metric-label">Risk Level</div>
+              <div class="exec-metric-value" style="font-size:1rem;color:#92400e;">[Low / Medium / High]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="exec-rec-box">
+      <div class="exec-rec-label">Recommendation</div>
+      <div class="exec-rec-value">[APPROVE / REJECT / DEFER with conditions]</div>
+      <div class="exec-rec-note">Decision required by [date]. See Section 11 for full recommendation and next steps.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: PROBLEM STATEMENT -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">02</span>
+      <div>
+        <div class="sec-title">Problem Statement</div>
+        <div class="sec-desc">Define the problem clearly before proposing any solution. Decision-makers must feel the weight of the problem before they'll approve the investment. Use data, not adjectives.</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>Key principle:</strong> Quantify the cost of inaction. "If we do nothing, this problem will cost us $[X] by [date]." That number justifies the investment before you even present the solution.</div>
+    <div class="field-group">
+      <span class="field-label">Current Situation</span>
+      <span class="field-hint">Describe what is happening today — factually and specifically. Avoid adjectives; use data.</span>
+      <div class="field-box xl">Today, [organization] faces [specific challenge]. Currently, [describe the situation with specifics]:
+• [Fact 1 — include a number, e.g., "Processing a single invoice takes 47 minutes of manual work"]
+• [Fact 2 — e.g., "We process 320 invoices per month, costing approximately $18,500 in labor"]
+• [Fact 3 — e.g., "Error rate on manual processing is 12%, requiring an average of 2.5 hours of correction per week"]</div>
+    </div>
+    <div class="field-row">
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">Who Is Affected</span>
+        <div class="field-box tall">Internal: [Teams, roles, departments experiencing the pain]
+External: [Clients, partners, or regulators affected by this problem]
+Estimated number of people impacted: [N]</div>
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">Root Cause Analysis</span>
+        <div class="field-box tall">Using the "5 Whys" or fishbone analysis, trace the problem to its root:
+
+Why 1: [Why does the problem exist?]
+Why 2: [Why does that happen?]
+Why 3: [Root cause]
+
+Root cause: [State it clearly]</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">Cost of Inaction (quantify the ongoing cost if nothing changes)</span>
+      <div class="field-box">Annual financial cost: $[X] &nbsp;|&nbsp; Operational cost: [hours/month, efficiency loss] &nbsp;|&nbsp; Strategic risk: [describe] &nbsp;|&nbsp; Cumulative 3-year cost of doing nothing: $[X]</div>
+      <div class="field-example"><strong>Example:</strong> "At current volume, manual processing costs $222,000 annually in labor and $47,000 in error correction. Over 3 years, inaction costs the organization $804,000."</div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: OPPORTUNITY -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">03</span>
+      <div>
+        <div class="sec-title">Opportunity</div>
+        <div class="sec-desc">Frame what is possible if the problem is solved. Size the opportunity — both the internal benefit and any external market or competitive advantage.</div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">The Opportunity</span>
+        <div class="field-box tall">By solving [problem], we have the opportunity to:
+• [Benefit 1 — e.g., "Reduce processing costs by 70%, freeing $155K in annual budget"]
+• [Benefit 2 — e.g., "Redirect 8 hours per week of staff time to higher-value work"]
+• [Benefit 3 — competitive/strategic benefit]</div>
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">Time Sensitivity</span>
+        <span class="field-hint">Why does this decision need to be made now?</span>
+        <div class="field-box tall">This opportunity is time-sensitive because:
+• [Regulatory / compliance deadline: e.g., "New regulation takes effect [date]"]
+• [Competitive pressure: e.g., "Competitor X launched this capability in Q1"]
+• [Cost of delay: e.g., "Each quarter we delay costs an additional $[X] in operational loss"]</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">Size of the Opportunity</span>
+      <div class="field-box">Internal savings / efficiency gain: $[X] annually &nbsp;|&nbsp; Revenue upside (if applicable): $[X] &nbsp;|&nbsp; Risk reduction value: $[X] &nbsp;|&nbsp; Total addressable benefit: $[X] over [N] years</div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: PROPOSED SOLUTION -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">04</span>
+      <div>
+        <div class="sec-title">Proposed Solution</div>
+        <div class="sec-desc">Describe what you are proposing — not how you'll implement it (that's Section 9). Focus on what the solution is, what it includes, and how it addresses the problem stated in Section 2.</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">Solution Description</span>
+      <span class="field-hint">Describe the solution at a level that non-technical executives can understand. Avoid jargon.</span>
+      <div class="field-box xl">We propose [specific solution — what it is, what it does, and what it replaces or improves]:
+
+Key components:
+• Component 1: [Description]
+• Component 2: [Description]
+• Component 3: [Description]
+
+This solution directly addresses [root cause from Section 2] by [mechanism — how it solves the problem].</div>
+    </div>
+    <div class="field-row">
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">What This Solution Includes</span>
+        <div class="field-box tall">
+          • [Technology / software / tools]<br>
+          • [People / services / vendors]<br>
+          • [Training or change management]<br>
+          • [Process changes]
+        </div>
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">Key Assumptions</span>
+        <div class="field-box tall">
+          • [Assumption 1 — e.g., "Assumes 80% adoption within 90 days"]<br>
+          • [Assumption 2 — e.g., "Assumes current vendor contracts remain in force"]<br>
+          • [Assumption 3]<br>
+          • [Assumption 4]
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: STRATEGIC ALIGNMENT -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">05</span>
+      <div>
+        <div class="sec-title">Strategic Alignment</div>
+        <div class="sec-desc">Show how this initiative supports the organization's stated strategy. Decision-makers approve initiatives that they see advancing organizational goals — not just fixing problems.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead><tr><th>Strategic Priority</th><th>How This Initiative Supports It</th><th>Alignment Strength</th></tr></thead>
+      <tbody>
+        <tr><td>[Strategic Priority 1 — from your strategic plan]</td><td>[Specific connection — how this initiative advances this priority]</td><td>High</td></tr>
+        <tr><td>[Strategic Priority 2]</td><td>[Connection]</td><td>Medium</td></tr>
+        <tr><td>[Strategic Priority 3]</td><td>[Connection]</td><td>Low</td></tr>
+      </tbody>
+    </table>
+    <div class="field-row">
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">Stakeholder Alignment</span>
+        <div class="field-box tall">Who has been consulted and supports this initiative?
+[Name / Role]: [Position — supports / neutral / concerns]
+[Name / Role]: [Position]
+[Name / Role]: [Position]
+
+Any known opposition: [describe and explain how it will be managed]</div>
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">Organizational Readiness</span>
+        <div class="field-box tall">Is the organization ready to execute this?
+• Capability: [Do we have the skills / people?]
+• Capacity: [Do we have the bandwidth?]
+• Culture: [Will this be embraced?]
+• Dependencies: [What must be true before this starts?]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: FINANCIAL IMPACT -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">06</span>
+      <div>
+        <div class="sec-title">Financial Impact</div>
+        <div class="sec-desc">The financial section is what gets business cases approved or rejected. Be thorough, honest, and conservative in your estimates. Include all costs — including implementation, change management, and ongoing maintenance.</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>Conservative estimates build credibility.</strong> Use the middle or low end of your range. A business case approved on conservative numbers that overdelivers builds trust. One approved on aggressive assumptions that underdelivers erodes it.</div>
+    <div class="field-group">
+      <span class="field-label">Investment Required</span>
+    </div>
+    <table class="fin-table">
+      <thead><tr><th style="min-width:180px;">Cost Item</th><th>Type</th><th class="right">One-Time</th><th class="right">Annual (Recurring)</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>[Software / Technology License]</td><td>Direct</td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right"><span class="cell-placeholder">$[X]/yr</span></td><td>[Vendor name and contract terms]</td></tr>
+        <tr><td>[Implementation / Setup]</td><td>Direct</td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right">—</td><td>[Internal or external; include estimates]</td></tr>
+        <tr><td>[Training &amp; Change Management]</td><td>Direct</td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right">—</td><td>[N hours × [N] staff; facilitation cost]</td></tr>
+        <tr><td>[Internal Labor (implementation)]</td><td>Indirect</td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right">—</td><td>[N hours × burdened rate; from Headcount]</td></tr>
+        <tr><td>[Ongoing Support / Maintenance]</td><td>Recurring</td><td class="right">—</td><td class="right"><span class="cell-placeholder">$[X]/yr</span></td><td>[Vendor support or internal FTE fraction]</td></tr>
+        <tr><td>[Contingency (10–15%)]</td><td>Contingency</td><td class="right"><span class="cell-calc">=(sum)×12.5%</span></td><td class="right"><span class="cell-calc">↑</span></td><td>Standard contingency; may not be needed</td></tr>
+        <tr class="subtotal"><td>TOTAL INVESTMENT</td><td></td><td class="right"><strong>$[X]</strong></td><td class="right"><strong>$[X]/yr</strong></td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="field-group">
+      <span class="field-label">Expected Financial Benefits</span>
+    </div>
+    <table class="fin-table">
+      <thead><tr><th style="min-width:180px;">Benefit</th><th>Type</th><th class="right">Year 1</th><th class="right">Year 2</th><th class="right">Year 3</th><th>How Calculated</th></tr></thead>
+      <tbody>
+        <tr><td>[Labor cost savings]</td><td>Hard Savings</td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right"><span class="cell-placeholder">$[X]</span></td><td>[N hours/month × $[X]/hr × 12 months]</td></tr>
+        <tr><td>[Error / rework cost elimination]</td><td>Hard Savings</td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right"><span class="cell-placeholder">$[X]</span></td><td>[Current error rate × cost per error]</td></tr>
+        <tr><td>[Revenue enablement]</td><td>Soft Benefit</td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right"><span class="cell-placeholder">$[X]</span></td><td>[Conservative estimate with rationale]</td></tr>
+        <tr><td>[Risk avoidance value]</td><td>Risk Reduction</td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right"><span class="cell-placeholder">$[X]</span></td><td class="right"><span class="cell-placeholder">$[X]</span></td><td>[Probability × cost of risk event]</td></tr>
+        <tr class="subtotal"><td>TOTAL BENEFITS</td><td></td><td class="right"><strong>$[X]</strong></td><td class="right"><strong>$[X]</strong></td><td class="right"><strong>$[X]</strong></td><td></td></tr>
+        <tr class="total"><td>NET BENEFIT (Benefits − Costs)</td><td></td><td class="right"><span class="cell-calc">=(Ben−Cost)</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="field-row-3">
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">ROI (3-Year)</span>
+        <div class="field-box" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--navy);">
+          ROI = (Total Benefits − Total Costs) ÷ Total Costs × 100<br><br>
+          = ($[X] − $[X]) ÷ $[X] × 100<br>
+          = <strong>[X]%</strong>
+        </div>
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">Payback Period</span>
+        <div class="field-box" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--navy);">
+          Payback = One-Time Investment ÷ (Annual Benefits − Annual Costs)<br><br>
+          = $[X] ÷ ($[X] − $[X])<br>
+          = <strong>[X] months</strong>
+        </div>
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">Net Present Value (NPV)</span>
+        <div class="field-box" style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--navy);">
+          NPV = Σ [Benefit_t ÷ (1 + r)^t] − Initial Investment<br><br>
+          Discount rate: [X]%<br>
+          3-Year NPV: <strong>$[X]</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: RISKS -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">07</span>
+      <div>
+        <div class="sec-title">Risk Analysis</div>
+        <div class="sec-desc">Every business case has risks. Presenting them honestly — with mitigations — increases credibility and demonstrates that you've thought this through. A risk ignored doesn't disappear; it just surprises you later.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead><tr><th>Risk</th><th>Probability</th><th>Impact</th><th>Score</th><th>Mitigation Strategy</th><th>Residual Risk</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>Implementation delays</strong><br><span style="font-style:italic;font-size:0.73rem;">Vendor or internal resource availability causes timeline slip</span></td>
+          <td>Medium</td><td>Medium</td><td><span class="risk-med">4 – Med</span></td>
+          <td>Include buffer in project plan; identify backup vendors; escalation path defined</td><td>Low</td>
+        </tr>
+        <tr>
+          <td><strong>Low adoption / change resistance</strong><br><span style="font-style:italic;font-size:0.73rem;">Staff do not use the new solution as intended</span></td>
+          <td>Medium</td><td>High</td><td><span class="risk-high">6 – High</span></td>
+          <td>Change management plan; executive sponsorship; training program; champions identified in each team</td><td>Medium</td>
+        </tr>
+        <tr>
+          <td><strong>Benefits not fully realized</strong><br><span style="font-style:italic;font-size:0.73rem;">Conservative estimates understate complexity; savings don't materialize at full projection</span></td>
+          <td>Low</td><td>Medium</td><td><span class="risk-low">2 – Low</span></td>
+          <td>Phase rollout to validate benefit assumptions before full deployment; success criteria tracked monthly</td><td>Low</td>
+        </tr>
+        <tr>
+          <td><strong>Vendor risk</strong><br><span style="font-style:italic;font-size:0.73rem;">Vendor raises prices, reduces service, or goes out of business</span></td>
+          <td>Low</td><td>Medium</td><td><span class="risk-low">2 – Low</span></td>
+          <td>Multi-year contract with price lock; data portability requirements in contract; backup vendor identified</td><td>Low</td>
+        </tr>
+        <tr>
+          <td>[Risk 5]</td><td>[Prob]</td><td>[Impact]</td><td>[Score]</td><td>[Mitigation]</td><td>[Residual]</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 8: ALTERNATIVES -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">08</span>
+      <div>
+        <div class="sec-title">Alternatives Considered</div>
+        <div class="sec-desc">Always present at least 3 options — including "do nothing." This shows rigor and prevents stakeholders from wondering "why didn't you consider X?" Explain why the proposed solution is superior to the alternatives.</div>
+      </div>
+    </div>
+    <div class="alt-grid">
+      <div class="alt-card">
+        <div class="alt-head option1">Option A: Do Nothing</div>
+        <div class="alt-body">
+          <div class="alt-row"><span class="alt-key">Description</span><span class="alt-val">Maintain current state; no change</span></div>
+          <div class="alt-row"><span class="alt-key">Cost</span><span class="alt-val">$0 upfront; $[X] ongoing</span></div>
+          <div class="alt-row"><span class="alt-key">3-Year Cost</span><span class="alt-val">$[X] total</span></div>
+          <div class="alt-row"><span class="alt-key">Risk Level</span><span class="alt-val">High (problem compounds)</span></div>
+          <div class="alt-row"><span class="alt-key">Why Not Selected</span><span class="alt-val">Problem grows; cost of inaction = $[X] over 3 years</span></div>
+        </div>
+      </div>
+      <div class="alt-card">
+        <div class="alt-head option2">Option B: Recommended (This Proposal)</div>
+        <div class="alt-body">
+          <div class="alt-row"><span class="alt-key">Description</span><span class="alt-val">[Brief description of proposed solution]</span></div>
+          <div class="alt-row"><span class="alt-key">Cost</span><span class="alt-val">$[X] upfront; $[X]/yr</span></div>
+          <div class="alt-row"><span class="alt-key">3-Year Net Benefit</span><span class="alt-val">$[X]</span></div>
+          <div class="alt-row"><span class="alt-key">Risk Level</span><span class="alt-val">Medium → Low with mitigations</span></div>
+          <div class="alt-row"><span class="alt-key">Why Selected</span><span class="alt-val">Best balance of cost, benefit, and feasibility</span></div>
+        </div>
+      </div>
+      <div class="alt-card">
+        <div class="alt-head option3">Option C: Alternative Approach</div>
+        <div class="alt-body">
+          <div class="alt-row"><span class="alt-key">Description</span><span class="alt-val">[Alternative — e.g., different vendor / build vs. buy / partial solution]</span></div>
+          <div class="alt-row"><span class="alt-key">Cost</span><span class="alt-val">$[X] upfront; $[X]/yr</span></div>
+          <div class="alt-row"><span class="alt-key">3-Year Net Benefit</span><span class="alt-val">$[X]</span></div>
+          <div class="alt-row"><span class="alt-key">Risk Level</span><span class="alt-val">[Low / Medium / High]</span></div>
+          <div class="alt-row"><span class="alt-key">Why Not Selected</span><span class="alt-val">[Reason — cost, complexity, risk, fit]</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 9: IMPLEMENTATION PLAN -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">09</span>
+      <div>
+        <div class="sec-title">Implementation Plan</div>
+        <div class="sec-desc">Show that you have a credible plan to execute. Keep it high level here — detailed project planning happens after approval. Four phases: Plan, Execute, Launch, Optimize.</div>
+      </div>
+    </div>
+    <div class="phase-cards">
+      <div class="phase-card">
+        <div class="phase-head"><span class="phase-num">Phase 1</span><span class="phase-name">Planning &amp; Procurement</span><span class="phase-dur">[Duration: X weeks]</span></div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-col-label">Key Activities</div>
+            <ul class="phase-items">
+              <li>Finalize vendor selection and contract negotiation</li>
+              <li>Assemble project team and assign roles</li>
+              <li>Define detailed project plan and milestones</li>
+              <li>Secure necessary approvals and system access</li>
+              <li>Communicate initiative to affected stakeholders</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label">Milestones &amp; Outputs</div>
+            <ul class="phase-items">
+              <li>Signed vendor contract by [date]</li>
+              <li>Project charter approved by [date]</li>
+              <li>Team kickoff completed by [date]</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-head"><span class="phase-num">Phase 2</span><span class="phase-name">Execution &amp; Build</span><span class="phase-dur">[Duration: X weeks]</span></div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-col-label">Key Activities</div>
+            <ul class="phase-items">
+              <li>[Core implementation activity 1]</li>
+              <li>[Core implementation activity 2]</li>
+              <li>Data migration and system configuration</li>
+              <li>Integration testing and quality assurance</li>
+              <li>Training content development</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label">Milestones &amp; Outputs</div>
+            <ul class="phase-items">
+              <li>[Deliverable 1] complete by [date]</li>
+              <li>QA testing passed by [date]</li>
+              <li>Training materials ready by [date]</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-head"><span class="phase-num">Phase 3</span><span class="phase-name">Launch &amp; Deployment</span><span class="phase-dur">[Duration: X weeks]</span></div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-col-label">Key Activities</div>
+            <ul class="phase-items">
+              <li>Staff training and certification</li>
+              <li>Phased or full rollout (per deployment plan)</li>
+              <li>Hypercare support period (first 2–4 weeks)</li>
+              <li>Parallel operation with old process (if applicable)</li>
+              <li>Issue tracking and rapid response</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label">Milestones &amp; Outputs</div>
+            <ul class="phase-items">
+              <li>[X]% of users trained by [date]</li>
+              <li>Go-live by [date]</li>
+              <li>Hypercare complete by [date]</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="phase-card">
+        <div class="phase-head"><span class="phase-num">Phase 4</span><span class="phase-name">Stabilize &amp; Optimize</span><span class="phase-dur">[Duration: Ongoing]</span></div>
+        <div class="phase-body">
+          <div>
+            <div class="phase-col-label">Key Activities</div>
+            <ul class="phase-items">
+              <li>Monitor adoption and benefit realization</li>
+              <li>Gather and act on user feedback</li>
+              <li>Optimize workflows based on real usage data</li>
+              <li>30/60/90-day benefit measurement review</li>
+            </ul>
+          </div>
+          <div>
+            <div class="phase-col-label">Milestones &amp; Outputs</div>
+            <ul class="phase-items">
+              <li>30-day adoption report by [date]</li>
+              <li>90-day benefit realization review by [date]</li>
+              <li>Annual ROI review by [date]</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 10: SUCCESS METRICS -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">10</span>
+      <div>
+        <div class="sec-title">Success Metrics</div>
+        <div class="sec-desc">Define how you will measure success — both during implementation and after. Set leading indicators (early signals of success) and lagging indicators (outcome measures). Build a review cadence.</div>
+      </div>
+    </div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-type">Leading Indicator</div>
+        <div class="metric-name">User Adoption Rate</div>
+        <div class="metric-def">% of intended users actively using the solution within 30/60/90 days of launch</div>
+        <div class="metric-target">Target: 60% at 30 days, 80% at 60 days, 90% at 90 days</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-type">Leading Indicator</div>
+        <div class="metric-name">Training Completion Rate</div>
+        <div class="metric-def">% of required users who complete training before or within 2 weeks of launch</div>
+        <div class="metric-target">Target: &gt;90% completion before go-live</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-type">Lagging Indicator</div>
+        <div class="metric-name">Cost Reduction (Primary)</div>
+        <div class="metric-def">[Specific cost metric tied to primary financial benefit — e.g., monthly processing cost, error rate cost]</div>
+        <div class="metric-target">Target: [$X savings or X% reduction] by [date]</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-type">Lagging Indicator</div>
+        <div class="metric-name">ROI Achievement</div>
+        <div class="metric-def">Actual return vs. projected return in the business case financial model</div>
+        <div class="metric-target">Target: 80%+ of projected benefits achieved by Year 1 review</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-type">Quality Indicator</div>
+        <div class="metric-name">User Satisfaction (CSAT)</div>
+        <div class="metric-def">User satisfaction score from post-implementation survey (0–10)</div>
+        <div class="metric-target">Target: &gt;7.5 average satisfaction score</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-type">Process Indicator</div>
+        <div class="metric-name">[Process Metric Specific to Your Initiative]</div>
+        <div class="metric-def">[e.g., processing time, cycle time, error rate, throughput — specific to your use case]</div>
+        <div class="metric-target">Target: [Specific improvement vs. baseline]</div>
+      </div>
+    </div>
+    <div class="field-group" style="margin-top:1rem;">
+      <span class="field-label">Review Cadence</span>
+      <table class="tpl-table">
+        <thead><tr><th>Review</th><th>When</th><th>Owner</th><th>Metrics Reviewed</th><th>Decision Points</th></tr></thead>
+        <tbody>
+          <tr><td>30-Day Adoption Check</td><td>30 days post go-live</td><td>[PM]</td><td>Adoption rate, support tickets, user feedback</td><td>Escalate adoption issues; adjust training if needed</td></tr>
+          <tr><td>90-Day Benefit Review</td><td>90 days post go-live</td><td>[Sponsor + PM]</td><td>All KPIs vs. target</td><td>Confirm benefit realization tracking; adjust or escalate</td></tr>
+          <tr><td>Annual ROI Review</td><td>12 months post go-live</td><td>[CFO + Sponsor]</td><td>Full financial ROI vs. business case</td><td>Document lessons; inform future investment decisions</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 11: RECOMMENDATION -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">11</span>
+      <div>
+        <div class="sec-title">Recommendation</div>
+        <div class="sec-desc">State your recommendation clearly, without hedging. This section drives the decision. Make it easy for the decision-maker to say yes — specify exactly what action you need, by when, and what happens next.</div>
+      </div>
+    </div>
+    <div class="rec-box">
+      <div class="rec-label">Formal Recommendation</div>
+      <div class="rec-title">We recommend [APPROVAL / REJECTION / DEFERRAL] of this initiative</div>
+      <div class="rec-body">Based on the analysis above, we recommend approval of [Initiative Name] with a total investment of $[X].
+
+The business case demonstrates:
+• A [X]% ROI over 3 years, with a payback period of [N] months
+• A net benefit of $[X] over 3 years vs. a cost of inaction of $[X]
+• Alignment with [strategic priority] and organizational readiness to execute
+
+The risks are manageable with the mitigation strategies outlined in Section 7. The recommended option (Option B) offers the best balance of return, feasibility, and risk among the alternatives considered.
+
+This initiative should be treated as [High / Medium / Low] priority relative to other initiatives currently in the queue.</div>
+      <div class="rec-next-steps">
+        <div class="rec-next-label">Next Steps (upon approval)</div>
+        <div class="rec-next-item">Authorize budget and resource allocation — [Name] by [Date]</div>
+        <div class="rec-next-item">Execute vendor contract — [Name] by [Date]</div>
+        <div class="rec-next-item">Appoint project manager and assemble team — [Name] by [Date]</div>
+        <div class="rec-next-item">Initiate stakeholder communication plan — [Name] by [Date]</div>
+        <div class="rec-next-item">Project kickoff meeting — [Date]</div>
+      </div>
+      <div class="rec-deadline">⏰ Decision Required By: [Date] — to maintain project timeline and [specific timing rationale]</div>
+    </div>
+    <div class="field-row" style="margin-top:1.5rem;">
+      <div class="field-box" style="text-align:center;">Sponsor Approval<br>[Name · Title]<br><br>[Signature / Date]</div>
+      <div class="field-box" style="text-align:center;">Financial Approval<br>[CFO · Name]<br><br>[Signature / Date]</div>
+    </div>
+  </div>
+
+  <div class="cta-block">
+    <h2>Need Help Building or Presenting a Business Case?</h2>
+    <p>We help leaders develop high-stakes business cases, model financial scenarios, and present to boards and executive teams. Let's make sure your next initiative gets approved.</p>
+    <div class="cta-btns">
+      <a href="https://nlcfirm.com/#contact" class="btn-gold">Book a Free Discovery Call</a>
+      <a href="/portal.html" class="btn-outline">Back to Dashboard</a>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>© 2026 New Level Consultants &nbsp;|&nbsp; <a href="https://nlcfirm.com">nlcfirm.com</a> &nbsp;|&nbsp; <a href="tel:+17864084243">786-408-4243</a></span>
+    <span>Free Resource Library · <a href="/free-resources.html">Explore All Templates</a></span>
+  </div>
+
+</div>
+</body>
+</html>

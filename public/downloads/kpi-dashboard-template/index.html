@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive KPI Dashboard Template — New Level Consultants</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0f1724; --navy-mid:#1a2744;
+    --gold:#c9a84c; --gold-light:#e8d5a3; --gold-dark:#9a7a2e;
+    --slate:#64748b; --text:#1e293b;
+    --bg:#f8f9fb; --white:#ffffff;
+    --border:#e2e8f0; --border-gold:rgba(201,168,76,0.3);
+    --cat-fin:#1d4ed8; --cat-fin-bg:#eff6ff;
+    --cat-sales:#166534; --cat-sales-bg:#f0fdf4;
+    --cat-mkt:#7c3aed; --cat-mkt-bg:#f5f3ff;
+    --cat-ops:#92400e; --cat-ops-bg:#fef3c7;
+    --cat-cx:#0f766e; --cat-cx-bg:#f0fdfa;
+    --cat-team:#9f1239; --cat-team-bg:#fff1f2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+
+  .dl-nav{background:var(--navy);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .dl-nav a{color:#fff;text-decoration:none;font-size:0.82rem;font-weight:500;opacity:0.8;}
+  .dl-nav a:hover{opacity:1;}
+  .dl-nav-title{color:var(--gold);font-size:0.82rem;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;}
+  .print-btn{background:var(--gold);color:var(--navy);border:none;padding:0.5rem 1.2rem;border-radius:4px;font-size:0.75rem;font-weight:700;cursor:pointer;}
+  .print-btn:hover{background:var(--gold-light);}
+
+  .document{max-width:1000px;margin:0 auto;background:var(--white);min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,0.06);}
+
+  .cover{background:linear-gradient(145deg,var(--navy),var(--navy-mid));color:#fff;padding:5rem 4rem 4rem;position:relative;overflow:hidden;}
+  .cover::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border:2px solid var(--border-gold);border-radius:50%;opacity:0.4;}
+  .cover-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--gold);color:var(--navy);font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.35rem 1rem;border-radius:3px;margin-bottom:1.5rem;}
+  .cover h1{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;line-height:1.15;margin-bottom:1rem;}
+  .cover h1 em{color:var(--gold-light);font-style:italic;}
+  .cover-desc{font-size:1rem;color:rgba(255,255,255,0.75);max-width:560px;margin-bottom:2.5rem;line-height:1.8;}
+  .cover-meta{display:flex;gap:2.5rem;flex-wrap:wrap;}
+  .cover-meta-label{font-size:0.65rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.2rem;}
+  .cover-meta-value{font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.9);}
+
+  .intro-block{padding:3rem 4rem;background:#fef9ec;border-bottom:1px solid #fde68a;}
+  .intro-block h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:0.8rem;}
+  .intro-block ol{padding-left:1.4rem;}
+  .intro-block li{font-size:0.85rem;color:var(--slate);margin-bottom:0.4rem;}
+  .intro-block strong{color:var(--text);}
+
+  .tpl-section{padding:3rem 4rem;border-bottom:1px solid var(--border);}
+
+  .sec-header{display:flex;align-items:flex-start;gap:1rem;margin-bottom:2rem;}
+  .sec-icon{font-size:1.8rem;flex-shrink:0;}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--gold);font-weight:700;letter-spacing:0.1em;background:rgba(201,168,76,0.1);padding:0.2rem 0.6rem;border-radius:3px;flex-shrink:0;}
+  .sec-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--navy);}
+  .sec-desc{font-size:0.82rem;color:var(--slate);margin-top:0.3rem;line-height:1.7;}
+
+  /* KPI TABLE */
+  .kpi-table{width:100%;border-collapse:collapse;font-size:0.77rem;margin-bottom:1rem;}
+  .kpi-table th{background:var(--navy);color:var(--gold-light);text-align:left;padding:0.6rem 0.8rem;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;}
+  .kpi-table td{padding:0.65rem 0.8rem;border-bottom:1px solid var(--border);vertical-align:top;}
+  .kpi-table tr:last-child td{border-bottom:none;}
+  .kpi-table tr:nth-child(even) td{background:#fafcff;}
+  .kpi-name{font-weight:600;color:var(--text);}
+  .kpi-def{font-size:0.72rem;color:var(--slate);margin-top:0.15rem;}
+  .kpi-formula{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--gold-dark);background:rgba(201,168,76,0.08);padding:0.15rem 0.4rem;border-radius:2px;margin-top:0.2rem;display:inline-block;}
+  .kpi-bench{font-size:0.7rem;color:#166534;background:#dcfce7;padding:0.1rem 0.5rem;border-radius:3px;}
+  .kpi-freq{font-size:0.68rem;font-weight:600;}
+  .freq-weekly{color:#1d4ed8;background:#eff6ff;padding:0.1rem 0.5rem;border-radius:3px;}
+  .freq-monthly{color:#7c3aed;background:#f5f3ff;padding:0.1rem 0.5rem;border-radius:3px;}
+  .freq-quarterly{color:#92400e;background:#fef3c7;padding:0.1rem 0.5rem;border-radius:3px;}
+  .interp-good{color:#166534;font-size:0.72rem;}
+  .interp-bad{color:#991b1b;font-size:0.72rem;}
+
+  /* CATEGORY BADGE */
+  .cat-fin-badge{background:var(--cat-fin-bg);color:var(--cat-fin);font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:3px;}
+  .cat-sales-badge{background:var(--cat-sales-bg);color:var(--cat-sales);font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:3px;}
+  .cat-mkt-badge{background:var(--cat-mkt-bg);color:var(--cat-mkt);font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:3px;}
+  .cat-ops-badge{background:var(--cat-ops-bg);color:var(--cat-ops);font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:3px;}
+  .cat-cx-badge{background:var(--cat-cx-bg);color:var(--cat-cx);font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:3px;}
+  .cat-team-badge{background:var(--cat-team-bg);color:var(--cat-team);font-size:0.65rem;font-weight:700;padding:0.2rem 0.6rem;border-radius:3px;}
+
+  /* CATEGORY SECTION STYLING */
+  .cat-section-fin .sec-title{color:var(--cat-fin);}
+  .cat-section-sales .sec-title{color:var(--cat-sales);}
+  .cat-section-mkt .sec-title{color:var(--cat-mkt);}
+  .cat-section-ops .sec-title{color:var(--cat-ops);}
+  .cat-section-cx .sec-title{color:var(--cat-cx);}
+  .cat-section-team .sec-title{color:var(--cat-team);}
+
+  /* DASHBOARD MOCKUP */
+  .dashboard-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+  .dash-kpi{border:1px solid var(--border);border-radius:6px;padding:1.2rem;text-align:center;}
+  .dash-label{font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--slate);margin-bottom:0.4rem;}
+  .dash-value{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--navy);margin-bottom:0.25rem;}
+  .dash-trend{font-size:0.7rem;font-weight:600;}
+  .trend-up{color:#166534;}
+  .trend-down{color:#991b1b;}
+  .trend-flat{color:var(--slate);}
+
+  /* SELECTION GUIDE */
+  .selector-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+  .selector-card{border:1px solid var(--border);border-radius:6px;padding:1.2rem;}
+  .sel-title{font-weight:700;font-size:0.88rem;color:var(--navy);margin-bottom:0.5rem;}
+  .sel-items{font-size:0.78rem;color:var(--slate);line-height:1.9;}
+
+  .tip-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:5px;padding:1rem 1.2rem;margin-bottom:1.2rem;font-size:0.8rem;color:#0c4a6e;}
+  .tip-box strong{color:#075985;}
+
+  .cta-block{background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:#fff;padding:3rem 4rem;text-align:center;}
+  .cta-block h2{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:0.8rem;}
+  .cta-block p{font-size:0.88rem;color:rgba(255,255,255,0.7);max-width:480px;margin:0 auto 2rem;line-height:1.8;}
+  .cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn-gold{background:var(--gold);color:var(--navy);padding:0.75rem 1.8rem;border-radius:4px;text-decoration:none;font-weight:700;font-size:0.82rem;letter-spacing:0.04em;}
+  .btn-gold:hover{background:var(--gold-light);}
+  .btn-outline{background:transparent;color:#fff;padding:0.75rem 1.8rem;border-radius:4px;text-decoration:none;font-weight:600;font-size:0.82rem;border:1px solid rgba(255,255,255,0.3);}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .doc-footer{background:var(--bg);border-top:2px solid var(--border);padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:var(--slate);}
+  .doc-footer a{color:var(--gold-dark);text-decoration:none;}
+
+  @media print{.dl-nav,.cta-block{display:none;} .tpl-section{page-break-inside:avoid;} body{background:#fff;} .document{box-shadow:none;}}
+  @media(max-width:700px){
+    .cover,.tpl-section,.intro-block{padding:2rem 1.5rem;}
+    .dashboard-row{grid-template-columns:1fr 1fr;}
+    .selector-grid{grid-template-columns:1fr;}
+    .doc-footer{flex-direction:column;gap:0.5rem;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<script>
+(function(){
+  if(!localStorage.getItem('nlc_client_token')){
+    window.location.replace('/portal-login.html?redirect='+encodeURIComponent(window.location.pathname));
+  }
+})();
+</script>
+
+<nav class="dl-nav">
+  <a href="/portal.html">← Back to Dashboard</a>
+  <span class="dl-nav-title">Executive KPI Dashboard Template</span>
+  <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</nav>
+
+<div class="document">
+
+  <div class="cover">
+    <div class="cover-badge">📈 Free Template · Performance</div>
+    <h1>Executive KPI <em>Dashboard</em></h1>
+    <p class="cover-desc">40+ KPIs across six business categories — Financial, Sales, Marketing, Operations, Customer, and Team. Each metric includes its definition, formula, reporting frequency, benchmark, and interpretation guidance.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Organization</div><div class="cover-meta-value">[Company Name]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Dashboard Owner</div><div class="cover-meta-value">[Name · Title]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Reporting Period</div><div class="cover-meta-value">[Monthly / Quarterly]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Updated</div><div class="cover-meta-value">[Date]</div></div>
+    </div>
+  </div>
+
+  <div class="intro-block">
+    <h2>How to Use This Dashboard</h2>
+    <ol>
+      <li><strong>Don't track all 40+ KPIs at once.</strong> Select 8–12 metrics that matter most to your current strategic priorities. Use this as a library, not a mandatory checklist.</li>
+      <li><strong>Assign an owner to each KPI</strong> you choose to track. A metric without an owner doesn't get improved.</li>
+      <li><strong>Set a baseline and target</strong> for every tracked KPI before you begin. A number without context is noise.</li>
+      <li><strong>Review your KPIs in a structured cadence</strong> — not just when you remember. Weekly for leading indicators; monthly for lagging indicators.</li>
+      <li><strong>If a KPI is trending the wrong direction for 2+ periods in a row,</strong> it needs a formal root-cause analysis and corrective action plan, not just a note.</li>
+    </ol>
+  </div>
+
+  <!-- EXECUTIVE SNAPSHOT -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <div>
+        <div class="sec-title">Executive Snapshot — How to Build Your Dashboard View</div>
+        <div class="sec-desc">This section is the single-page "cockpit view" for leadership. Build it in Excel, Google Sheets, or a BI tool. Replace placeholder values with live data linked from your source tabs.</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>Dashboard design principle:</strong> A great executive dashboard answers "Are we winning or losing?" in under 30 seconds. Use conditional formatting: Green = on/above target, Amber = within 10% of target, Red = more than 10% below target.</div>
+    <div class="dashboard-row">
+      <div class="dash-kpi"><div class="dash-label">Revenue (MTD)</div><div class="dash-value">$[X]K</div><div class="dash-trend trend-up">↑ [X]% vs. Plan</div></div>
+      <div class="dash-kpi"><div class="dash-label">Gross Margin</div><div class="dash-value">[X]%</div><div class="dash-trend trend-up">↑ [X]pts YoY</div></div>
+      <div class="dash-kpi"><div class="dash-label">Pipeline (Open)</div><div class="dash-value">$[X]K</div><div class="dash-trend trend-flat">→ [X]% Coverage</div></div>
+      <div class="dash-kpi"><div class="dash-label">Win Rate</div><div class="dash-value">[X]%</div><div class="dash-trend trend-down">↓ [X]pts vs. Q-1</div></div>
+    </div>
+    <div class="dashboard-row">
+      <div class="dash-kpi"><div class="dash-label">NPS Score</div><div class="dash-value">[X]</div><div class="dash-trend trend-up">↑ [X] pts</div></div>
+      <div class="dash-kpi"><div class="dash-label">Client Retention</div><div class="dash-value">[X]%</div><div class="dash-trend trend-flat">→ At Target</div></div>
+      <div class="dash-kpi"><div class="dash-label">Utilization Rate</div><div class="dash-value">[X]%</div><div class="dash-trend trend-up">↑ [X]%</div></div>
+      <div class="dash-kpi"><div class="dash-label">Cash Runway</div><div class="dash-value">[N] Mo</div><div class="dash-trend trend-up">$[X]K Cash</div></div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 1: FINANCIAL -->
+  <div class="tpl-section cat-section-fin">
+    <div class="sec-header">
+      <span class="sec-icon">💰</span>
+      <div>
+        <span class="cat-fin-badge">Financial KPIs</span>
+        <div class="sec-title" style="margin-top:0.3rem;">Financial Performance</div>
+        <div class="sec-desc">These metrics measure the financial health, profitability, and capital efficiency of your organization. Review monthly with CFO/finance lead and quarterly with the full leadership team.</div>
+      </div>
+    </div>
+    <table class="kpi-table">
+      <thead><tr><th style="min-width:160px;">KPI</th><th>Definition &amp; Formula</th><th>Frequency</th><th>Benchmark</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div class="kpi-name">Monthly Recurring Revenue (MRR)</div><div class="kpi-def">Total predictable revenue earned per month from all recurring sources</div></td>
+          <td><div class="kpi-formula">MRR = Σ (active subscriptions × monthly fee)</div>Break into: New MRR + Expansion MRR − Churned MRR = Net New MRR</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Growing by 5–15% MoM (early stage)</td>
+          <td><div class="interp-good">↑ Good: MRR growing faster than cost base</div><div class="interp-bad">↓ Alert: MRR flat or declining for 2+ months — investigate churn and new business pipeline</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Annual Recurring Revenue (ARR)</div><div class="kpi-def">Annualized value of all recurring contracts</div></td>
+          <td><div class="kpi-formula">ARR = MRR × 12</div>Track ARR waterfall: Beginning + New + Expansion − Churn − Contraction = Ending ARR</td>
+          <td><span class="freq-quarterly">Quarterly</span></td>
+          <td class="kpi-bench">SaaS benchmark: 80–120% NRR</td>
+          <td><div class="interp-good">↑ ARR growing with high retention = healthy unit economics</div><div class="interp-bad">↓ ARR shrinking = churn exceeding new business</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Gross Margin %</div><div class="kpi-def">Revenue remaining after direct delivery costs</div></td>
+          <td><div class="kpi-formula">(Revenue − COGS) ÷ Revenue × 100</div>Track monthly; separate by service line to identify margin diluters</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Services: 50–70% | SaaS: 70–80%</td>
+          <td><div class="interp-good">↑ Rising gross margin = better pricing or improved delivery efficiency</div><div class="interp-bad">↓ Declining margin = pricing pressure, scope creep, or cost growth outpacing revenue</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">EBITDA &amp; EBITDA Margin</div><div class="kpi-def">Operating profitability before non-cash items</div></td>
+          <td><div class="kpi-formula">EBITDA = Revenue − COGS − OpEx</div><div class="kpi-formula">EBITDA Margin = EBITDA ÷ Revenue × 100</div></td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Profitable SMB services: 15–25%</td>
+          <td><div class="interp-good">↑ Positive and growing = operational leverage</div><div class="interp-bad">↓ Negative EBITDA = burning cash; map the path to breakeven</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Cash Runway</div><div class="kpi-def">Months of operations at current burn rate before cash runs out</div></td>
+          <td><div class="kpi-formula">Cash Runway = Current Cash ÷ Monthly Net Burn Rate</div>Monthly Net Burn = Cash Outflows − Cash Inflows (negative = burning)</td>
+          <td><span class="freq-weekly">Weekly</span></td>
+          <td class="kpi-bench">Minimum: 6 months | Healthy: 12+ months</td>
+          <td><div class="interp-good">↑ &gt;12 months: comfortable; focus on growth</div><div class="interp-bad">↓ &lt;6 months: critical — begin fundraising or cost reduction immediately</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Days Sales Outstanding (DSO)</div><div class="kpi-def">Average time to collect payment after invoice</div></td>
+          <td><div class="kpi-formula">DSO = (Accounts Receivable ÷ Revenue) × Days in Period</div></td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Best: &lt;30 days | Watch: &gt;45 days</td>
+          <td><div class="interp-good">↓ Lower DSO = faster cash collection, better working capital</div><div class="interp-bad">↑ Rising DSO = clients paying slower; review collections process and payment terms</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">OpEx as % of Revenue</div><div class="kpi-def">Overhead cost efficiency relative to revenue size</div></td>
+          <td><div class="kpi-formula">Operating Expenses ÷ Revenue × 100</div>Track by cost category: Headcount, Sales &amp; Mkt, Tech, G&amp;A</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Scale target: OpEx declining as % of revenue</td>
+          <td><div class="interp-good">↓ Declining = operating leverage; more efficient at scale</div><div class="interp-bad">↑ Rising = cost growing faster than revenue — identify the driver</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CATEGORY 2: SALES -->
+  <div class="tpl-section cat-section-sales">
+    <div class="sec-header">
+      <span class="sec-icon">🤝</span>
+      <div>
+        <span class="cat-sales-badge">Sales KPIs</span>
+        <div class="sec-title" style="margin-top:0.3rem;">Sales Performance</div>
+        <div class="sec-desc">Measure the efficiency and effectiveness of your revenue generation machine. Leading indicators (pipeline, activities) predict future revenue. Lagging indicators (closed revenue) confirm past performance.</div>
+      </div>
+    </div>
+    <table class="kpi-table">
+      <thead><tr><th style="min-width:160px;">KPI</th><th>Definition &amp; Formula</th><th>Frequency</th><th>Benchmark</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div class="kpi-name">Total Pipeline Value</div><div class="kpi-def">Total dollar value of all active opportunities in your sales pipeline</div></td>
+          <td><div class="kpi-formula">Σ (Deal Value × Stage Probability %)</div>Break by stage: Prospect, Qualified, Proposal, Negotiation, Closed Won</td>
+          <td><span class="freq-weekly">Weekly</span></td>
+          <td class="kpi-bench">Pipeline Coverage: 3–5× monthly revenue target</td>
+          <td><div class="interp-good">↑ 3× coverage or above = healthy; you have enough at-bats to hit targets</div><div class="interp-bad">↓ Below 2× = pipeline emergency; accelerate prospecting immediately</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Win Rate</div><div class="kpi-def">Percentage of qualified opportunities that close as won</div></td>
+          <td><div class="kpi-formula">Win Rate = Closed Won Deals ÷ Total Qualified Opportunities × 100</div></td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">B2B services: 20–35%</td>
+          <td><div class="interp-good">↑ Improving win rate = better qualification, stronger proposals, improved trust</div><div class="interp-bad">↓ Declining = review lost deal analysis; identify common objections and competitive weaknesses</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Average Deal Size</div><div class="kpi-def">Average revenue per closed deal</div></td>
+          <td><div class="kpi-formula">ADS = Total Revenue from Closed Won ÷ Number of Closed Won Deals</div>Track trend over time and by deal type/segment</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Set target based on your pricing model and growth strategy</td>
+          <td><div class="interp-good">↑ Rising ADS = successful upselling, moving upmarket, or pricing improvements</div><div class="interp-bad">↓ Declining = competing on price, downmarket drift, or product mix shift</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Sales Cycle Length</div><div class="kpi-def">Average time from first contact to closed deal</div></td>
+          <td><div class="kpi-formula">Avg Days = Σ (Close Date − First Contact Date) ÷ # Closed Deals</div></td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">SMB B2B services: 14–45 days</td>
+          <td><div class="interp-good">↓ Shorter cycle = better qualification, clearer value prop, streamlined process</div><div class="interp-bad">↑ Longer cycle = friction in buying process; identify and remove bottlenecks</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Customer Acquisition Cost (CAC)</div><div class="kpi-def">Total cost to acquire one new customer</div></td>
+          <td><div class="kpi-formula">CAC = Total Sales &amp; Marketing Spend ÷ # New Customers Acquired</div>Separate CAC payback period: CAC ÷ Monthly Gross Margin per Customer</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">LTV:CAC ratio should be &gt;3:1</td>
+          <td><div class="interp-good">↓ CAC declining + LTV growing = efficient growth engine</div><div class="interp-bad">↑ Rising CAC = market saturation or inefficient marketing spend — audit channel by channel</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">New vs. Renewal Revenue Mix</div><div class="kpi-def">Proportion of revenue from new vs. existing clients</div></td>
+          <td><div class="kpi-formula">New Revenue % = New Client Revenue ÷ Total Revenue × 100</div></td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Healthy: 30–40% new; 60–70% renewal</td>
+          <td><div class="interp-good">High renewal % = strong retention and predictable base; new % growing = expanding market reach</div><div class="interp-bad">↓ Too much new dependency = churn risk is hiding; &gt;80% renewal only = growth may be stagnating</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CATEGORY 3: MARKETING -->
+  <div class="tpl-section cat-section-mkt">
+    <div class="sec-header">
+      <span class="sec-icon">📣</span>
+      <div>
+        <span class="cat-mkt-badge">Marketing KPIs</span>
+        <div class="sec-title" style="margin-top:0.3rem;">Marketing Performance</div>
+        <div class="sec-desc">Marketing KPIs measure your ability to generate awareness, attract qualified prospects, and convert them into sales opportunities. Focus on quality over quantity — a 2% conversion on high-quality leads beats a 0.5% on mass traffic.</div>
+      </div>
+    </div>
+    <table class="kpi-table">
+      <thead><tr><th style="min-width:160px;">KPI</th><th>Definition &amp; Formula</th><th>Frequency</th><th>Benchmark</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div class="kpi-name">Marketing Qualified Leads (MQLs)</div><div class="kpi-def">Leads that meet your criteria for "ready to talk to sales"</div></td>
+          <td><div class="kpi-formula">MQLs = Leads meeting defined qualification criteria</div>Define your MQL criteria explicitly (e.g., title + company size + behavior trigger)</td>
+          <td><span class="freq-weekly">Weekly</span></td>
+          <td class="kpi-bench">Target based on pipeline coverage ratio needed</td>
+          <td><div class="interp-good">↑ MQLs + high MQL-to-SQL conversion = marketing efficiently feeding pipeline</div><div class="interp-bad">↑ MQLs + low conversion = lead quality problem; tighten MQL definition</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Website Traffic &amp; Organic Sessions</div><div class="kpi-def">Total visitors and organic search visitors to your website</div></td>
+          <td><div class="kpi-formula">Sessions from Google Analytics or equivalent</div>Track total, organic, paid, referral, and direct separately</td>
+          <td><span class="freq-weekly">Weekly</span></td>
+          <td class="kpi-bench">Track MoM growth; target 10–20% organic growth YoY</td>
+          <td><div class="interp-good">↑ Organic growing = SEO working; lower-cost acquisition over time</div><div class="interp-bad">↓ Traffic dropping = algorithm change, technical SEO issue, or content gap</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Conversion Rate (Web → Lead)</div><div class="kpi-def">% of website visitors who become a lead</div></td>
+          <td><div class="kpi-formula">Conversion Rate = Leads ÷ Website Sessions × 100</div>Track by traffic source and landing page</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">B2B average: 1–3% | High-performing: 5%+</td>
+          <td><div class="interp-good">↑ Improving conversion = better messaging, offers, or UX</div><div class="interp-bad">↓ Declining = traffic quality issue or website friction; A/B test landing pages</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Cost Per Lead (CPL)</div><div class="kpi-def">Average cost to generate one new lead</div></td>
+          <td><div class="kpi-formula">CPL = Total Marketing Spend ÷ Total Leads Generated</div>Calculate by channel (paid, organic, events, referrals)</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Compare CPL to CAC; CPL should be 5–10% of CAC</td>
+          <td><div class="interp-good">↓ Declining CPL = marketing efficiency improving</div><div class="interp-bad">↑ Rising CPL = channel saturation or inefficient spend; reallocate budget</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Email List Growth &amp; Engagement</div><div class="kpi-def">Subscriber growth, open rates, and click-through rates</div></td>
+          <td><div class="kpi-formula">Open Rate = Opens ÷ Delivered × 100</div><div class="kpi-formula">CTR = Clicks ÷ Delivered × 100</div></td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">B2B open rate: 20–30% | CTR: 2–5%</td>
+          <td><div class="interp-good">↑ Rising open and click rates = compelling content, clean list</div><div class="interp-bad">↓ Declining = unsubscribes growing or content not resonating; audit subject lines and content relevance</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CATEGORY 4: OPERATIONS -->
+  <div class="tpl-section cat-section-ops">
+    <div class="sec-header">
+      <span class="sec-icon">⚙️</span>
+      <div>
+        <span class="cat-ops-badge">Operations KPIs</span>
+        <div class="sec-title" style="margin-top:0.3rem;">Operational Performance</div>
+        <div class="sec-desc">Operational KPIs measure how efficiently and effectively you deliver your products or services. These are often the most neglected — but they directly drive cost, quality, and client satisfaction.</div>
+      </div>
+    </div>
+    <table class="kpi-table">
+      <thead><tr><th style="min-width:160px;">KPI</th><th>Definition &amp; Formula</th><th>Frequency</th><th>Benchmark</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div class="kpi-name">Utilization Rate</div><div class="kpi-def">% of team time spent on billable/revenue-generating work</div></td>
+          <td><div class="kpi-formula">Billable Hours ÷ Total Available Hours × 100</div>Available hours = work hours minus non-billable overhead (admin, meetings, training)</td>
+          <td><span class="freq-weekly">Weekly</span></td>
+          <td class="kpi-bench">Professional services: 65–75% target</td>
+          <td><div class="interp-good">↑ 70–80%: Healthy. Good balance of delivery and overhead</div><div class="interp-bad">↓ &lt;60%: Overcapacity — review workload and pipeline. ↑ &gt;85%: Risk of burnout; hire or reduce non-billable overhead</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">On-Time Delivery Rate</div><div class="kpi-def">% of deliverables or projects completed by committed deadline</div></td>
+          <td><div class="kpi-formula">On-Time Deliveries ÷ Total Deliveries × 100</div></td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Target: &gt;90%</td>
+          <td><div class="interp-good">↑ &gt;90% = strong execution and realistic scoping</div><div class="interp-bad">↓ &lt;80% = scope creep, resource constraints, or planning failures — review project retrospectives</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Capacity Utilization (vs. Plan)</div><div class="kpi-def">Actual output vs. planned/target output</div></td>
+          <td><div class="kpi-formula">Actual Output ÷ Planned Output × 100</div>Customize "output" definition to your business (projects delivered, units produced, clients served)</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Target: 85–95%</td>
+          <td><div class="interp-good">Near 100% = demand well-matched to capacity</div><div class="interp-bad">Consistently below 85% = demand planning issue; above 100% = unsustainable — add capacity</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Error / Rework Rate</div><div class="kpi-def">% of work requiring correction or rework after first delivery</div></td>
+          <td><div class="kpi-formula">Work Items Requiring Rework ÷ Total Work Items × 100</div></td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Target: &lt;5%</td>
+          <td><div class="interp-good">↓ Declining = quality processes working, clearer requirements</div><div class="interp-bad">↑ Rising = identify root cause: unclear specs? Team skill gap? Process failure?</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Revenue Per Employee</div><div class="kpi-def">Revenue generated per full-time equivalent employee</div></td>
+          <td><div class="kpi-formula">Annual Revenue ÷ Total FTE Headcount</div></td>
+          <td><span class="freq-quarterly">Quarterly</span></td>
+          <td class="kpi-bench">Professional services: $150K–$250K+ per FTE</td>
+          <td><div class="interp-good">↑ Rising = increasing productivity or better pricing</div><div class="interp-bad">↓ Declining = hiring faster than revenue; or revenue stagnating without headcount reduction</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CATEGORY 5: CUSTOMER -->
+  <div class="tpl-section cat-section-cx">
+    <div class="sec-header">
+      <span class="sec-icon">⭐</span>
+      <div>
+        <span class="cat-cx-badge">Customer KPIs</span>
+        <div class="sec-title" style="margin-top:0.3rem;">Customer Success &amp; Experience</div>
+        <div class="sec-desc">The health of your customer base is a leading indicator of future revenue. Happy customers renew, expand, and refer. Unhappy customers churn quietly — often without warning unless you're tracking these signals.</div>
+      </div>
+    </div>
+    <table class="kpi-table">
+      <thead><tr><th style="min-width:160px;">KPI</th><th>Definition &amp; Formula</th><th>Frequency</th><th>Benchmark</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div class="kpi-name">Net Promoter Score (NPS)</div><div class="kpi-def">Likelihood of clients to recommend your organization (0–10 scale)</div></td>
+          <td><div class="kpi-formula">NPS = % Promoters (9–10) − % Detractors (0–6)</div>Survey all clients quarterly. Ask: "How likely are you to recommend us to a colleague?"</td>
+          <td><span class="freq-quarterly">Quarterly</span></td>
+          <td class="kpi-bench">Good: &gt;30 | Excellent: &gt;50</td>
+          <td><div class="interp-good">↑ &gt;50: World-class advocacy; clients are a growth channel</div><div class="interp-bad">↓ &lt;20: Satisfaction gap; review Detractor feedback within 48 hours</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Customer Retention Rate</div><div class="kpi-def">% of clients who remain at the end of a period</div></td>
+          <td><div class="kpi-formula">Retention = (Clients at End − New Clients) ÷ Clients at Start × 100</div>Track by cohort (when they started) to identify retention patterns over time</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Best-in-class services: &gt;90% annual retention</td>
+          <td><div class="interp-good">↑ &gt;90%: Clients find lasting value; CAC is amortized effectively</div><div class="interp-bad">↓ &lt;80%: Churn is eroding growth; build a formal churn analysis process</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Customer Churn Rate</div><div class="kpi-def">% of clients lost in a given period</div></td>
+          <td><div class="kpi-formula">Monthly Churn = Clients Lost ÷ Clients at Start of Month × 100</div>Separate logo churn (# of clients) from revenue churn ($ lost)</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Monthly: &lt;2% | Annual: &lt;10%</td>
+          <td><div class="interp-good">↓ &lt;1% monthly: Excellent retention; focus on expansion</div><div class="interp-bad">↑ &gt;3% monthly: Urgent — conduct exit interviews; build health scoring system</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Customer Lifetime Value (CLV)</div><div class="kpi-def">Total revenue expected from a client over the full relationship</div></td>
+          <td><div class="kpi-formula">CLV = Avg Monthly Revenue × Avg Client Lifetime (months)</div><div class="kpi-formula">Alt: CLV = (ARPU × Gross Margin %) ÷ Monthly Churn Rate</div></td>
+          <td><span class="freq-quarterly">Quarterly</span></td>
+          <td class="kpi-bench">CLV:CAC should be &gt;3:1</td>
+          <td><div class="interp-good">↑ Rising CLV = clients staying longer and/or spending more</div><div class="interp-bad">↓ Declining CLV = churn increasing or revenue per customer shrinking</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">CSAT (Customer Satisfaction Score)</div><div class="kpi-def">Direct satisfaction rating after interactions or deliverables</div></td>
+          <td><div class="kpi-formula">CSAT = (Satisfied Responses ÷ Total Responses) × 100</div>Use after key touchpoints: delivery, support, onboarding</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Target: &gt;85% satisfied or very satisfied</td>
+          <td><div class="interp-good">↑ Consistent CSAT &gt;85% = delivery quality meeting expectations</div><div class="interp-bad">↓ &lt;75%: Systematic quality or communication issue; conduct root cause by deliverable type</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- CATEGORY 6: TEAM -->
+  <div class="tpl-section cat-section-team">
+    <div class="sec-header">
+      <span class="sec-icon">👥</span>
+      <div>
+        <span class="cat-team-badge">Team &amp; Productivity KPIs</span>
+        <div class="sec-title" style="margin-top:0.3rem;">People &amp; Organizational Health</div>
+        <div class="sec-desc">Your team is the engine behind every other KPI. Track the metrics that signal whether your people are engaged, productive, and growing — before turnover or burnout become visible problems.</div>
+      </div>
+    </div>
+    <table class="kpi-table">
+      <thead><tr><th style="min-width:160px;">KPI</th><th>Definition &amp; Formula</th><th>Frequency</th><th>Benchmark</th><th>Interpretation</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><div class="kpi-name">Employee NPS (eNPS)</div><div class="kpi-def">Likelihood of employees to recommend your org as a place to work</div></td>
+          <td><div class="kpi-formula">eNPS = % Promoters (9–10) − % Detractors (0–6)</div>Ask: "How likely are you to recommend [Company] as a place to work, on a scale of 0–10?"</td>
+          <td><span class="freq-quarterly">Quarterly</span></td>
+          <td class="kpi-bench">Good: &gt;20 | Excellent: &gt;40</td>
+          <td><div class="interp-good">↑ &gt;40: Strong culture; employees are advocates</div><div class="interp-bad">↓ &lt;10 or negative: Cultural warning sign; conduct qualitative follow-up interviews</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Employee Turnover Rate</div><div class="kpi-def">% of employees who leave (voluntary and involuntary) in a period</div></td>
+          <td><div class="kpi-formula">Turnover = Employees Who Left ÷ Avg Headcount × 100</div>Separate voluntary (resignation) from involuntary (termination)</td>
+          <td><span class="freq-quarterly">Quarterly</span></td>
+          <td class="kpi-bench">Annual voluntary: &lt;15% | Knowledge workers: &lt;10%</td>
+          <td><div class="interp-good">↓ &lt;10% annual voluntary = strong retention and culture</div><div class="interp-bad">↑ &gt;20% = high cost (1.5–2× salary to replace); audit exit interview themes</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Headcount vs. Plan</div><div class="kpi-def">Actual FTE count vs. planned headcount in your hiring plan</div></td>
+          <td><div class="kpi-formula">Variance = Actual FTE − Planned FTE</div>Track open requisitions and average time-to-fill</td>
+          <td><span class="freq-monthly">Monthly</span></td>
+          <td class="kpi-bench">Time-to-fill: &lt;45 days for most roles</td>
+          <td><div class="interp-good">On plan = capacity aligned with demand</div><div class="interp-bad">↓ Below plan = underresourced; assess impact on delivery and revenue. Persistently unfilled roles = compensation or employer brand issue</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Training Completion Rate</div><div class="kpi-def">% of employees who complete required training in period</div></td>
+          <td><div class="kpi-formula">Completions ÷ Required Completions × 100</div></td>
+          <td><span class="freq-quarterly">Quarterly</span></td>
+          <td class="kpi-bench">Target: &gt;90% completion</td>
+          <td><div class="interp-good">↑ High completion = culture of development and compliance awareness</div><div class="interp-bad">↓ &lt;80%: Investigate barriers — time, access, relevance, accountability</div></td>
+        </tr>
+        <tr>
+          <td><div class="kpi-name">Average Performance Rating</div><div class="kpi-def">Distribution of performance ratings across the team</div></td>
+          <td>Track % Exceeds / Meets / Below expectations. Use consistent rubric across all roles.</td>
+          <td><span class="freq-quarterly">Quarterly</span></td>
+          <td class="kpi-bench">Calibrated distribution: 10–20% Exceeds, 70% Meets, &lt;10% Below</td>
+          <td><div class="interp-good">Calibrated ratings = clear performance standards and fair management</div><div class="interp-bad">&gt;50% "Exceeds" = grade inflation; recalibrate. Rising "Below" = hiring, training, or management issue</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SELECTION GUIDE -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <div>
+        <div class="sec-title">Build Your Custom Dashboard: KPI Selection Guide</div>
+        <div class="sec-desc">Use this guide to select the right 8–12 KPIs for your monthly executive review. Choose based on your strategic priorities, business stage, and current biggest risks.</div>
+      </div>
+    </div>
+    <div class="selector-grid">
+      <div class="selector-card">
+        <div class="sel-title">🌱 Early Stage (Revenue &lt; $1M)</div>
+        <div class="sel-items">
+          Focus on growth and product-market fit signals:<br>
+          • MRR &amp; MoM Growth Rate<br>
+          • Win Rate<br>
+          • Pipeline Coverage<br>
+          • CAC + LTV:CAC Ratio<br>
+          • Client Retention Rate<br>
+          • Cash Runway<br>
+          • Utilization Rate (if services)
+        </div>
+      </div>
+      <div class="selector-card">
+        <div class="sel-title">📈 Growth Stage ($1M–$10M)</div>
+        <div class="sel-items">
+          Focus on efficiency and scalability:<br>
+          • ARR &amp; NRR<br>
+          • Gross Margin<br>
+          • EBITDA Margin<br>
+          • Sales Cycle Length<br>
+          • NPS<br>
+          • Organic Traffic Growth<br>
+          • Revenue Per Employee<br>
+          • eNPS
+        </div>
+      </div>
+      <div class="selector-card">
+        <div class="sel-title">🏢 Mature / Scaling ($10M+)</div>
+        <div class="sel-items">
+          Focus on profitability and market leadership:<br>
+          • EBITDA + Operating Leverage<br>
+          • DSO &amp; Working Capital<br>
+          • Market Share<br>
+          • CLV by Segment<br>
+          • Churn by Cohort<br>
+          • OpEx as % Revenue<br>
+          • Turnover Rate
+        </div>
+      </div>
+      <div class="selector-card">
+        <div class="sel-title">⚠️ Turnaround / At-Risk</div>
+        <div class="sel-items">
+          Focus on survival and burn control:<br>
+          • Cash Runway (weekly)<br>
+          • Net Burn Rate<br>
+          • Churn Rate (real-time)<br>
+          • CAC (cut to minimum)<br>
+          • Gross Margin by Client<br>
+          • OpEx Breakdown<br>
+          • Pipeline by Close Probability
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-block">
+    <h2>Want Your KPI Dashboard Built for You?</h2>
+    <p>We design and implement executive dashboards in Excel, Google Sheets, Power BI, and Looker Studio. From KPI selection through automated reporting — we build it, document it, and train your team to own it.</p>
+    <div class="cta-btns">
+      <a href="https://nlcfirm.com/#contact" class="btn-gold">Book a Free Discovery Call</a>
+      <a href="/portal.html" class="btn-outline">Back to Dashboard</a>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>© 2026 New Level Consultants &nbsp;|&nbsp; <a href="https://nlcfirm.com">nlcfirm.com</a> &nbsp;|&nbsp; <a href="tel:+17864084243">786-408-4243</a></span>
+    <span>Free Resource Library · <a href="/free-resources.html">Explore All Templates</a></span>
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Financial Model Template — New Level Consultants</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1724; --navy-mid: #1a2744;
+    --gold: #c9a84c; --gold-light: #e8d5a3; --gold-dark: #9a7a2e;
+    --slate: #64748b; --text: #1e293b;
+    --bg: #f8f9fb; --white: #ffffff;
+    --border: #e2e8f0; --border-gold: rgba(201,168,76,0.3);
+    --input-blue: #eff6ff; --input-border: #bfdbfe;
+    --calc-green: #f0fdf4; --calc-border: #bbf7d0;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); line-height:1.7; }
+
+  .dl-nav { background:var(--navy); padding:0.9rem 2rem; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; }
+  .dl-nav a { color:#fff; text-decoration:none; font-size:0.82rem; font-weight:500; opacity:0.8; }
+  .dl-nav a:hover { opacity:1; }
+  .dl-nav-title { color:var(--gold); font-size:0.82rem; font-weight:600; font-family:'JetBrains Mono',monospace; letter-spacing:0.04em; }
+  .print-btn { background:var(--gold); color:var(--navy); border:none; padding:0.5rem 1.2rem; border-radius:4px; font-size:0.75rem; font-weight:700; cursor:pointer; }
+  .print-btn:hover { background:var(--gold-light); }
+
+  .document { max-width:1000px; margin:0 auto; background:var(--white); min-height:100vh; box-shadow:0 0 40px rgba(0,0,0,0.06); }
+
+  /* COVER */
+  .cover { background:linear-gradient(145deg,var(--navy),var(--navy-mid)); color:#fff; padding:5rem 4rem 4rem; position:relative; overflow:hidden; }
+  .cover::before { content:''; position:absolute; top:-60px; right:-60px; width:280px; height:280px; border:2px solid var(--border-gold); border-radius:50%; opacity:0.4; }
+  .cover-badge { display:inline-flex; align-items:center; gap:0.4rem; background:var(--gold); color:var(--navy); font-size:0.7rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; padding:0.35rem 1rem; border-radius:3px; margin-bottom:1.5rem; }
+  .cover h1 { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:700; line-height:1.15; margin-bottom:1rem; }
+  .cover h1 em { color:var(--gold-light); font-style:italic; }
+  .cover-desc { font-size:1rem; color:rgba(255,255,255,0.75); max-width:560px; margin-bottom:2.5rem; line-height:1.8; }
+  .cover-meta { display:flex; gap:2.5rem; flex-wrap:wrap; }
+  .cover-meta-label { font-size:0.65rem; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.2rem; }
+  .cover-meta-value { font-size:0.88rem; font-weight:600; color:rgba(255,255,255,0.9); }
+
+  /* INTRO */
+  .intro-block { padding:3rem 4rem; background:#fef9ec; border-bottom:1px solid #fde68a; }
+  .intro-block h2 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); margin-bottom:0.8rem; }
+  .intro-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:1rem; }
+  .intro-block ol, .intro-block ul { padding-left:1.4rem; }
+  .intro-block li { font-size:0.85rem; color:var(--slate); margin-bottom:0.4rem; }
+  .intro-block strong { color:var(--text); }
+  .color-legend { display:flex; gap:1rem; flex-wrap:wrap; margin-top:0.8rem; }
+  .color-chip { display:flex; align-items:center; gap:0.4rem; font-size:0.78rem; color:var(--slate); }
+  .chip { width:20px; height:14px; border-radius:2px; }
+  .chip-input { background:var(--input-blue); border:1px solid var(--input-border); }
+  .chip-calc { background:var(--calc-green); border:1px solid var(--calc-border); }
+  .chip-header { background:var(--navy); }
+
+  /* TAB NAV */
+  .tab-nav { display:flex; overflow-x:auto; background:var(--navy); gap:0; padding:0 2rem; border-bottom:3px solid var(--gold); }
+  .tab-btn { background:transparent; border:none; color:rgba(255,255,255,0.6); font-size:0.78rem; font-weight:600; padding:0.85rem 1.2rem; cursor:pointer; white-space:nowrap; transition:0.2s; letter-spacing:0.04em; border-bottom:3px solid transparent; margin-bottom:-3px; }
+  .tab-btn:hover { color:#fff; }
+  .tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
+
+  /* TAB CONTENT */
+  .tab-pane { display:none; }
+  .tab-pane.active { display:block; }
+
+  /* SECTION */
+  .tpl-section { padding:3rem 4rem; border-bottom:1px solid var(--border); }
+
+  .sec-header { display:flex; align-items:baseline; gap:1rem; margin-bottom:2rem; }
+  .sec-num { font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--gold); font-weight:700; letter-spacing:0.1em; background:rgba(201,168,76,0.1); padding:0.2rem 0.6rem; border-radius:3px; flex-shrink:0; }
+  .sec-title { font-family:'Playfair Display',serif; font-size:1.4rem; color:var(--navy); }
+  .sec-desc { font-size:0.82rem; color:var(--slate); margin-top:0.3rem; line-height:1.7; }
+
+  /* MODEL TABLE */
+  .model-table { width:100%; border-collapse:collapse; font-size:0.78rem; margin-bottom:1rem; }
+  .model-table th { background:var(--navy); color:var(--gold-light); text-align:left; padding:0.6rem 0.8rem; font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; white-space:nowrap; }
+  .model-table td { padding:0.55rem 0.8rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  .model-table tr.subtotal td { background:#f1f5f9; font-weight:600; border-top:1px solid #cbd5e1; }
+  .model-table tr.total td { background:var(--navy); color:#fff; font-weight:700; }
+  .model-table tr.section-header td { background:rgba(201,168,76,0.08); font-weight:700; color:var(--navy); font-size:0.8rem; border-top:2px solid var(--border-gold); }
+  .cell-input { background:var(--input-blue); border:1px solid var(--input-border); border-radius:2px; padding:0.2rem 0.5rem; font-size:0.73rem; color:#1d4ed8; font-family:'JetBrains Mono',monospace; white-space:nowrap; }
+  .cell-calc { background:var(--calc-green); border:1px solid var(--calc-border); border-radius:2px; padding:0.2rem 0.5rem; font-size:0.73rem; color:#15803d; font-family:'JetBrains Mono',monospace; white-space:nowrap; }
+  .cell-placeholder { color:#94a3b8; font-style:italic; font-size:0.75rem; }
+  .formula-note { font-size:0.72rem; color:var(--gold-dark); margin-top:0.3rem; }
+  .model-table td.right { text-align:right; }
+  .model-table th.right { text-align:right; }
+
+  /* ASSUME TABLE */
+  .assume-table { width:100%; border-collapse:collapse; font-size:0.8rem; margin-bottom:1.5rem; }
+  .assume-table th { background:var(--navy); color:var(--gold-light); padding:0.6rem 0.8rem; text-align:left; font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; }
+  .assume-table td { padding:0.65rem 0.8rem; border-bottom:1px solid var(--border); vertical-align:top; }
+  .assume-table tr.section-row td { background:rgba(201,168,76,0.07); font-weight:700; color:var(--navy); font-size:0.78rem; border-top:2px solid var(--border-gold); }
+  .assume-table tr:nth-child(even):not(.section-row) td { background:#fafcff; }
+
+  /* SCENARIO */
+  .scenario-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:1.5rem; }
+  .scenario-card { border:1px solid var(--border); border-radius:6px; overflow:hidden; }
+  .scenario-head { padding:1rem 1.2rem; font-weight:700; font-size:0.82rem; text-align:center; }
+  .scenario-head.base { background:var(--navy); color:var(--gold-light); }
+  .scenario-head.bull { background:#166534; color:#dcfce7; }
+  .scenario-head.bear { background:#991b1b; color:#fee2e2; }
+  .scenario-body { padding:1rem 1.2rem; }
+  .scenario-row { display:flex; justify-content:space-between; font-size:0.78rem; padding:0.3rem 0; border-bottom:1px dashed var(--border); }
+  .scenario-row:last-child { border-bottom:none; }
+  .scenario-key { color:var(--slate); }
+  .scenario-val { font-weight:600; color:var(--text); }
+
+  /* DASHBOARD */
+  .kpi-boxes { display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-bottom:2rem; }
+  .kpi-box { border:1px solid var(--border-gold); border-radius:6px; padding:1.2rem; text-align:center; background:linear-gradient(135deg,rgba(201,168,76,0.05),#fff); }
+  .kpi-box-label { font-size:0.65rem; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--slate); margin-bottom:0.4rem; }
+  .kpi-box-value { font-family:'Playfair Display',serif; font-size:1.8rem; color:var(--navy); margin-bottom:0.2rem; }
+  .kpi-box-change { font-size:0.72rem; color:#166534; font-weight:600; }
+  .kpi-box-change.neg { color:#991b1b; }
+
+  /* CTA */
+  .cta-block { background:linear-gradient(135deg,var(--navy),var(--navy-mid)); color:#fff; padding:3rem 4rem; text-align:center; }
+  .cta-block h2 { font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:0.8rem; }
+  .cta-block p { font-size:0.88rem; color:rgba(255,255,255,0.7); max-width:480px; margin:0 auto 2rem; line-height:1.8; }
+  .cta-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+  .btn-gold { background:var(--gold); color:var(--navy); padding:0.75rem 1.8rem; border-radius:4px; text-decoration:none; font-weight:700; font-size:0.82rem; letter-spacing:0.04em; }
+  .btn-gold:hover { background:var(--gold-light); }
+  .btn-outline { background:transparent; color:#fff; padding:0.75rem 1.8rem; border-radius:4px; text-decoration:none; font-weight:600; font-size:0.82rem; border:1px solid rgba(255,255,255,0.3); }
+  .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+
+  .doc-footer { background:var(--bg); border-top:2px solid var(--border); padding:1.5rem 4rem; display:flex; justify-content:space-between; align-items:center; font-size:0.75rem; color:var(--slate); }
+  .doc-footer a { color:var(--gold-dark); text-decoration:none; }
+
+  .tip-box { background:#f0f9ff; border:1px solid #bae6fd; border-radius:5px; padding:1rem 1.2rem; margin-bottom:1.2rem; font-size:0.8rem; color:#0c4a6e; }
+  .tip-box strong { color:#075985; }
+  .warn-box { background:#fef9ec; border:1px solid #fde68a; border-radius:5px; padding:1rem 1.2rem; margin-bottom:1.2rem; font-size:0.8rem; color:#78350f; }
+
+  @media print {
+    .dl-nav, .tab-nav, .cta-block { display:none; }
+    .tab-pane { display:block !important; page-break-before:always; }
+    .tab-pane:first-child { page-break-before:auto; }
+    body { background:#fff; }
+    .document { box-shadow:none; }
+  }
+  @media (max-width:700px) {
+    .cover, .tpl-section, .intro-block { padding:2rem 1.5rem; }
+    .kpi-boxes { grid-template-columns:1fr 1fr; }
+    .scenario-grid { grid-template-columns:1fr; }
+    .intro-grid { grid-template-columns:1fr; }
+    .doc-footer { flex-direction:column; gap:0.5rem; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<script>
+(function(){
+  if(!localStorage.getItem('nlc_client_token')){
+    window.location.replace('/portal-login.html?redirect='+encodeURIComponent(window.location.pathname));
+  }
+})();
+</script>
+
+<nav class="dl-nav">
+  <a href="/portal.html">← Back to Dashboard</a>
+  <span class="dl-nav-title">Financial Model Template</span>
+  <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</nav>
+
+<div class="document">
+
+  <div class="cover">
+    <div class="cover-badge">📊 Free Template · Finance</div>
+    <h1>Financial Model <em>Template</em></h1>
+    <p class="cover-desc">An 8-tab professional financial model structure with suggested formulas, example line items, and color-coded inputs vs. calculated cells. Built for planning, fundraising, and board reporting.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Company</div><div class="cover-meta-value">[Company Name]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Model Period</div><div class="cover-meta-value">[Jan 2026 – Dec 2026]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Currency</div><div class="cover-meta-value">USD ($)</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Prepared by</div><div class="cover-meta-value">[Name · Date]</div></div>
+    </div>
+  </div>
+
+  <div class="intro-block">
+    <h2>How to Use This Financial Model</h2>
+    <div class="intro-grid">
+      <div>
+        <strong style="font-size:0.85rem;">Build Order (follow this sequence):</strong>
+        <ol style="margin-top:0.5rem;">
+          <li><strong>Tab 1 — Assumptions:</strong> Enter all drivers first. Everything else should link here.</li>
+          <li><strong>Tab 2 — Revenue Forecast:</strong> Build each revenue stream from assumptions.</li>
+          <li><strong>Tab 3 — Cost Forecast:</strong> Build independently of revenue (avoid reverse-engineering margins).</li>
+          <li><strong>Tab 4 — Headcount Plan:</strong> Employee costs feed into Costs and P&amp;L.</li>
+          <li><strong>Tabs 5 &amp; 6 — P&amp;L and Cash Flow:</strong> Should pull from the above; minimal manual input.</li>
+          <li><strong>Tab 7 — Scenario Analysis:</strong> Adjust key assumptions; outputs update automatically.</li>
+          <li><strong>Tab 8 — Dashboard:</strong> Summary view for stakeholders.</li>
+        </ol>
+      </div>
+      <div>
+        <strong style="font-size:0.85rem;">Color Coding Convention:</strong>
+        <div class="color-legend" style="margin-top:0.5rem;">
+          <div class="color-chip"><div class="chip chip-input"></div> Blue = Input cell (you type here)</div>
+          <div class="color-chip"><div class="chip chip-calc"></div> Green = Calculated (formula, don't override)</div>
+          <div class="color-chip"><div class="chip chip-header"></div> Dark = Section header</div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--slate);margin-top:0.8rem;">In Excel/Sheets: use conditional formatting to apply blue fill to all hard-coded inputs and green fill to all formula cells. This makes auditing significantly easier.</p>
+        <p style="font-size:0.78rem;color:var(--slate);margin-top:0.5rem;"><strong>Period columns:</strong> Use monthly columns (Jan–Dec) with a full-year total. Add a "vs. Prior Year" column for context.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="showTab(0,this)">1. Assumptions</button>
+    <button class="tab-btn" onclick="showTab(1,this)">2. Revenue</button>
+    <button class="tab-btn" onclick="showTab(2,this)">3. Costs</button>
+    <button class="tab-btn" onclick="showTab(3,this)">4. Headcount</button>
+    <button class="tab-btn" onclick="showTab(4,this)">5. P&amp;L</button>
+    <button class="tab-btn" onclick="showTab(5,this)">6. Cash Flow</button>
+    <button class="tab-btn" onclick="showTab(6,this)">7. Scenarios</button>
+    <button class="tab-btn" onclick="showTab(7,this)">8. Dashboard</button>
+  </div>
+
+  <!-- TAB 1: ASSUMPTIONS -->
+  <div class="tab-pane active">
+    <div class="tpl-section">
+      <div class="sec-header">
+        <span class="sec-num">TAB 01</span>
+        <div>
+          <div class="sec-title">Assumptions</div>
+          <div class="sec-desc">Every number in your model should be traceable to an assumption on this tab. Change an assumption here and the entire model updates. This tab is the "control panel" of your model.</div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>Pro tip:</strong> Name your assumption cells (e.g., <code>RevGrowthRate</code>) and reference them by name throughout the model. This makes it far easier to audit than cell references like =B12.</div>
+      <table class="assume-table">
+        <thead><tr><th>Assumption</th><th>Value</th><th>Notes / Source</th><th>Sensitivity?</th></tr></thead>
+        <tbody>
+          <tr class="section-row"><td colspan="4">Revenue Assumptions</td></tr>
+          <tr><td>Starting Annual Revenue (Y0 Actual)</td><td><span class="cell-input">$[X]</span></td><td>Prior year actuals; source: audited financials or management accounts</td><td>No</td></tr>
+          <tr><td>Revenue Growth Rate — Base Case</td><td><span class="cell-input">[X]%</span></td><td>Based on pipeline analysis + market research; document your rationale</td><td>Yes — key driver</td></tr>
+          <tr><td>Average Revenue Per Client/Unit</td><td><span class="cell-input">$[X]</span></td><td>Blended average across service tiers; use actual historical average</td><td>Yes</td></tr>
+          <tr><td>New Client Acquisitions Per Month</td><td><span class="cell-input">[N]</span></td><td>Based on current pipeline conversion rate and sales capacity</td><td>Yes</td></tr>
+          <tr><td>Client Churn Rate (Monthly)</td><td><span class="cell-input">[X]%</span></td><td>Based on trailing 12-month actuals; [X]% = [N] clients/month lost</td><td>Yes</td></tr>
+          <tr><td>Upsell/Expansion Revenue Rate</td><td><span class="cell-input">[X]%</span></td><td>% of existing clients who upgrade or expand annually</td><td>Yes</td></tr>
+          <tr class="section-row"><td colspan="4">Cost Assumptions</td></tr>
+          <tr><td>COGS as % of Revenue</td><td><span class="cell-input">[X]%</span></td><td>Direct service delivery costs; benchmark against industry: [X]–[Y]%</td><td>Yes</td></tr>
+          <tr><td>Annual Payroll Increase Rate</td><td><span class="cell-input">[X]%</span></td><td>Assumed merit/inflation increase applied to existing headcount</td><td>No</td></tr>
+          <tr><td>Rent / Facilities (Monthly)</td><td><span class="cell-input">$[X]</span></td><td>Current lease; escalation: [X]% annually</td><td>No</td></tr>
+          <tr><td>Software / Technology (Monthly)</td><td><span class="cell-input">$[X]</span></td><td>Itemize major tools: [list]. Budget for [N] new tools at $[X]/mo avg.</td><td>No</td></tr>
+          <tr><td>Marketing / CAC Budget (Annual)</td><td><span class="cell-input">$[X]</span></td><td>Target CAC: $[X]. Planned lead volume: [N]. Conversion: [X]%</td><td>Yes</td></tr>
+          <tr class="section-row"><td colspan="4">Financial Assumptions</td></tr>
+          <tr><td>Effective Tax Rate</td><td><span class="cell-input">[X]%</span></td><td>Consult your accountant; typical range 21–28% for US entities</td><td>No</td></tr>
+          <tr><td>Accounts Receivable Days (DSO)</td><td><span class="cell-input">[N] days</span></td><td>How quickly clients pay; impacts cash flow. Target: &lt;30 days</td><td>Yes</td></tr>
+          <tr><td>Accounts Payable Days (DPO)</td><td><span class="cell-input">[N] days</span></td><td>How quickly you pay vendors; extends runway. Typical: 30–45 days</td><td>No</td></tr>
+          <tr><td>Beginning Cash Balance</td><td><span class="cell-input">$[X]</span></td><td>Opening cash at start of model period</td><td>No</td></tr>
+          <tr><td>Capital Expenditure (Annual)</td><td><span class="cell-input">$[X]</span></td><td>Equipment, leasehold improvements, major purchases. Depreciation: [X] years</td><td>No</td></tr>
+          <tr class="section-row"><td colspan="4">Scenario Toggles</td></tr>
+          <tr><td>Scenario Selector</td><td><span class="cell-input">Base / Bull / Bear</span></td><td>Toggle here; Scenario tab defines the multipliers for each case</td><td>—</td></tr>
+          <tr><td>Bull Case Revenue Multiplier</td><td><span class="cell-input">+[X]%</span></td><td>Applied to base case revenue growth rate in bull scenario</td><td>—</td></tr>
+          <tr><td>Bear Case Revenue Multiplier</td><td><span class="cell-input">-[X]%</span></td><td>Applied to base case revenue growth rate in bear scenario</td><td>—</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 2: REVENUE -->
+  <div class="tab-pane">
+    <div class="tpl-section">
+      <div class="sec-header">
+        <span class="sec-num">TAB 02</span>
+        <div>
+          <div class="sec-title">Revenue Forecast</div>
+          <div class="sec-desc">Build revenue from the bottom up — by product/service line, by customer segment, or by geographic market. Each stream should link to the Assumptions tab for growth rates and pricing.</div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>Column structure:</strong> Jan | Feb | Mar | Q1 Total | Apr | May | Jun | Q2 Total | ... | Full Year | Prior Year | YoY Growth %</div>
+      <table class="model-table">
+        <thead>
+          <tr>
+            <th style="min-width:200px;">Revenue Stream</th>
+            <th class="right">Jan</th><th class="right">Feb</th><th class="right">Mar</th>
+            <th class="right" style="background:#1a3a5c;">Q1</th>
+            <th class="right">Q2</th><th class="right">Q3</th><th class="right">Q4</th>
+            <th class="right" style="background:#1a3a5c;">Full Year</th>
+            <th class="right">Formula / Driver</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="section-header"><td colspan="10">Recurring Revenue</td></tr>
+          <tr>
+            <td>Service Line 1 — [e.g., Retainer Clients]</td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-calc">=Jan×(1+GrowthRate)</span></td>
+            <td class="right"><span class="cell-calc">=Feb×(1+GrowthRate)</span></td>
+            <td class="right"><span class="cell-calc">=SUM(Jan:Mar)</span></td>
+            <td class="right"><span class="cell-calc">=SUM(Apr:Jun)</span></td>
+            <td class="right"><span class="cell-calc">=SUM(Jul:Sep)</span></td>
+            <td class="right"><span class="cell-calc">=SUM(Oct:Dec)</span></td>
+            <td class="right"><span class="cell-calc">=SUM(Q1:Q4)</span></td>
+            <td><span class="cell-placeholder">Active clients × Avg MRR</span></td>
+          </tr>
+          <tr>
+            <td>Service Line 2 — [e.g., Advisory Retainer]</td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-calc">↑</span></td>
+            <td class="right"><span class="cell-calc">↑</span></td>
+            <td class="right"><span class="cell-calc">↑</span></td>
+            <td class="right"><span class="cell-calc">↑</span></td>
+            <td class="right"><span class="cell-calc">↑</span></td>
+            <td class="right"><span class="cell-calc">↑</span></td>
+            <td class="right"><span class="cell-calc">↑</span></td>
+            <td><span class="cell-placeholder">Tier pricing × client count</span></td>
+          </tr>
+          <tr class="subtotal"><td>Total Recurring Revenue</td><td class="right"><span class="cell-calc">=SUM</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td></td></tr>
+          <tr class="section-header"><td colspan="10">Project / Non-Recurring Revenue</td></tr>
+          <tr>
+            <td>Project Revenue — [e.g., Assessments]</td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-calc">=SUM</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-calc">↑</span></td>
+            <td><span class="cell-placeholder">Pipeline × close rate × avg deal</span></td>
+          </tr>
+          <tr>
+            <td>Digital Products / Tools</td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-calc">=SUM</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-input">$[X]</span></td>
+            <td class="right"><span class="cell-calc">↑</span></td>
+            <td><span class="cell-placeholder">Units sold × price</span></td>
+          </tr>
+          <tr class="subtotal"><td>Total Non-Recurring Revenue</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td></td></tr>
+          <tr class="total"><td>TOTAL REVENUE</td><td class="right">$[X]</td><td class="right">$[X]</td><td class="right">$[X]</td><td class="right">$[X]</td><td class="right">$[X]</td><td class="right">$[X]</td><td class="right">$[X]</td><td class="right">$[X]</td><td></td></tr>
+          <tr><td>YoY Growth %</td><td class="right"><span class="cell-calc">=(This–Prior)÷Prior</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td></td></tr>
+        </tbody>
+      </table>
+      <p class="formula-note">Revenue Bridge: Track the components of change each period — New Revenue + Expansion Revenue − Churn Revenue = Net Revenue Change. This tells you how healthy growth really is.</p>
+    </div>
+  </div>
+
+  <!-- TAB 3: COSTS -->
+  <div class="tab-pane">
+    <div class="tpl-section">
+      <div class="sec-header">
+        <span class="sec-num">TAB 03</span>
+        <div>
+          <div class="sec-title">Cost Forecast</div>
+          <div class="sec-desc">Build costs independently of revenue. Separate fixed costs (don't change with revenue) from variable costs (scale with revenue). This distinction is critical for scenario analysis.</div>
+        </div>
+      </div>
+      <div class="warn-box"><strong>Warning:</strong> Don't work backwards from a target margin to arrive at costs. Build costs independently, then calculate the resulting margin. If the margin is unacceptable, go back and challenge the cost structure.</div>
+      <table class="model-table">
+        <thead>
+          <tr><th style="min-width:220px;">Cost Item</th><th>Type</th><th class="right">Q1</th><th class="right">Q2</th><th class="right">Q3</th><th class="right">Q4</th><th class="right">Full Year</th><th>Driver / Formula</th></tr>
+        </thead>
+        <tbody>
+          <tr class="section-header"><td colspan="8">Cost of Goods Sold (COGS)</td></tr>
+          <tr><td>Direct Labor (billable staff)</td><td>Variable</td><td class="right"><span class="cell-calc">=Revenue×COGSRate</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td>Headcount tab → billable hours × fully-loaded rate</td></tr>
+          <tr><td>Subcontractors / Freelancers</td><td>Variable</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>Project-based; estimate by engagement</td></tr>
+          <tr><td>Direct Software / Tools</td><td>Variable</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>Tools used in client delivery; track per project</td></tr>
+          <tr class="subtotal"><td>Total COGS</td><td></td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td></td></tr>
+          <tr><td>Gross Margin %</td><td></td><td class="right"><span class="cell-calc">=(Rev−COGS)÷Rev</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td>Target: [X]%. Industry bench: [Y]–[Z]%</td></tr>
+          <tr class="section-header"><td colspan="8">Operating Expenses (OpEx)</td></tr>
+          <tr><td>Salaries &amp; Benefits (non-billable)</td><td>Fixed</td><td class="right"><span class="cell-calc">=Headcount tab</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>From Headcount Plan tab</td></tr>
+          <tr><td>Rent &amp; Facilities</td><td>Fixed</td><td class="right"><span class="cell-calc">=Assumptions!Rent×3</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>Monthly × 3 = quarterly</td></tr>
+          <tr><td>Technology &amp; Software (overhead)</td><td>Fixed</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>Itemize: CRM $X, Accounting $X, etc.</td></tr>
+          <tr><td>Sales &amp; Marketing</td><td>Variable</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>From marketing budget; track CAC</td></tr>
+          <tr><td>Professional Services (legal, accounting)</td><td>Fixed</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>Retainer + estimated project fees</td></tr>
+          <tr><td>Insurance</td><td>Fixed</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>General liability + E&amp;O + D&amp;O if applicable</td></tr>
+          <tr><td>Travel &amp; Entertainment</td><td>Variable</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>Cap as % of revenue; flag overruns</td></tr>
+          <tr><td>Other G&amp;A</td><td>Fixed</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td>Supplies, subscriptions, miscellaneous</td></tr>
+          <tr class="subtotal"><td>Total Operating Expenses</td><td></td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td></td></tr>
+          <tr class="total"><td>TOTAL COSTS (COGS + OpEx)</td><td></td><td class="right">$[X]</td><td class="right">$[X]</td><td class="right">$[X]</td><td class="right">$[X]</td><td class="right">$[X]</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 4: HEADCOUNT -->
+  <div class="tab-pane">
+    <div class="tpl-section">
+      <div class="sec-header">
+        <span class="sec-num">TAB 04</span>
+        <div>
+          <div class="sec-title">Headcount Plan</div>
+          <div class="sec-desc">Track every employee and planned hire: their role, department, FTE, base salary, benefits cost, and hiring month. Sum feeds into COGS and OpEx on the Cost tab.</div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>Benefits cost rule of thumb:</strong> Add 20–30% of base salary for benefits (health insurance, payroll taxes, 401k match, paid leave). Adjust for your actual plan.</div>
+      <table class="model-table">
+        <thead>
+          <tr><th>Name / Role</th><th>Dept.</th><th>FTE</th><th>Type</th><th>Hire Month</th><th class="right">Base Salary</th><th class="right">Benefits (25%)</th><th class="right">Total Cost/Yr</th><th class="right">Months in Period</th><th class="right">Cost This Period</th></tr>
+        </thead>
+        <tbody>
+          <tr class="section-header"><td colspan="10">Existing Headcount</td></tr>
+          <tr><td>[Name / Role 1]</td><td>Delivery</td><td>1.0</td><td>Billable</td><td>Current</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right"><span class="cell-calc">=$Sal×25%</span></td><td class="right"><span class="cell-calc">=Sal+Ben</span></td><td class="right">12</td><td class="right"><span class="cell-calc">=(Sal+Ben)×Mo/12</span></td></tr>
+          <tr><td>[Name / Role 2]</td><td>Delivery</td><td>1.0</td><td>Billable</td><td>Current</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right">12</td><td class="right"><span class="cell-calc">↑</span></td></tr>
+          <tr><td>[Operations Manager]</td><td>G&amp;A</td><td>1.0</td><td>Non-Billable</td><td>Current</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right">12</td><td class="right"><span class="cell-calc">↑</span></td></tr>
+          <tr class="section-header"><td colspan="10">Planned New Hires</td></tr>
+          <tr><td>[New Role — e.g., Account Manager]</td><td>Sales</td><td>1.0</td><td>Non-Billable</td><td><span class="cell-input">Apr</span></td><td class="right"><span class="cell-input">$[X]</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">=MONTHS(HireDate,YrEnd)</span></td><td class="right"><span class="cell-calc">↑</span></td></tr>
+          <tr><td>[New Role — e.g., Senior Consultant]</td><td>Delivery</td><td>1.0</td><td>Billable</td><td><span class="cell-input">Jul</span></td><td class="right"><span class="cell-input">$[X]</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td></tr>
+          <tr><td>[Add rows as needed]</td><td></td><td></td><td></td><td></td><td class="right"></td><td class="right"></td><td class="right"></td><td class="right"></td><td class="right"></td></tr>
+          <tr class="subtotal"><td>TOTAL HEADCOUNT COST</td><td></td><td><span class="cell-calc">=COUNT</span></td><td></td><td></td><td class="right"><span class="cell-calc">=SUM</span></td><td class="right"><span class="cell-calc">=SUM</span></td><td class="right"><span class="cell-calc">=SUM</span></td><td></td><td class="right"><span class="cell-calc">=SUM</span></td></tr>
+          <tr><td>Billable Headcount Cost (→ COGS)</td><td></td><td><span class="cell-calc">=COUNTIF</span></td><td></td><td></td><td class="right"></td><td class="right"></td><td class="right"><span class="cell-calc">=SUMIF(Type,"Billable")</span></td><td></td><td class="right"><span class="cell-calc">↑</span></td></tr>
+          <tr><td>Non-Billable Cost (→ OpEx)</td><td></td><td><span class="cell-calc">=COUNTIF</span></td><td></td><td></td><td class="right"></td><td class="right"></td><td class="right"><span class="cell-calc">=SUMIF(Type,"Non-Billable")</span></td><td></td><td class="right"><span class="cell-calc">↑</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 5: P&L -->
+  <div class="tab-pane">
+    <div class="tpl-section">
+      <div class="sec-header">
+        <span class="sec-num">TAB 05</span>
+        <div>
+          <div class="sec-title">Profit &amp; Loss Statement</div>
+          <div class="sec-desc">The P&amp;L should be almost entirely calculated cells — pulling from Revenue, Cost, and Headcount tabs. Minimal manual input. If you're entering numbers directly, something is disconnected.</div>
+        </div>
+      </div>
+      <table class="model-table">
+        <thead>
+          <tr><th style="min-width:220px;">Line Item</th><th class="right">Q1</th><th class="right">Q2</th><th class="right">Q3</th><th class="right">Q4</th><th class="right">Full Year</th><th class="right">% of Revenue</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Revenue</strong></td><td class="right"><span class="cell-calc">=Rev tab</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">100%</td></tr>
+          <tr><td>Cost of Goods Sold (COGS)</td><td class="right"><span class="cell-calc">=Costs tab</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">=COGS÷Rev</span></td></tr>
+          <tr class="subtotal"><td>GROSS PROFIT</td><td class="right"><span class="cell-calc">=Rev−COGS</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">=GP÷Rev</span></td></tr>
+          <tr class="section-header"><td colspan="7">Operating Expenses</td></tr>
+          <tr><td>Salaries &amp; Benefits (non-billable)</td><td class="right"><span class="cell-calc">=Headcount tab</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">=÷Rev</span></td></tr>
+          <tr><td>Sales &amp; Marketing</td><td class="right"><span class="cell-calc">=Costs tab</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">=÷Rev</span></td></tr>
+          <tr><td>Technology &amp; Software</td><td class="right"><span class="cell-calc">=Costs tab</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">=÷Rev</span></td></tr>
+          <tr><td>Rent &amp; Facilities</td><td class="right"><span class="cell-calc">=Costs tab</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">=÷Rev</span></td></tr>
+          <tr><td>Professional Services</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">=÷Rev</span></td></tr>
+          <tr><td>Other G&amp;A</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">=÷Rev</span></td></tr>
+          <tr class="subtotal"><td>TOTAL OPERATING EXPENSES</td><td class="right"><span class="cell-calc">=SUM</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">=÷Rev</span></td></tr>
+          <tr class="subtotal" style="background:#fef9ec;"><td>EBITDA</td><td class="right"><span class="cell-calc">=GP−OpEx</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">=EBITDA÷Rev</span></td></tr>
+          <tr><td>Depreciation &amp; Amortization</td><td class="right"><span class="cell-calc">=CapEx÷LifeYrs÷4</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">=÷Rev</span></td></tr>
+          <tr class="subtotal"><td>EBIT (Operating Income)</td><td class="right"><span class="cell-calc">=EBITDA−D&amp;A</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td></tr>
+          <tr><td>Interest Income / (Expense)</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"></td></tr>
+          <tr class="subtotal"><td>EBT (Pre-Tax Income)</td><td class="right"><span class="cell-calc">=EBIT+Interest</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td></tr>
+          <tr><td>Income Tax Expense</td><td class="right"><span class="cell-calc">=EBT×TaxRate</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td></tr>
+          <tr class="total"><td>NET INCOME</td><td class="right"><span class="cell-calc">=EBT−Tax</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">=NetInc÷Rev</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 6: CASH FLOW -->
+  <div class="tab-pane">
+    <div class="tpl-section">
+      <div class="sec-header">
+        <span class="sec-num">TAB 06</span>
+        <div>
+          <div class="sec-title">Cash Flow Forecast</div>
+          <div class="sec-desc">Cash flow ≠ profit. A profitable business can run out of cash. Track the timing of cash inflows and outflows. The ending cash balance must never go negative — that's your primary constraint.</div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>Key formula:</strong> Beginning Cash + Cash from Operations + Cash from Investing + Cash from Financing = Ending Cash Balance</div>
+      <table class="model-table">
+        <thead>
+          <tr><th style="min-width:240px;">Line Item</th><th class="right">Jan</th><th class="right">Feb</th><th class="right">Mar</th><th class="right">Q1</th><th class="right">Q2</th><th class="right">Q3</th><th class="right">Q4</th><th class="right">Full Year</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Beginning Cash Balance</strong></td><td class="right"><span class="cell-input">$[X]</span></td><td class="right"><span class="cell-calc">=PriorEndCash</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td><td class="right"><span class="cell-calc">↑</span></td></tr>
+          <tr class="section-header"><td colspan="9">Operating Activities</td></tr>
+          <tr><td>Net Income</td><td class="right"><span class="cell-calc">=P&amp;L</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Add back: D&amp;A</td><td class="right"><span class="cell-calc">=P&amp;L D&amp;A</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Change in Accounts Receivable</td><td class="right"><span class="cell-calc">=(Rev×DSO/365)−Prior</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Change in Accounts Payable</td><td class="right"><span class="cell-calc">=(Costs×DPO/365)−Prior</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Change in Deferred Revenue</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr class="subtotal"><td>Net Cash from Operations</td><td class="right"><span class="cell-calc">=SUM above</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr class="section-header"><td colspan="9">Investing Activities</td></tr>
+          <tr><td>Capital Expenditures</td><td class="right"><span class="cell-input">$(X)</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr class="subtotal"><td>Net Cash from Investing</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr class="section-header"><td colspan="9">Financing Activities</td></tr>
+          <tr><td>Debt Proceeds / (Repayments)</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Owner Distributions</td><td class="right"><span class="cell-input">$(X)</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr class="subtotal"><td>Net Cash from Financing</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr class="total"><td>ENDING CASH BALANCE</td><td class="right"><span class="cell-calc">=Begin+Ops+Inv+Fin</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Minimum Cash Target</td><td class="right"><span class="cell-input">$[X]</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Cash Surplus / (Deficit) vs. Target</td><td class="right"><span class="cell-calc">=EndCash−MinTarget</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Months of Runway</td><td class="right"><span class="cell-calc">=Cash÷MonthlyBurnRate</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 7: SCENARIOS -->
+  <div class="tab-pane">
+    <div class="tpl-section">
+      <div class="sec-header">
+        <span class="sec-num">TAB 07</span>
+        <div>
+          <div class="sec-title">Scenario Analysis</div>
+          <div class="sec-desc">Always present three scenarios: Base (most likely), Bull (optimistic but achievable), and Bear (conservative but survivable). Scenarios should differ in assumptions — not just revenue multipliers.</div>
+        </div>
+      </div>
+      <div class="tip-box"><strong>Best practice:</strong> Run the Bear case first. If the business isn't survivable in the Bear case without additional capital, you have a structural risk issue to solve before fundraising or planning.</div>
+      <div class="scenario-grid">
+        <div class="scenario-card">
+          <div class="scenario-head base">Base Case</div>
+          <div class="scenario-body">
+            <div class="scenario-row"><span class="scenario-key">Revenue Growth</span><span class="scenario-val">[X]% YoY</span></div>
+            <div class="scenario-row"><span class="scenario-key">New Client Acq./Mo</span><span class="scenario-val">[N]</span></div>
+            <div class="scenario-row"><span class="scenario-key">Churn Rate</span><span class="scenario-val">[X]%/mo</span></div>
+            <div class="scenario-row"><span class="scenario-key">Gross Margin</span><span class="scenario-val">[X]%</span></div>
+            <div class="scenario-row"><span class="scenario-key">Annual Revenue</span><span class="scenario-val">$[X]</span></div>
+            <div class="scenario-row"><span class="scenario-key">EBITDA</span><span class="scenario-val">$[X] ([X]%)</span></div>
+            <div class="scenario-row"><span class="scenario-key">Year-End Cash</span><span class="scenario-val">$[X]</span></div>
+            <div class="scenario-row"><span class="scenario-key">Headcount (Dec)</span><span class="scenario-val">[N] FTE</span></div>
+          </div>
+        </div>
+        <div class="scenario-card">
+          <div class="scenario-head bull">Bull Case (+[X]% Revenue)</div>
+          <div class="scenario-body">
+            <div class="scenario-row"><span class="scenario-key">Revenue Growth</span><span class="scenario-val">[X]% YoY</span></div>
+            <div class="scenario-row"><span class="scenario-key">New Client Acq./Mo</span><span class="scenario-val">[N+X]</span></div>
+            <div class="scenario-row"><span class="scenario-key">Churn Rate</span><span class="scenario-val">[X−1]%/mo</span></div>
+            <div class="scenario-row"><span class="scenario-key">Gross Margin</span><span class="scenario-val">[X+2]%</span></div>
+            <div class="scenario-row"><span class="scenario-key">Annual Revenue</span><span class="scenario-val">$[X×1.2]</span></div>
+            <div class="scenario-row"><span class="scenario-key">EBITDA</span><span class="scenario-val">$[X] ([X+3]%)</span></div>
+            <div class="scenario-row"><span class="scenario-key">Year-End Cash</span><span class="scenario-val">$[X]</span></div>
+            <div class="scenario-row"><span class="scenario-key">Headcount (Dec)</span><span class="scenario-val">[N+2] FTE</span></div>
+          </div>
+        </div>
+        <div class="scenario-card">
+          <div class="scenario-head bear">Bear Case (−[X]% Revenue)</div>
+          <div class="scenario-body">
+            <div class="scenario-row"><span class="scenario-key">Revenue Growth</span><span class="scenario-val">[X÷2]% YoY</span></div>
+            <div class="scenario-row"><span class="scenario-key">New Client Acq./Mo</span><span class="scenario-val">[N−X]</span></div>
+            <div class="scenario-row"><span class="scenario-key">Churn Rate</span><span class="scenario-val">[X+1]%/mo</span></div>
+            <div class="scenario-row"><span class="scenario-key">Gross Margin</span><span class="scenario-val">[X−3]%</span></div>
+            <div class="scenario-row"><span class="scenario-key">Annual Revenue</span><span class="scenario-val">$[X×0.8]</span></div>
+            <div class="scenario-row"><span class="scenario-key">EBITDA</span><span class="scenario-val">$[X] ([X−5]%)</span></div>
+            <div class="scenario-row"><span class="scenario-key">Year-End Cash</span><span class="scenario-val">$[X]</span></div>
+            <div class="scenario-row"><span class="scenario-key">Headcount (Dec)</span><span class="scenario-val">[N] FTE</span></div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:0.8rem;color:var(--slate);margin-top:0.5rem;"><strong>Sensitivity Analysis:</strong> Add a sensitivity table showing how EBITDA changes when revenue and gross margin change together. Use Excel's Data Table feature (What-If Analysis) or build a manual grid.</p>
+    </div>
+  </div>
+
+  <!-- TAB 8: DASHBOARD -->
+  <div class="tab-pane">
+    <div class="tpl-section">
+      <div class="sec-header">
+        <span class="sec-num">TAB 08</span>
+        <div>
+          <div class="sec-title">Executive Dashboard</div>
+          <div class="sec-desc">A single-page summary for board meetings and investor updates. All cells should be calculated from other tabs. No manual input here — if a number changes, the dashboard should update automatically.</div>
+        </div>
+      </div>
+      <div class="kpi-boxes">
+        <div class="kpi-box">
+          <div class="kpi-box-label">Annual Revenue</div>
+          <div class="kpi-box-value">$[X]M</div>
+          <div class="kpi-box-change">↑ [X]% vs. Plan</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-box-label">Gross Margin</div>
+          <div class="kpi-box-value">[X]%</div>
+          <div class="kpi-box-change">↑ [X]pts vs. PY</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-box-label">EBITDA</div>
+          <div class="kpi-box-value">$[X]K</div>
+          <div class="kpi-box-change kpi-box-change neg">↓ [X]% vs. Plan</div>
+        </div>
+        <div class="kpi-box">
+          <div class="kpi-box-label">Cash Runway</div>
+          <div class="kpi-box-value">[N] Mo</div>
+          <div class="kpi-box-change">$[X]K Cash</div>
+        </div>
+      </div>
+      <div class="tip-box">
+        <strong>Dashboard charts to build in Excel / Google Sheets:</strong>
+        <ul style="margin-top:0.5rem;padding-left:1.2rem;font-size:0.8rem;">
+          <li>Revenue by quarter — clustered bar chart (Actual vs. Plan vs. Prior Year)</li>
+          <li>Monthly recurring revenue trend — line chart</li>
+          <li>Gross margin % trend — line chart with target line overlay</li>
+          <li>Cash balance projection — area chart with minimum threshold line</li>
+          <li>Revenue by stream — pie or stacked bar chart (Recurring vs. Project)</li>
+          <li>Headcount over time — bar chart with color coding by department</li>
+        </ul>
+      </div>
+      <table class="model-table">
+        <thead><tr><th>Summary Metric</th><th class="right">Q1</th><th class="right">Q2</th><th class="right">Q3</th><th class="right">Q4</th><th class="right">Full Year</th><th class="right">vs. Plan</th></tr></thead>
+        <tbody>
+          <tr><td>Total Revenue</td><td class="right"><span class="cell-calc">=Rev!Full</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right"><span class="cell-calc">=Act÷Plan−1</span></td></tr>
+          <tr><td>Gross Profit</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>EBITDA</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Net Income</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Ending Cash</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Headcount (EOP)</td><td class="right"><span class="cell-calc">↑</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+          <tr><td>Revenue Per FTE</td><td class="right"><span class="cell-calc">=Rev÷HC</span></td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td><td class="right">↑</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2>Need a Custom Financial Model Built for You?</h2>
+    <p>Our team builds professional financial models for planning, fundraising, and board reporting. If you'd rather have it done right the first time, let's talk.</p>
+    <div class="cta-btns">
+      <a href="https://nlcfirm.com/#contact" class="btn-gold">Book a Free Discovery Call</a>
+      <a href="/portal.html" class="btn-outline">Back to Dashboard</a>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>© 2026 New Level Consultants &nbsp;|&nbsp; <a href="https://nlcfirm.com">nlcfirm.com</a> &nbsp;|&nbsp; <a href="tel:+17864084243">786-408-4243</a></span>
+    <span>Free Resource Library · <a href="/free-resources.html">Explore All Templates</a></span>
+  </div>
+
+</div><!-- /.document -->
+
+<script>
+function showTab(index, btn) {
+  document.querySelectorAll('.tab-pane').forEach((p,i) => p.classList.toggle('active', i===index));
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', i===index));
+}
+</script>
+</body>
+</html>

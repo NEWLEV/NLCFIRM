@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Management Framework — New Level Consultants</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:#0f1724; --navy-mid:#1a2744;
+    --gold:#c9a84c; --gold-light:#e8d5a3; --gold-dark:#9a7a2e;
+    --slate:#64748b; --text:#1e293b;
+    --bg:#f8f9fb; --white:#ffffff;
+    --border:#e2e8f0; --border-gold:rgba(201,168,76,0.3);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;}
+
+  .dl-nav{background:var(--navy);padding:0.9rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+  .dl-nav a{color:#fff;text-decoration:none;font-size:0.82rem;font-weight:500;opacity:0.8;}
+  .dl-nav a:hover{opacity:1;}
+  .dl-nav-title{color:var(--gold);font-size:0.82rem;font-weight:600;font-family:'JetBrains Mono',monospace;letter-spacing:0.04em;}
+  .print-btn{background:var(--gold);color:var(--navy);border:none;padding:0.5rem 1.2rem;border-radius:4px;font-size:0.75rem;font-weight:700;cursor:pointer;}
+  .print-btn:hover{background:var(--gold-light);}
+
+  .document{max-width:960px;margin:0 auto;background:var(--white);min-height:100vh;box-shadow:0 0 40px rgba(0,0,0,0.06);}
+
+  .cover{background:linear-gradient(145deg,var(--navy),var(--navy-mid));color:#fff;padding:5rem 4rem 4rem;position:relative;overflow:hidden;}
+  .cover::before{content:'';position:absolute;top:-60px;right:-60px;width:280px;height:280px;border:2px solid var(--border-gold);border-radius:50%;opacity:0.4;}
+  .cover-badge{display:inline-flex;align-items:center;gap:0.4rem;background:var(--gold);color:var(--navy);font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;padding:0.35rem 1rem;border-radius:3px;margin-bottom:1.5rem;}
+  .cover h1{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:700;line-height:1.15;margin-bottom:1rem;}
+  .cover h1 em{color:var(--gold-light);font-style:italic;}
+  .cover-desc{font-size:1rem;color:rgba(255,255,255,0.75);max-width:520px;margin-bottom:2.5rem;line-height:1.8;}
+  .cover-meta{display:flex;gap:2.5rem;flex-wrap:wrap;}
+  .cover-meta-label{font-size:0.65rem;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.2rem;}
+  .cover-meta-value{font-size:0.88rem;font-weight:600;color:rgba(255,255,255,0.9);}
+
+  .intro-block{padding:3rem 4rem;background:#fef9ec;border-bottom:1px solid #fde68a;}
+  .intro-block h2{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);margin-bottom:0.8rem;}
+  .intro-block ol{padding-left:1.4rem;}
+  .intro-block li{font-size:0.85rem;color:var(--slate);margin-bottom:0.4rem;}
+  .intro-block strong{color:var(--text);}
+
+  .tpl-section{padding:3rem 4rem;border-bottom:1px solid var(--border);}
+
+  .sec-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem;}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--gold);font-weight:700;letter-spacing:0.1em;background:rgba(201,168,76,0.1);padding:0.2rem 0.6rem;border-radius:3px;flex-shrink:0;}
+  .sec-title{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--navy);}
+  .sec-desc{font-size:0.82rem;color:var(--slate);margin-top:0.3rem;line-height:1.7;}
+
+  .field-label{font-size:0.72rem;font-weight:700;color:var(--slate);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.4rem;display:block;}
+  .field-hint{font-size:0.73rem;color:#94a3b8;margin-bottom:0.5rem;font-style:italic;}
+  .field-box{background:var(--bg);border:1px solid var(--border);border-radius:4px;padding:0.85rem 1rem;font-size:0.85rem;color:#94a3b8;min-height:44px;font-style:italic;margin-bottom:1rem;}
+  .field-box.tall{min-height:80px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:1rem;}
+  .field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}
+  .field-row-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}
+
+  .tpl-table{width:100%;border-collapse:collapse;font-size:0.78rem;margin-bottom:1rem;}
+  .tpl-table th{background:var(--navy);color:var(--gold-light);text-align:left;padding:0.65rem 0.8rem;font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;}
+  .tpl-table td{padding:0.65rem 0.8rem;border-bottom:1px solid var(--border);color:#94a3b8;font-style:italic;vertical-align:top;}
+  .tpl-table tr:last-child td{border-bottom:none;}
+  .tpl-table tr:nth-child(even) td{background:#fafcff;}
+
+  /* RACI */
+  .raci-r{background:#dcfce7;color:#166534;font-weight:700;border-radius:3px;padding:0.15rem 0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;}
+  .raci-a{background:#fee2e2;color:#991b1b;font-weight:700;border-radius:3px;padding:0.15rem 0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;}
+  .raci-c{background:#fef3c7;color:#92400e;font-weight:700;border-radius:3px;padding:0.15rem 0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;}
+  .raci-i{background:#eff6ff;color:#1d4ed8;font-weight:700;border-radius:3px;padding:0.15rem 0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;}
+
+  /* STATUS BADGES */
+  .status-done{background:#dcfce7;color:#166534;padding:0.15rem 0.6rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+  .status-prog{background:#fef3c7;color:#92400e;padding:0.15rem 0.6rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+  .status-risk{background:#fee2e2;color:#991b1b;padding:0.15rem 0.6rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+  .status-plan{background:#f1f5f9;color:#475569;padding:0.15rem 0.6rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+
+  /* RAG STATUS */
+  .rag-green{width:12px;height:12px;background:#22c55e;border-radius:50%;display:inline-block;}
+  .rag-amber{width:12px;height:12px;background:#f59e0b;border-radius:50%;display:inline-block;}
+  .rag-red{width:12px;height:12px;background:#ef4444;border-radius:50%;display:inline-block;}
+
+  /* STAKEHOLDER */
+  .stakeholder-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;margin-bottom:1rem;}
+  .stakeholder-card{border:1px solid var(--border);border-radius:6px;padding:1rem;}
+  .sc-name{font-weight:700;color:var(--navy);font-size:0.88rem;margin-bottom:0.2rem;}
+  .sc-role{font-size:0.75rem;color:var(--gold-dark);font-weight:600;margin-bottom:0.5rem;}
+  .sc-row{display:flex;justify-content:space-between;font-size:0.75rem;padding:0.2rem 0;border-bottom:1px dashed var(--border);}
+  .sc-row:last-child{border-bottom:none;}
+  .sc-key{color:var(--slate);}
+  .sc-val{color:#94a3b8;font-style:italic;}
+
+  /* CHARTER BOX */
+  .charter-block{background:linear-gradient(135deg,rgba(201,168,76,0.06),#fff);border:1px solid var(--border-gold);border-radius:8px;padding:2rem;margin-bottom:1.5rem;}
+
+  /* WEEKLY STATUS */
+  .status-report{border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:1rem;}
+  .sr-header{background:var(--navy);color:#fff;padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center;}
+  .sr-title{font-weight:700;font-size:0.9rem;}
+  .sr-date{font-size:0.75rem;color:rgba(255,255,255,0.6);font-family:'JetBrains Mono',monospace;}
+  .sr-body{padding:1.5rem;}
+  .sr-section{margin-bottom:1.2rem;}
+  .sr-section-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--slate);margin-bottom:0.5rem;}
+  .sr-item{font-size:0.8rem;color:#94a3b8;font-style:italic;padding:0.3rem 0;border-bottom:1px dashed var(--border);}
+  .sr-item:last-child{border-bottom:none;}
+  .sr-item::before{content:'✓  ';color:var(--gold);font-style:normal;}
+  .sr-section-rag{display:flex;align-items:center;gap:0.6rem;font-size:0.88rem;font-weight:600;color:var(--navy);}
+
+  /* RISK */
+  .risk-high{color:#991b1b;background:#fee2e2;padding:0.1rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+  .risk-med{color:#92400e;background:#fef3c7;padding:0.1rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+  .risk-low{color:#166534;background:#dcfce7;padding:0.1rem 0.5rem;border-radius:3px;font-size:0.68rem;font-weight:700;}
+
+  .tip-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:5px;padding:1rem 1.2rem;margin-bottom:1.2rem;font-size:0.8rem;color:#0c4a6e;}
+  .tip-box strong{color:#075985;}
+
+  .priority-high{color:#991b1b;font-weight:600;font-size:0.75rem;}
+  .priority-med{color:#92400e;font-weight:600;font-size:0.75rem;}
+  .priority-low{color:#166534;font-weight:600;font-size:0.75rem;}
+
+  /* CTA */
+  .cta-block{background:linear-gradient(135deg,var(--navy),var(--navy-mid));color:#fff;padding:3rem 4rem;text-align:center;}
+  .cta-block h2{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:0.8rem;}
+  .cta-block p{font-size:0.88rem;color:rgba(255,255,255,0.7);max-width:480px;margin:0 auto 2rem;line-height:1.8;}
+  .cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+  .btn-gold{background:var(--gold);color:var(--navy);padding:0.75rem 1.8rem;border-radius:4px;text-decoration:none;font-weight:700;font-size:0.82rem;letter-spacing:0.04em;}
+  .btn-gold:hover{background:var(--gold-light);}
+  .btn-outline{background:transparent;color:#fff;padding:0.75rem 1.8rem;border-radius:4px;text-decoration:none;font-weight:600;font-size:0.82rem;border:1px solid rgba(255,255,255,0.3);}
+  .btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+  .doc-footer{background:var(--bg);border-top:2px solid var(--border);padding:1.5rem 4rem;display:flex;justify-content:space-between;align-items:center;font-size:0.75rem;color:var(--slate);}
+  .doc-footer a{color:var(--gold-dark);text-decoration:none;}
+
+  @media print{.dl-nav,.cta-block{display:none;} .tpl-section{page-break-inside:avoid;} body{background:#fff;} .document{box-shadow:none;}}
+  @media(max-width:700px){
+    .cover,.tpl-section,.intro-block{padding:2rem 1.5rem;}
+    .field-row,.field-row-3,.field-row-4{grid-template-columns:1fr;}
+    .stakeholder-grid{grid-template-columns:1fr;}
+    .doc-footer{flex-direction:column;gap:0.5rem;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<script>
+(function(){
+  if(!localStorage.getItem('nlc_client_token')){
+    window.location.replace('/portal-login.html?redirect='+encodeURIComponent(window.location.pathname));
+  }
+})();
+</script>
+
+<nav class="dl-nav">
+  <a href="/portal.html">← Back to Dashboard</a>
+  <span class="dl-nav-title">Project Management Framework</span>
+  <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</nav>
+
+<div class="document">
+
+  <div class="cover">
+    <div class="cover-badge">📋 Free Framework · Project Management</div>
+    <h1>Project Management <em>Framework</em></h1>
+    <p class="cover-desc">A complete 10-component framework covering every phase of a project — from kick-off to closure. Built for project managers, operations teams, and consultants leading cross-functional initiatives.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item"><div class="cover-meta-label">Project Name</div><div class="cover-meta-value">[Project Name]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Project Manager</div><div class="cover-meta-value">[Name · Title]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Start Date</div><div class="cover-meta-value">[Date]</div></div>
+      <div class="cover-meta-item"><div class="cover-meta-label">Target End Date</div><div class="cover-meta-value">[Date]</div></div>
+    </div>
+  </div>
+
+  <div class="intro-block">
+    <h2>How to Use This Framework</h2>
+    <ol>
+      <li><strong>Complete the Project Charter first</strong> — before any work begins. The charter creates alignment on scope, objectives, and success criteria.</li>
+      <li><strong>Use the RACI Matrix</strong> to define accountability clearly. Ambiguity in ownership is the most common cause of project failure.</li>
+      <li><strong>Update the Risk Register weekly</strong> during execution. Risks that go untracked become issues.</li>
+      <li><strong>Complete a Weekly Status Report every Friday</strong> and share with stakeholders. Keeps everyone informed without ad-hoc meetings.</li>
+      <li><strong>Do not skip the Post-Project Review.</strong> The lessons from this project will save the next one.</li>
+    </ol>
+  </div>
+
+  <!-- SECTION 1: PROJECT CHARTER -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">01</span>
+      <div>
+        <div class="sec-title">Project Charter</div>
+        <div class="sec-desc">The project charter is the founding document of any project. It creates formal authorization, defines scope, sets expectations, and identifies the key decision-maker. Complete this before work begins.</div>
+      </div>
+    </div>
+    <div class="charter-block">
+      <div class="field-row">
+        <div><span class="field-label">Project Name</span><div class="field-box">[Descriptive project name — be specific]</div></div>
+        <div><span class="field-label">Project Sponsor (Ultimate Decision-Maker)</span><div class="field-box">[Name · Title · Contact]</div></div>
+      </div>
+      <div class="field-row">
+        <div><span class="field-label">Project Manager</span><div class="field-box">[Name · Title · Email]</div></div>
+        <div><span class="field-label">Requested By</span><div class="field-box">[Name · Department]</div></div>
+      </div>
+      <div class="field-row">
+        <div><span class="field-label">Start Date</span><div class="field-box">[Date]</div></div>
+        <div><span class="field-label">Target Completion Date</span><div class="field-box">[Date]</div></div>
+      </div>
+      <span class="field-label">Problem / Opportunity Statement</span>
+      <span class="field-hint">What problem does this project solve or what opportunity does it capture? Include current state vs. desired state.</span>
+      <div class="field-box tall">Current state: [Describe the problem, pain point, or gap — with data where possible, e.g., "Our current onboarding process takes 14 days and results in 23% of new hires failing their 30-day check-in."]
+
+Desired state: [What will be true after this project? e.g., "Onboarding is completed in 5 days with a structured orientation program, resulting in &gt;90% 30-day check-in pass rate."]</div>
+      <span class="field-label">Project Objective</span>
+      <span class="field-hint">Write a SMART objective: Specific, Measurable, Achievable, Relevant, Time-bound.</span>
+      <div class="field-box">To [action verb] [specific outcome] by [date], measured by [KPI/metric], resulting in [business impact].</div>
+      <div class="field-row">
+        <div>
+          <span class="field-label">In Scope (what is included)</span>
+          <div class="field-box tall">
+            • [Deliverable 1]<br>
+            • [Deliverable 2]<br>
+            • [Deliverable 3]<br>
+            • [Process / system / team affected]
+          </div>
+        </div>
+        <div>
+          <span class="field-label">Out of Scope (what is explicitly excluded)</span>
+          <div class="field-box tall">
+            • [Excluded work 1 — be explicit to prevent scope creep]<br>
+            • [Excluded work 2]<br>
+            • [Future phase items]<br>
+            • [Adjacent work that will be a separate initiative]
+          </div>
+        </div>
+      </div>
+      <span class="field-label">Key Deliverables</span>
+      <table class="tpl-table">
+        <thead><tr><th>Deliverable</th><th>Description</th><th>Owner</th><th>Due Date</th><th>Acceptance Criteria</th></tr></thead>
+        <tbody>
+          <tr><td>[Deliverable 1]</td><td>[What is it?]</td><td>[Name]</td><td>[Date]</td><td>[How will we know it's done and acceptable?]</td></tr>
+          <tr><td>[Deliverable 2]</td><td>[Description]</td><td>[Name]</td><td>[Date]</td><td>[Criteria]</td></tr>
+          <tr><td>[Deliverable 3]</td><td>[Description]</td><td>[Name]</td><td>[Date]</td><td>[Criteria]</td></tr>
+        </tbody>
+      </table>
+      <div class="field-row">
+        <div><span class="field-label">Budget</span><div class="field-box">Total: $[X] &nbsp;|&nbsp; Internal labor: $[X] &nbsp;|&nbsp; External: $[X] &nbsp;|&nbsp; Contingency (10–15%): $[X]</div></div>
+        <div><span class="field-label">Success Criteria (How will we know the project succeeded?)</span><div class="field-box">[Specific, measurable outcomes that define success — e.g., "Onboarding time reduced from 14 to 5 days by Oct 1"]</div></div>
+      </div>
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);">
+        <span class="field-label">Charter Approvals</span>
+        <div class="field-row-3">
+          <div class="field-box" style="text-align:center;">Project Sponsor<br><br>[Signature / Date]</div>
+          <div class="field-box" style="text-align:center;">Project Manager<br><br>[Signature / Date]</div>
+          <div class="field-box" style="text-align:center;">Key Stakeholder<br><br>[Signature / Date]</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: STAKEHOLDER MAP -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">02</span>
+      <div>
+        <div class="sec-title">Stakeholder Map</div>
+        <div class="sec-desc">Identify everyone who affects or is affected by this project. Classify their influence and interest level, then define your communication approach for each. High influence + high interest = manage closely.</div>
+      </div>
+    </div>
+    <table class="tpl-table" style="margin-bottom:1.5rem;">
+      <thead><tr><th>Stakeholder</th><th>Role/Title</th><th>Influence</th><th>Interest</th><th>Classification</th><th>Communication Approach</th><th>Frequency</th></tr></thead>
+      <tbody>
+        <tr><td>[Project Sponsor]</td><td>[Title]</td><td>High</td><td>High</td><td>Manage Closely</td><td>Weekly status report + monthly steering committee</td><td>Weekly</td></tr>
+        <tr><td>[Department Head]</td><td>[Title]</td><td>High</td><td>Medium</td><td>Keep Satisfied</td><td>Bi-weekly update email; escalate decisions promptly</td><td>Bi-weekly</td></tr>
+        <tr><td>[End Users / Team]</td><td>[Title]</td><td>Low</td><td>High</td><td>Keep Informed</td><td>Town halls, training sessions, FAQ document</td><td>Monthly</td></tr>
+        <tr><td>[IT / Systems Team]</td><td>[Title]</td><td>Medium</td><td>Medium</td><td>Keep Informed</td><td>Meeting invitations for relevant milestones</td><td>As needed</td></tr>
+        <tr><td>[External Vendor]</td><td>[Vendor Name]</td><td>Medium</td><td>Low</td><td>Monitor</td><td>Contract milestones and deliverable reviews</td><td>Monthly</td></tr>
+        <tr><td>[Add stakeholder]</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+    <div class="stakeholder-grid">
+      <div class="stakeholder-card">
+        <div class="sc-name">[Stakeholder Name]</div>
+        <div class="sc-role">[Title · Department]</div>
+        <div class="sc-row"><span class="sc-key">Influence / Interest</span><span class="sc-val">High / High</span></div>
+        <div class="sc-row"><span class="sc-key">Key Concern</span><span class="sc-val">[What do they care most about?]</span></div>
+        <div class="sc-row"><span class="sc-key">Potential Resistance</span><span class="sc-val">[What might cause them to push back?]</span></div>
+        <div class="sc-row"><span class="sc-key">Engagement Strategy</span><span class="sc-val">[How will you keep them aligned?]</span></div>
+      </div>
+      <div class="stakeholder-card">
+        <div class="sc-name">[Stakeholder Name]</div>
+        <div class="sc-role">[Title · Department]</div>
+        <div class="sc-row"><span class="sc-key">Influence / Interest</span><span class="sc-val">Medium / High</span></div>
+        <div class="sc-row"><span class="sc-key">Key Concern</span><span class="sc-val">[Description]</span></div>
+        <div class="sc-row"><span class="sc-key">Potential Resistance</span><span class="sc-val">[Description]</span></div>
+        <div class="sc-row"><span class="sc-key">Engagement Strategy</span><span class="sc-val">[Description]</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: RACI -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">03</span>
+      <div>
+        <div class="sec-title">RACI Matrix</div>
+        <div class="sec-desc">For each task or deliverable, define who is Responsible (does the work), Accountable (owns the outcome — only ONE per row), Consulted (provides input), and Informed (notified of results).</div>
+      </div>
+    </div>
+    <div class="tip-box"><strong>RACI Rules:</strong> (1) Every row must have exactly one <span class="raci-a">A</span> — multiple Accountable = no accountability. (2) The <span class="raci-a">A</span> is the person who answers if it fails. (3) Minimize <span class="raci-c">C</span>s to prevent bottlenecks. (4) <span class="raci-i">I</span> = receive output, not required to approve.</div>
+    <table class="tpl-table">
+      <thead>
+        <tr>
+          <th style="min-width:200px;">Task / Deliverable</th>
+          <th style="text-align:center;">[Name 1]<br><span style="font-weight:400;font-size:0.65rem;">[PM]</span></th>
+          <th style="text-align:center;">[Name 2]<br><span style="font-weight:400;font-size:0.65rem;">[Sponsor]</span></th>
+          <th style="text-align:center;">[Name 3]<br><span style="font-weight:400;font-size:0.65rem;">[Tech Lead]</span></th>
+          <th style="text-align:center;">[Name 4]<br><span style="font-weight:400;font-size:0.65rem;">[Ops]</span></th>
+          <th style="text-align:center;">[Name 5]<br><span style="font-weight:400;font-size:0.65rem;">[Finance]</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Project Planning</strong></td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"></td></tr>
+        <tr><td>Develop Project Charter</td><td style="text-align:center;"><span class="raci-r">R</span></td><td style="text-align:center;"><span class="raci-a">A</span></td><td style="text-align:center;"><span class="raci-c">C</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-c">C</span></td></tr>
+        <tr><td>Define Project Budget</td><td style="text-align:center;"><span class="raci-r">R</span></td><td style="text-align:center;"><span class="raci-a">A</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-c">C</span></td></tr>
+        <tr><td>Stakeholder Identification</td><td style="text-align:center;"><span class="raci-r">R</span></td><td style="text-align:center;"><span class="raci-a">A</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-c">C</span></td><td style="text-align:center;"><span class="raci-i">I</span></td></tr>
+        <tr><td><strong>Execution</strong></td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"></td></tr>
+        <tr><td>[Key Deliverable 1]</td><td style="text-align:center;"><span class="raci-a">A</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-r">R</span></td><td style="text-align:center;"><span class="raci-c">C</span></td><td style="text-align:center;"><span class="raci-i">I</span></td></tr>
+        <tr><td>[Key Deliverable 2]</td><td style="text-align:center;"><span class="raci-a">A</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-c">C</span></td><td style="text-align:center;"><span class="raci-r">R</span></td><td style="text-align:center;"><span class="raci-i">I</span></td></tr>
+        <tr><td>[Vendor / External Work]</td><td style="text-align:center;"><span class="raci-a">A</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-c">C</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-i">I</span></td></tr>
+        <tr><td><strong>Quality &amp; Approval</strong></td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"></td><td style="text-align:center;"></td></tr>
+        <tr><td>Quality Review / Testing</td><td style="text-align:center;"><span class="raci-a">A</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-r">R</span></td><td style="text-align:center;"><span class="raci-c">C</span></td><td style="text-align:center;"><span class="raci-i">I</span></td></tr>
+        <tr><td>Final Approval / Sign-Off</td><td style="text-align:center;"><span class="raci-r">R</span></td><td style="text-align:center;"><span class="raci-a">A</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-i">I</span></td><td style="text-align:center;"><span class="raci-i">I</span></td></tr>
+        <tr><td>[Add rows as needed]</td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 4: TIMELINE -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">04</span>
+      <div>
+        <div class="sec-title">Project Timeline</div>
+        <div class="sec-desc">Break the project into phases. Each phase has activities, owners, dates, and dependencies. Flag activities on the critical path — any delay here delays the project end date.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead><tr><th>Phase</th><th>Activity</th><th>Owner</th><th>Start</th><th>End</th><th>Duration</th><th>Depends On</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3" style="font-weight:700;color:var(--navy);background:#f8fafc;font-style:normal;">Phase 1<br>Planning</td><td>Finalize project charter</td><td>[PM]</td><td>[Date]</td><td>[Date]</td><td>3d</td><td>—</td><td><span class="status-done">Done</span></td></tr>
+        <tr><td>Stakeholder kickoff meeting</td><td>[PM]</td><td>[Date]</td><td>[Date]</td><td>1d</td><td>Charter</td><td><span class="status-done">Done</span></td></tr>
+        <tr><td>Detailed project plan</td><td>[PM]</td><td>[Date]</td><td>[Date]</td><td>5d</td><td>Kickoff</td><td><span class="status-prog">In Progress</span></td></tr>
+        <tr><td rowspan="4" style="font-weight:700;color:var(--navy);background:#f8fafc;font-style:normal;">Phase 2<br>Execution</td><td>[Activity 1]</td><td>[Name]</td><td>[Date]</td><td>[Date]</td><td>[X]d</td><td>[Dep.]</td><td><span class="status-plan">Planned</span></td></tr>
+        <tr><td>[Activity 2]</td><td>[Name]</td><td>[Date]</td><td>[Date]</td><td>[X]d</td><td>[Dep.]</td><td><span class="status-plan">Planned</span></td></tr>
+        <tr><td>[Activity 3]</td><td>[Name]</td><td>[Date]</td><td>[Date]</td><td>[X]d</td><td>[Dep.]</td><td><span class="status-plan">Planned</span></td></tr>
+        <tr><td>[Activity 4]</td><td>[Name]</td><td>[Date]</td><td>[Date]</td><td>[X]d</td><td>[Dep.]</td><td><span class="status-plan">Planned</span></td></tr>
+        <tr><td rowspan="3" style="font-weight:700;color:var(--navy);background:#f8fafc;font-style:normal;">Phase 3<br>Review &amp; Launch</td><td>Quality review and testing</td><td>[Name]</td><td>[Date]</td><td>[Date]</td><td>[X]d</td><td>Execution</td><td><span class="status-plan">Planned</span></td></tr>
+        <tr><td>Stakeholder acceptance review</td><td>[Sponsor]</td><td>[Date]</td><td>[Date]</td><td>[X]d</td><td>QA</td><td><span class="status-plan">Planned</span></td></tr>
+        <tr><td>Go-live / implementation</td><td>[PM]</td><td>[Date]</td><td>[Date]</td><td>[X]d</td><td>Approval</td><td><span class="status-plan">Planned</span></td></tr>
+        <tr><td style="font-weight:700;color:var(--navy);background:#f8fafc;font-style:normal;">Phase 4<br>Closure</td><td>Post-project review</td><td>[PM]</td><td>[Date]</td><td>[Date]</td><td>1d</td><td>Go-live</td><td><span class="status-plan">Planned</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 5: MILESTONES -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">05</span>
+      <div>
+        <div class="sec-title">Milestone Tracker</div>
+        <div class="sec-desc">Milestones are significant project checkpoints — not tasks. They mark the completion of a phase or major deliverable. Track actual vs. target dates to measure schedule health.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead><tr><th>#</th><th>Milestone</th><th>Target Date</th><th>Actual Date</th><th>Status</th><th>Variance</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>M1</td><td>Project Charter approved</td><td>[Date]</td><td>[Date]</td><td><span class="status-done">✓ Complete</span></td><td>On time</td><td></td></tr>
+        <tr><td>M2</td><td>Kickoff meeting held; team aligned</td><td>[Date]</td><td>[Date]</td><td><span class="status-done">✓ Complete</span></td><td>+1d</td><td>Rescheduled once</td></tr>
+        <tr><td>M3</td><td>[Phase 2 completion milestone]</td><td>[Date]</td><td></td><td><span class="status-prog">In Progress</span></td><td>—</td><td>[Notes]</td></tr>
+        <tr><td>M4</td><td>[Key deliverable completed]</td><td>[Date]</td><td></td><td><span class="status-plan">Planned</span></td><td>—</td><td></td></tr>
+        <tr><td>M5</td><td>Stakeholder acceptance sign-off</td><td>[Date]</td><td></td><td><span class="status-plan">Planned</span></td><td>—</td><td></td></tr>
+        <tr><td>M6</td><td>Project go-live / launch</td><td>[Date]</td><td></td><td><span class="status-plan">Planned</span></td><td>—</td><td></td></tr>
+        <tr><td>M7</td><td>Post-project review complete; lessons documented</td><td>[Date]</td><td></td><td><span class="status-plan">Planned</span></td><td>—</td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 6: RISK REGISTER -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">06</span>
+      <div>
+        <div class="sec-title">Risk Register</div>
+        <div class="sec-desc">Proactively identify risks before they become issues. Score each risk (Probability × Impact, 1–3 scale). Anything scoring 6+ needs a formal mitigation plan. Review and update every week.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead><tr><th>ID</th><th>Risk Description</th><th>Category</th><th>Prob (1-3)</th><th>Impact (1-3)</th><th>Score</th><th>Response Strategy</th><th>Owner</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>R1</td><td>Key team member unavailable during execution phase</td><td>Resource</td><td>2 – Med</td><td>3 – High</td><td><span class="risk-high">6 – High</span></td><td>Cross-train backup; document all work-in-progress</td><td>[PM]</td><td>Open</td></tr>
+        <tr><td>R2</td><td>Scope creep from stakeholder change requests</td><td>Scope</td><td>3 – High</td><td>2 – Med</td><td><span class="risk-high">6 – High</span></td><td>Formal change request process; escalate to sponsor</td><td>[PM]</td><td>Open</td></tr>
+        <tr><td>R3</td><td>Third-party vendor misses a delivery deadline</td><td>External</td><td>2 – Med</td><td>2 – Med</td><td><span class="risk-med">4 – Med</span></td><td>Contract SLAs; weekly vendor check-in; backup options identified</td><td>[PM]</td><td>Monitoring</td></tr>
+        <tr><td>R4</td><td>Technical integration more complex than anticipated</td><td>Technical</td><td>2 – Med</td><td>2 – Med</td><td><span class="risk-med">4 – Med</span></td><td>Technical spike in Phase 1; contingency time in schedule</td><td>[Tech Lead]</td><td>Open</td></tr>
+        <tr><td>R5</td><td>Budget overrun due to underestimated labor costs</td><td>Financial</td><td>1 – Low</td><td>2 – Med</td><td><span class="risk-low">2 – Low</span></td><td>15% contingency buffer in budget; weekly cost tracking</td><td>[PM/Finance]</td><td>Monitoring</td></tr>
+        <tr><td>R6</td><td>[Add risk]</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 7: ISSUE LOG -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">07</span>
+      <div>
+        <div class="sec-title">Issue Log</div>
+        <div class="sec-desc">Issues are risks that have materialized. Document every issue, its impact, and how it was resolved. An active issue log prevents things from falling through the cracks.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead><tr><th>ID</th><th>Date Raised</th><th>Description</th><th>Raised By</th><th>Priority</th><th>Assigned To</th><th>Status</th><th>Resolution</th><th>Closed Date</th></tr></thead>
+      <tbody>
+        <tr><td>I1</td><td>[Date]</td><td>[Description of the issue — be specific and factual]</td><td>[Name]</td><td><span class="priority-high">High</span></td><td>[Name]</td><td><span class="status-prog">Open</span></td><td>[Resolution steps or outcome]</td><td></td></tr>
+        <tr><td>I2</td><td>[Date]</td><td>[Description]</td><td>[Name]</td><td><span class="priority-med">Medium</span></td><td>[Name]</td><td><span class="status-done">Closed</span></td><td>[How it was resolved]</td><td>[Date]</td></tr>
+        <tr><td>I3</td><td>[Date]</td><td>[Description]</td><td>[Name]</td><td><span class="priority-low">Low</span></td><td>[Name]</td><td><span class="status-prog">In Review</span></td><td>[Pending]</td><td></td></tr>
+        <tr><td>I4</td><td></td><td>[Add issue as they arise]</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 8: WEEKLY STATUS REPORT -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">08</span>
+      <div>
+        <div class="sec-title">Weekly Status Report Template</div>
+        <div class="sec-desc">Send this every Friday. Keep it short — the goal is to keep stakeholders informed and surface issues early, not to write a novel. Fill in the placeholders and distribute.</div>
+      </div>
+    </div>
+    <div class="status-report">
+      <div class="sr-header">
+        <div class="sr-title">Weekly Status Report — [Project Name]</div>
+        <div class="sr-date">Week ending: [Date] &nbsp;|&nbsp; PM: [Name]</div>
+      </div>
+      <div class="sr-body">
+        <div class="sr-section">
+          <div class="sr-section-label">Overall Project Status</div>
+          <div class="sr-section-rag"><span class="rag-green"></span> Green = On track &nbsp;&nbsp; <span class="rag-amber"></span> Amber = At risk &nbsp;&nbsp; <span class="rag-red"></span> Red = Off track</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.8rem;margin-top:0.8rem;">
+            <div style="text-align:center;padding:0.8rem;border:1px solid var(--border);border-radius:5px;"><div class="sr-section-label">Schedule</div><span class="rag-green"></span> [On Track / At Risk]</div>
+            <div style="text-align:center;padding:0.8rem;border:1px solid var(--border);border-radius:5px;"><div class="sr-section-label">Budget</div><span class="rag-green"></span> [On Track / At Risk]</div>
+            <div style="text-align:center;padding:0.8rem;border:1px solid var(--border);border-radius:5px;"><div class="sr-section-label">Scope</div><span class="rag-amber"></span> [On Track / At Risk]</div>
+          </div>
+        </div>
+        <div class="sr-section">
+          <div class="sr-section-label">Accomplishments This Week</div>
+          <div class="sr-item">[Specific task/deliverable completed — link to artifact if applicable]</div>
+          <div class="sr-item">[Another completed item]</div>
+          <div class="sr-item">[Another completed item]</div>
+        </div>
+        <div class="sr-section">
+          <div class="sr-section-label">Planned for Next Week</div>
+          <div class="sr-item">[Task 1 — Owner: [Name]]</div>
+          <div class="sr-item">[Task 2 — Owner: [Name]]</div>
+          <div class="sr-item">[Task 3 — Owner: [Name]]</div>
+        </div>
+        <div class="sr-section">
+          <div class="sr-section-label">Key Decisions Needed</div>
+          <div class="sr-item">[Decision required from sponsor/stakeholder — needed by: [date]]</div>
+          <div class="sr-item">[Another decision]</div>
+        </div>
+        <div class="sr-section">
+          <div class="sr-section-label">New / Updated Risks &amp; Issues</div>
+          <div class="sr-item">[New risk or escalated issue — severity, owner, mitigation]</div>
+        </div>
+        <div class="sr-section">
+          <div class="sr-section-label">Budget Update</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0.8rem;margin-top:0.5rem;font-size:0.78rem;">
+            <div style="text-align:center;padding:0.6rem;background:var(--bg);border:1px solid var(--border);border-radius:4px;"><div class="sr-section-label">Total Budget</div>$[X]</div>
+            <div style="text-align:center;padding:0.6rem;background:var(--bg);border:1px solid var(--border);border-radius:4px;"><div class="sr-section-label">Spent to Date</div>$[X]</div>
+            <div style="text-align:center;padding:0.6rem;background:var(--bg);border:1px solid var(--border);border-radius:4px;"><div class="sr-section-label">Forecasted Total</div>$[X]</div>
+            <div style="text-align:center;padding:0.6rem;background:var(--bg);border:1px solid var(--border);border-radius:4px;"><div class="sr-section-label">Variance</div><span style="color:#166534;">+$[X] under</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 9: DECISION LOG -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">09</span>
+      <div>
+        <div class="sec-title">Decision Log</div>
+        <div class="sec-desc">Document every major decision made during the project — including what options were considered and why the chosen option was selected. This creates an audit trail and prevents re-litigating past decisions.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead><tr><th>ID</th><th>Date</th><th>Decision Topic</th><th>Options Considered</th><th>Decision Made</th><th>Rationale</th><th>Decided By</th><th>Implemented</th></tr></thead>
+      <tbody>
+        <tr><td>D1</td><td>[Date]</td><td>Project scope boundary — [topic]</td><td>Option A: [desc] · Option B: [desc]</td><td>Option A</td><td>[Why this option was chosen — include trade-offs acknowledged]</td><td>[Sponsor]</td><td>[Date]</td></tr>
+        <tr><td>D2</td><td>[Date]</td><td>[Technology / vendor selection]</td><td>[Vendor A] vs [Vendor B] vs [Vendor C]</td><td>[Vendor B]</td><td>Best fit for requirements; cost and timeline acceptable</td><td>[PM + Sponsor]</td><td>[Date]</td></tr>
+        <tr><td>D3</td><td>[Date]</td><td>[Schedule change decision]</td><td>Delay launch by 2 weeks OR scope reduction</td><td>Scope reduction</td><td>Timeline was fixed; removed [feature X] to preserve go-live date</td><td>[PM]</td><td>[Date]</td></tr>
+        <tr><td>D4</td><td></td><td>[Add decisions as they are made]</td><td></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 10: POST-PROJECT REVIEW -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">10</span>
+      <div>
+        <div class="sec-title">Post-Project Review</div>
+        <div class="sec-desc">Complete within 2 weeks of project close. Gather honest input from all team members. The review is not a performance evaluation — it is a learning exercise. Focus on process, not people.</div>
+      </div>
+    </div>
+    <div class="field-row">
+      <div><span class="field-label">Project Name &amp; Summary</span><div class="field-box">[Brief description of what was delivered, when, and at what cost]</div></div>
+      <div><span class="field-label">Final Outcome vs. Original Objective</span><div class="field-box">[Did the project achieve its SMART objective? Quantify the gap or success.]</div></div>
+    </div>
+    <div class="field-row-3">
+      <div><span class="field-label">Final Budget vs. Actual</span><div class="field-box">Budget: $[X]<br>Actual: $[X]<br>Variance: $[X] ([X]%)</div></div>
+      <div><span class="field-label">Final Schedule vs. Plan</span><div class="field-box">Planned end: [Date]<br>Actual end: [Date]<br>Variance: [X] days</div></div>
+      <div><span class="field-label">Scope Delivered</span><div class="field-box">100% / [X]% of original scope<br>[Changes noted]</div></div>
+    </div>
+    <div class="field-row">
+      <div>
+        <span class="field-label">What Went Well (keep doing this)</span>
+        <div class="field-box tall">
+          • [Specific thing that worked well — process, tool, behavior]<br>
+          • [Another success]<br>
+          • [Another success]<br>
+          • [Team members to recognize for specific contributions]
+        </div>
+      </div>
+      <div>
+        <span class="field-label">What Could Be Improved (do differently next time)</span>
+        <div class="field-box tall">
+          • [Specific process or behavior to change]<br>
+          • [Tool or communication approach to improve]<br>
+          • [Planning assumption that was wrong]<br>
+          • [Resource or capacity issue to plan for]
+        </div>
+      </div>
+    </div>
+    <span class="field-label">Top 3 Lessons Learned (for the next project team)</span>
+    <div class="field-box tall">
+      1. [Lesson — written as actionable guidance: "Next time, always [action] because [reason]."]<br>
+      2. [Lesson]<br>
+      3. [Lesson]
+    </div>
+    <div class="field-row">
+      <div><span class="field-label">Recommendations for Future Projects</span><div class="field-box tall">[Process improvements, resource changes, tool investments, or methodology adjustments recommended based on this project's experience]</div></div>
+      <div><span class="field-label">Team Recognition</span><div class="field-box tall">[Name specific team members and their contributions. This section matters — recognition drives future engagement.]</div></div>
+    </div>
+    <span class="field-label">Review Participants &amp; Sign-Off</span>
+    <div class="field-row-3">
+      <div class="field-box" style="text-align:center;">Project Manager<br>[Name]<br><br>[Signature / Date]</div>
+      <div class="field-box" style="text-align:center;">Project Sponsor<br>[Name]<br><br>[Signature / Date]</div>
+      <div class="field-box" style="text-align:center;">Key Team Member<br>[Name]<br><br>[Signature / Date]</div>
+    </div>
+  </div>
+
+  <div class="cta-block">
+    <h2>Need a Project Manager on Your Team?</h2>
+    <p>New Level Consultants provides project management as a service — from scoping through closure. We bring the framework, the discipline, and the experience so your team can focus on delivery.</p>
+    <div class="cta-btns">
+      <a href="https://nlcfirm.com/#contact" class="btn-gold">Book a Free Discovery Call</a>
+      <a href="/portal.html" class="btn-outline">Back to Dashboard</a>
+    </div>
+  </div>
+
+  <div class="doc-footer">
+    <span>© 2026 New Level Consultants &nbsp;|&nbsp; <a href="https://nlcfirm.com">nlcfirm.com</a> &nbsp;|&nbsp; <a href="tel:+17864084243">786-408-4243</a></span>
+    <span>Free Resource Library · <a href="/free-resources.html">Explore All Templates</a></span>
+  </div>
+
+</div>
+</body>
+</html>

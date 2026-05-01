@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Planning Worksheet — New Level Consultants</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f1724;
+    --navy-mid: #1a2744;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --gold-dark: #9a7a2e;
+    --slate: #64748b;
+    --text: #1e293b;
+    --bg: #f8f9fb;
+    --white: #ffffff;
+    --border: #e2e8f0;
+    --border-gold: rgba(201,168,76,0.3);
+    --success: #166534;
+    --success-bg: #dcfce7;
+    --warn-bg: #fef9ec;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; }
+
+  /* NAV */
+  .dl-nav { background: var(--navy); padding: 0.9rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+  .dl-nav a { color: #fff; text-decoration: none; font-size: 0.82rem; font-weight: 500; opacity: 0.8; transition: opacity 0.2s; }
+  .dl-nav a:hover { opacity: 1; }
+  .dl-nav-title { color: var(--gold); font-size: 0.82rem; font-weight: 600; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em; }
+  .print-btn { background: var(--gold); color: var(--navy); border: none; padding: 0.5rem 1.2rem; border-radius: 4px; font-size: 0.75rem; font-weight: 700; cursor: pointer; letter-spacing: 0.04em; transition: 0.2s; }
+  .print-btn:hover { background: var(--gold-light); }
+
+  /* DOCUMENT */
+  .document { max-width: 960px; margin: 0 auto; background: var(--white); min-height: 100vh; box-shadow: 0 0 40px rgba(0,0,0,0.06); }
+
+  /* COVER */
+  .cover { background: linear-gradient(145deg, var(--navy) 0%, var(--navy-mid) 100%); color: #fff; padding: 5rem 4rem 4rem; position: relative; overflow: hidden; }
+  .cover::before { content: ''; position: absolute; top: -60px; right: -60px; width: 280px; height: 280px; border: 2px solid var(--border-gold); border-radius: 50%; opacity: 0.4; }
+  .cover::after { content: ''; position: absolute; bottom: -40px; left: -40px; width: 180px; height: 180px; border: 1px solid var(--border-gold); border-radius: 50%; opacity: 0.3; }
+  .cover-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--gold); color: var(--navy); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.35rem 1rem; border-radius: 3px; margin-bottom: 1.5rem; }
+  .cover h1 { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; line-height: 1.15; margin-bottom: 1rem; }
+  .cover h1 em { color: var(--gold-light); font-style: italic; }
+  .cover-desc { font-size: 1rem; color: rgba(255,255,255,0.75); max-width: 520px; margin-bottom: 2.5rem; line-height: 1.8; }
+  .cover-meta { display: flex; gap: 2.5rem; flex-wrap: wrap; }
+  .cover-meta-item { }
+  .cover-meta-label { font-size: 0.65rem; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.2rem; }
+  .cover-meta-value { font-size: 0.88rem; font-weight: 600; color: rgba(255,255,255,0.9); }
+
+  /* INTRO */
+  .intro-block { padding: 3rem 4rem; background: var(--warn-bg); border-bottom: 1px solid #fde68a; }
+  .intro-block h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--navy); margin-bottom: 0.8rem; }
+  .intro-block ol { padding-left: 1.4rem; }
+  .intro-block li { font-size: 0.85rem; color: var(--slate); margin-bottom: 0.4rem; }
+  .intro-block strong { color: var(--text); }
+
+  /* SECTION WRAPPER */
+  .tpl-section { padding: 3rem 4rem; border-bottom: 1px solid var(--border); }
+  .tpl-section:last-child { border-bottom: none; }
+
+  /* SECTION HEADER */
+  .sec-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2rem; }
+  .sec-num { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--gold); font-weight: 700; letter-spacing: 0.1em; background: rgba(201,168,76,0.1); padding: 0.2rem 0.6rem; border-radius: 3px; flex-shrink: 0; }
+  .sec-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--navy); }
+  .sec-desc { font-size: 0.82rem; color: var(--slate); margin-top: 0.3rem; line-height: 1.7; }
+
+  /* FIELD STYLES */
+  .field-group { margin-bottom: 1.5rem; }
+  .field-label { font-size: 0.72rem; font-weight: 700; color: var(--slate); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; display: block; }
+  .field-hint { font-size: 0.73rem; color: #94a3b8; margin-bottom: 0.5rem; font-style: italic; }
+  .field-box { background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.85rem 1rem; font-size: 0.85rem; color: #94a3b8; min-height: 44px; font-style: italic; }
+  .field-box.tall { min-height: 80px; }
+  .field-box.xl { min-height: 120px; }
+  .field-example { font-size: 0.73rem; color: var(--gold-dark); margin-top: 0.4rem; }
+  .field-example strong { color: var(--gold-dark); }
+
+  /* 2-COL GRID */
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem; }
+  .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+
+  /* SWOT */
+  .swot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 2px solid var(--border-gold); border-radius: 6px; overflow: hidden; }
+  .swot-cell { padding: 1.5rem; border: 1px solid var(--border); }
+  .swot-cell:nth-child(1) { background: linear-gradient(135deg, rgba(201,168,76,0.07), rgba(201,168,76,0.03)); }
+  .swot-cell:nth-child(2) { background: linear-gradient(135deg, rgba(239,68,68,0.06), rgba(239,68,68,0.02)); }
+  .swot-cell:nth-child(3) { background: linear-gradient(135deg, rgba(34,197,94,0.07), rgba(34,197,94,0.02)); }
+  .swot-cell:nth-child(4) { background: linear-gradient(135deg, rgba(239,153,68,0.07), rgba(239,153,68,0.02)); }
+  .swot-label { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.6rem; }
+  .swot-cell:nth-child(1) .swot-label { color: var(--gold-dark); }
+  .swot-cell:nth-child(2) .swot-label { color: #b91c1c; }
+  .swot-cell:nth-child(3) .swot-label { color: #166534; }
+  .swot-cell:nth-child(4) .swot-label { color: #92400e; }
+  .swot-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.8rem; }
+  .swot-items { list-style: none; padding: 0; }
+  .swot-items li { font-size: 0.78rem; color: #94a3b8; padding: 0.3rem 0; border-bottom: 1px dashed var(--border); font-style: italic; }
+  .swot-items li:last-child { border-bottom: none; }
+  .swot-items li::before { content: '•  '; color: var(--border); }
+
+  /* TABLES */
+  .tpl-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-bottom: 1.5rem; }
+  .tpl-table th { background: var(--navy); color: var(--gold-light); text-align: left; padding: 0.7rem 0.8rem; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+  .tpl-table td { padding: 0.7rem 0.8rem; border-bottom: 1px solid var(--border); color: #94a3b8; font-style: italic; vertical-align: top; }
+  .tpl-table tr:last-child td { border-bottom: none; }
+  .tpl-table tr:nth-child(even) td { background: #f8fafc; }
+  .tbl-note { font-size: 0.72rem; color: var(--gold-dark); margin-top: 0.4rem; }
+
+  /* PRIORITY CARDS */
+  .priority-cards { display: flex; flex-direction: column; gap: 1rem; }
+  .priority-card { border: 1px solid var(--border-gold); border-radius: 6px; overflow: hidden; }
+  .priority-card-head { background: var(--navy); color: #fff; padding: 0.75rem 1.2rem; display: flex; align-items: center; gap: 1rem; }
+  .priority-card-num { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--gold); font-weight: 700; }
+  .priority-card-name { font-size: 0.9rem; font-weight: 600; }
+  .priority-card-body { padding: 1.2rem; background: #fafbfc; }
+  .priority-card-body .field-row { margin-bottom: 0.8rem; }
+
+  /* OKR */
+  .okr-quarter { background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 1.5rem; margin-bottom: 1.2rem; }
+  .okr-q-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.4rem; }
+  .okr-objective { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 1rem; background: rgba(255,255,255,0.7); padding: 0.6rem 0.8rem; border-radius: 4px; border: 1px dashed var(--border-gold); }
+  .kr-list { list-style: none; padding: 0; }
+  .kr-list li { font-size: 0.8rem; color: #94a3b8; font-style: italic; padding: 0.4rem 0; border-bottom: 1px dashed var(--border); display: flex; gap: 0.5rem; }
+  .kr-list li::before { content: 'KR'; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--gold); font-weight: 700; flex-shrink: 0; margin-top: 0.15rem; }
+
+  /* RISK BADGE */
+  .risk-high { color: #991b1b; background: #fee2e2; padding: 0.1rem 0.5rem; border-radius: 3px; font-size: 0.68rem; font-weight: 700; }
+  .risk-med { color: #92400e; background: #fef3c7; padding: 0.1rem 0.5rem; border-radius: 3px; font-size: 0.68rem; font-weight: 700; }
+  .risk-low { color: #166534; background: #dcfce7; padding: 0.1rem 0.5rem; border-radius: 3px; font-size: 0.68rem; font-weight: 700; }
+
+  /* VALUES */
+  .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  .value-card { border: 1px solid var(--border); border-radius: 5px; padding: 1rem; text-align: center; }
+  .value-name { font-weight: 700; color: var(--navy); font-size: 0.88rem; margin-bottom: 0.3rem; }
+  .value-def { font-size: 0.75rem; color: #94a3b8; font-style: italic; line-height: 1.6; }
+
+  /* CADENCE */
+  .cadence-row { display: grid; grid-template-columns: 140px 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 5px; overflow: hidden; margin-bottom: 0.5rem; }
+  .cadence-cell { background: #fff; padding: 0.75rem 1rem; font-size: 0.8rem; }
+  .cadence-cell.label { background: var(--navy); color: var(--gold-light); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+
+  /* CTA BLOCK */
+  .cta-block { background: linear-gradient(135deg, var(--navy), var(--navy-mid)); color: #fff; padding: 3rem 4rem; text-align: center; }
+  .cta-block h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin-bottom: 0.8rem; }
+  .cta-block p { font-size: 0.88rem; color: rgba(255,255,255,0.7); max-width: 480px; margin: 0 auto 2rem; line-height: 1.8; }
+  .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-gold { background: var(--gold); color: var(--navy); padding: 0.75rem 1.8rem; border-radius: 4px; text-decoration: none; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.04em; transition: 0.2s; }
+  .btn-gold:hover { background: var(--gold-light); }
+  .btn-outline { background: transparent; color: #fff; padding: 0.75rem 1.8rem; border-radius: 4px; text-decoration: none; font-weight: 600; font-size: 0.82rem; border: 1px solid rgba(255,255,255,0.3); transition: 0.2s; }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* FOOTER */
+  .doc-footer { background: var(--bg); border-top: 2px solid var(--border); padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--slate); }
+  .doc-footer a { color: var(--gold-dark); text-decoration: none; }
+
+  /* PRINT */
+  @media print {
+    .dl-nav, .cta-block { display: none; }
+    body { background: #fff; }
+    .document { box-shadow: none; }
+    .tpl-section { page-break-inside: avoid; }
+  }
+  @media (max-width: 700px) {
+    .cover { padding: 3rem 1.5rem 2.5rem; }
+    .tpl-section { padding: 2rem 1.5rem; }
+    .intro-block { padding: 2rem 1.5rem; }
+    .field-row, .field-row-3 { grid-template-columns: 1fr; }
+    .swot-grid { grid-template-columns: 1fr; }
+    .values-grid { grid-template-columns: 1fr 1fr; }
+    .cover h1 { font-size: 2rem; }
+    .cadence-row { grid-template-columns: 1fr; }
+    .doc-footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<script>
+(function(){
+  if(!localStorage.getItem('nlc_client_token')){
+    window.location.replace('/portal-login.html?redirect='+encodeURIComponent(window.location.pathname));
+  }
+})();
+</script>
+
+<!-- NAV -->
+<nav class="dl-nav">
+  <a href="/portal.html">← Back to Dashboard</a>
+  <span class="dl-nav-title">Strategic Planning Worksheet</span>
+  <button class="print-btn" onclick="window.print()">🖨 Print / Save PDF</button>
+</nav>
+
+<div class="document">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-badge">🎯 Free Template · Strategy</div>
+    <h1>Strategic Planning <em>Worksheet</em></h1>
+    <p class="cover-desc">A complete end-to-end planning template covering vision through execution — built for leadership teams conducting annual or quarterly strategic planning cycles.</p>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Planning Period</div>
+        <div class="cover-meta-value">[FY 2026 / Q1–Q4 2026]</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Organization</div>
+        <div class="cover-meta-value">[Your Organization Name]</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Version</div>
+        <div class="cover-meta-value">v1.0 · [Date]</div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-label">Prepared by</div>
+        <div class="cover-meta-value">[Name · Title]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOW TO USE -->
+  <div class="intro-block">
+    <h2>How to Use This Template</h2>
+    <ol>
+      <li><strong>Complete sequentially.</strong> Each section builds on the previous one — start with Vision and work through to Review Cadence.</li>
+      <li><strong>Do this as a team.</strong> The most valuable planning output comes from debate, not solo completion. Facilitate sections 1–4 with your leadership team.</li>
+      <li><strong>Replace all placeholder text</strong> (shown in gray italics) with your own content.</li>
+      <li><strong>Revisit quarterly.</strong> A plan that isn't reviewed is decoration. Schedule your review cadence in Section 13 before you close the document.</li>
+      <li><strong>To save as PDF:</strong> Click "Print / Save PDF" in the top nav and choose "Save as PDF" from your print dialog.</li>
+    </ol>
+  </div>
+
+  <!-- SECTION 1: VISION -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">01</span>
+      <div>
+        <div class="sec-title">Vision Statement</div>
+        <div class="sec-desc">Your vision is the long-horizon destination — where you're going in 5–10 years. It should be aspirational, specific enough to be meaningful, and broad enough to guide strategic choices.</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">Vision Statement</span>
+      <span class="field-hint">Write 1–3 sentences. Focus on the future state, not the present. Ask: "What does winning look like in 10 years?"</span>
+      <div class="field-box xl">To be the most trusted [industry] partner for [customer type] in [geography/market], recognized for [key differentiator] — transforming how [target audience] achieves [outcome].</div>
+      <div class="field-example"><strong>Example (healthcare consulting):</strong> "To be the leading compliance and operations partner for independent healthcare practices in the Southeast, known for turning complex regulatory requirements into practical, scalable systems — so providers can focus on patients, not paperwork."</div>
+    </div>
+    <div class="field-row">
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">Why This Vision Matters</span>
+        <div class="field-box tall">Describe the deeper "why" behind this vision — what problem it solves for the world, your customers, or your community.</div>
+      </div>
+      <div class="field-group" style="margin-bottom:0;">
+        <span class="field-label">How We'll Know We've Arrived</span>
+        <div class="field-box tall">What are 2–3 measurable signals that would indicate you've achieved this vision? (revenue milestone, market share, geographic reach, recognition)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: MISSION -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">02</span>
+      <div>
+        <div class="sec-title">Mission Statement</div>
+        <div class="sec-desc">Your mission describes what you do, for whom, and how — in the present tense. It's operational, not aspirational. A good mission statement guides daily decisions.</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">Mission Statement</span>
+      <span class="field-hint">Format: [We/Our organization] [does what] for [whom] by [how] so that [result].</span>
+      <div class="field-box xl">We [verb: help / provide / build / deliver] [target customer] [achieve / solve / access] [specific outcome] through [method / approach / capability], so that [meaningful result for them].</div>
+      <div class="field-example"><strong>Example:</strong> "We help independent healthcare practices navigate compliance and operational complexity through practical assessments, documented systems, and hands-on implementation support — so they can operate confidently, reduce risk, and grow without fear of regulatory exposure."</div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">Core Values (3–6 values that guide behavior and decisions)</span>
+    </div>
+    <div class="values-grid">
+      <div class="value-card">
+        <div class="value-name">[Value 1]</div>
+        <div class="value-def">What this value means in practice for your team...</div>
+      </div>
+      <div class="value-card">
+        <div class="value-name">[Value 2]</div>
+        <div class="value-def">What this value means in practice for your team...</div>
+      </div>
+      <div class="value-card">
+        <div class="value-name">[Value 3]</div>
+        <div class="value-def">What this value means in practice for your team...</div>
+      </div>
+      <div class="value-card">
+        <div class="value-name">[Value 4]</div>
+        <div class="value-def">What this value means in practice for your team...</div>
+      </div>
+      <div class="value-card">
+        <div class="value-name">[Value 5]</div>
+        <div class="value-def">What this value means in practice for your team...</div>
+      </div>
+      <div class="value-card">
+        <div class="value-name">[Value 6]</div>
+        <div class="value-def">What this value means in practice for your team...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: MARKET CONTEXT -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">03</span>
+      <div>
+        <div class="sec-title">Market Context</div>
+        <div class="sec-desc">Before setting strategy, ground your team in external reality. This section captures the environment you're operating in — industry trends, competitive landscape, and customer segments.</div>
+      </div>
+    </div>
+    <div class="field-group">
+      <span class="field-label">Industry Trends (3–5 trends shaping your market)</span>
+      <table class="tpl-table">
+        <thead><tr><th>Trend</th><th>Impact on Us</th><th>Opportunity or Threat?</th><th>Time Horizon</th></tr></thead>
+        <tbody>
+          <tr><td>e.g., Increased regulatory scrutiny in [sector]</td><td>Drives demand for compliance services</td><td>Opportunity</td><td>Now–2 years</td></tr>
+          <tr><td>e.g., AI adoption accelerating in operations</td><td>Clients expect AI-enabled solutions</td><td>Both</td><td>1–3 years</td></tr>
+          <tr><td>[Trend 3]</td><td>[Impact]</td><td>[O/T]</td><td>[Horizon]</td></tr>
+          <tr><td>[Trend 4]</td><td>[Impact]</td><td>[O/T]</td><td>[Horizon]</td></tr>
+          <tr><td>[Trend 5]</td><td>[Impact]</td><td>[O/T]</td><td>[Horizon]</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="field-group">
+      <span class="field-label">Customer / Client Segments</span>
+      <table class="tpl-table">
+        <thead><tr><th>Segment</th><th>Description</th><th>Size / Value</th><th>Primary Need</th><th>Strategic Priority?</th></tr></thead>
+        <tbody>
+          <tr><td>[Segment A]</td><td>[Who they are, size, characteristics]</td><td>[Revenue or volume]</td><td>[Key problem/need]</td><td>High</td></tr>
+          <tr><td>[Segment B]</td><td>[Description]</td><td>[Value]</td><td>[Need]</td><td>Medium</td></tr>
+          <tr><td>[Segment C]</td><td>[Description]</td><td>[Value]</td><td>[Need]</td><td>Low</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="field-group">
+      <span class="field-label">Competitive Landscape</span>
+      <table class="tpl-table">
+        <thead><tr><th>Competitor</th><th>Positioning</th><th>Key Strength</th><th>Key Weakness</th><th>Our Differentiator vs. Them</th></tr></thead>
+        <tbody>
+          <tr><td>[Competitor 1]</td><td>[Their market position]</td><td>[What they do well]</td><td>[Where they fall short]</td><td>[Why clients choose us]</td></tr>
+          <tr><td>[Competitor 2]</td><td>[Position]</td><td>[Strength]</td><td>[Weakness]</td><td>[Differentiator]</td></tr>
+          <tr><td>[Competitor 3]</td><td>[Position]</td><td>[Strength]</td><td>[Weakness]</td><td>[Differentiator]</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 4: SWOT -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">04</span>
+      <div>
+        <div class="sec-title">SWOT Analysis</div>
+        <div class="sec-desc">Be brutally honest. Strengths and weaknesses are internal (within your control). Opportunities and threats are external (in your environment). Fill each quadrant with 4–6 specific, evidence-based points.</div>
+      </div>
+    </div>
+    <div class="swot-grid">
+      <div class="swot-cell">
+        <div class="swot-label">S — Strengths</div>
+        <div class="swot-title">What do we do better than anyone?</div>
+        <ul class="swot-items">
+          <li>Deep industry expertise in [area]</li>
+          <li>Strong client retention / high NPS</li>
+          <li>Proprietary methodology / tools</li>
+          <li>[Your strength 4]</li>
+          <li>[Your strength 5]</li>
+        </ul>
+      </div>
+      <div class="swot-cell">
+        <div class="swot-label">W — Weaknesses</div>
+        <div class="swot-title">Where are we exposed?</div>
+        <ul class="swot-items">
+          <li>Limited brand awareness outside [region]</li>
+          <li>Dependence on a small number of large clients</li>
+          <li>Capacity constraints at current headcount</li>
+          <li>[Your weakness 4]</li>
+          <li>[Your weakness 5]</li>
+        </ul>
+      </div>
+      <div class="swot-cell">
+        <div class="swot-label">O — Opportunities</div>
+        <div class="swot-title">What can we capture?</div>
+        <ul class="swot-items">
+          <li>Growing demand for [service/product category]</li>
+          <li>Underserved segment: [segment name]</li>
+          <li>Technology-enabled service expansion</li>
+          <li>[Your opportunity 4]</li>
+          <li>[Your opportunity 5]</li>
+        </ul>
+      </div>
+      <div class="swot-cell">
+        <div class="swot-label">T — Threats</div>
+        <div class="swot-title">What could derail us?</div>
+        <ul class="swot-items">
+          <li>New entrants / well-funded competitors</li>
+          <li>Economic slowdown reducing client budgets</li>
+          <li>Regulatory change affecting demand</li>
+          <li>[Your threat 4]</li>
+          <li>[Your threat 5]</li>
+        </ul>
+      </div>
+    </div>
+    <div class="field-group" style="margin-top:1.5rem;">
+      <span class="field-label">Key SWOT Insights (3–5 most important strategic implications from your SWOT)</span>
+      <div class="field-box xl">Summarize the most important conclusions from your SWOT analysis. What does this tell you about where to focus?
+
+Example: "Our strongest opportunity is [X] and our biggest vulnerability is [Y]. The combination suggests our top priority should be [Z]."</div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: STRATEGIC PRIORITIES -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">05</span>
+      <div>
+        <div class="sec-title">Strategic Priorities</div>
+        <div class="sec-desc">Strategic priorities are the 3–5 things you must get right for the year to be successful. Each should be a category of effort, not a specific task. Every major initiative should trace to one of these.</div>
+      </div>
+    </div>
+    <div class="priority-cards">
+      <div class="priority-card">
+        <div class="priority-card-head"><span class="priority-card-num">P1</span><span class="priority-card-name">[Priority Name — e.g., Accelerate Revenue Growth]</span></div>
+        <div class="priority-card-body">
+          <div class="field-row">
+            <div class="field-group" style="margin-bottom:0;">
+              <span class="field-label">Description</span>
+              <div class="field-box tall">What this priority means, why it matters, and what success looks like at the end of the year.</div>
+            </div>
+            <div class="field-group" style="margin-bottom:0;">
+              <span class="field-label">Link to SWOT</span>
+              <div class="field-box tall">Which SWOT element(s) drive this priority? e.g., "Addresses Opportunity O1 and builds on Strength S2"</div>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Primary Owner</span><div class="field-box">[Name / Role]</div></div>
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Success Metric by Year-End</span><div class="field-box">[KPI and target — e.g., Revenue: $2.5M]</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="priority-card">
+        <div class="priority-card-head"><span class="priority-card-num">P2</span><span class="priority-card-name">[Priority Name — e.g., Build Operational Capacity]</span></div>
+        <div class="priority-card-body">
+          <div class="field-row">
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Description</span><div class="field-box tall">Description of this priority and what it encompasses for the year...</div></div>
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Link to SWOT</span><div class="field-box tall">Which SWOT element drives this?</div></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Primary Owner</span><div class="field-box">[Name / Role]</div></div>
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Success Metric by Year-End</span><div class="field-box">[KPI and target]</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="priority-card">
+        <div class="priority-card-head"><span class="priority-card-num">P3</span><span class="priority-card-name">[Priority Name — e.g., Deepen Client Relationships]</span></div>
+        <div class="priority-card-body">
+          <div class="field-row">
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Description</span><div class="field-box tall">Description...</div></div>
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Link to SWOT</span><div class="field-box tall">SWOT link...</div></div>
+          </div>
+          <div class="field-row">
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Primary Owner</span><div class="field-box">[Name / Role]</div></div>
+            <div class="field-group" style="margin-bottom:0;"><span class="field-label">Success Metric by Year-End</span><div class="field-box">[KPI and target]</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="tbl-note" style="margin-top:0.8rem;">Add up to 2 more priorities if needed (P4, P5). Fewer is better. More than 5 priorities = no priorities.</p>
+  </div>
+
+  <!-- SECTION 6: ANNUAL GOALS -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">06</span>
+      <div>
+        <div class="sec-title">Annual Goals</div>
+        <div class="sec-desc">Annual goals translate strategic priorities into specific, measurable outcomes for the year. Every goal should map to a priority and have a clear owner and due date.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead>
+        <tr><th>#</th><th>Goal</th><th>Priority</th><th>Owner</th><th>Due</th><th>KPI / Metric</th><th>Baseline</th><th>Target</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>G1</td><td>Grow recurring revenue to $X by year-end</td><td>P1</td><td>[Name]</td><td>Dec 31</td><td>MRR / ARR</td><td>$[X]</td><td>$[Y]</td></tr>
+        <tr><td>G2</td><td>Hire and onboard [N] new [role] by Q2</td><td>P2</td><td>[Name]</td><td>Jun 30</td><td>Headcount</td><td>[N]</td><td>[N+X]</td></tr>
+        <tr><td>G3</td><td>Achieve NPS score of [N]+ among active clients</td><td>P3</td><td>[Name]</td><td>Dec 31</td><td>Net Promoter Score</td><td>[current]</td><td>[target]</td></tr>
+        <tr><td>G4</td><td>Launch [product/service/initiative] by Q3</td><td>P1</td><td>[Name]</td><td>Sep 30</td><td>Launch date met</td><td>Not launched</td><td>Live</td></tr>
+        <tr><td>G5</td><td>Complete [certification / compliance / audit]</td><td>P2</td><td>[Name]</td><td>[Date]</td><td>Certification achieved</td><td>In progress</td><td>Certified</td></tr>
+        <tr><td>G6</td><td>[Goal 6]</td><td>[P#]</td><td>[Name]</td><td>[Date]</td><td>[KPI]</td><td>[Baseline]</td><td>[Target]</td></tr>
+        <tr><td>G7</td><td>[Goal 7]</td><td>[P#]</td><td>[Name]</td><td>[Date]</td><td>[KPI]</td><td>[Baseline]</td><td>[Target]</td></tr>
+        <tr><td>G8</td><td>[Goal 8]</td><td>[P#]</td><td>[Name]</td><td>[Date]</td><td>[KPI]</td><td>[Baseline]</td><td>[Target]</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 7: QUARTERLY OKRs -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">07</span>
+      <div>
+        <div class="sec-title">Quarterly Objectives &amp; Key Results (OKRs)</div>
+        <div class="sec-desc">Break annual goals into quarterly objectives. Each objective has 2–4 key results — specific, measurable milestones that indicate the objective is being achieved. Update status each quarter.</div>
+      </div>
+    </div>
+    <div class="okr-quarter">
+      <div class="okr-q-label">Q1 · Jan – Mar</div>
+      <div class="okr-objective">Objective: [What do we need to accomplish in Q1?]</div>
+      <ul class="kr-list">
+        <li>Achieve [specific measurable outcome] by [date]</li>
+        <li>Complete [deliverable / milestone] with [quality standard]</li>
+        <li>Reach [metric] of [number] by end of March</li>
+        <li>[Key Result 4]</li>
+      </ul>
+    </div>
+    <div class="okr-quarter">
+      <div class="okr-q-label">Q2 · Apr – Jun</div>
+      <div class="okr-objective">Objective: [Q2 objective]</div>
+      <ul class="kr-list">
+        <li>[Key Result 1]</li>
+        <li>[Key Result 2]</li>
+        <li>[Key Result 3]</li>
+      </ul>
+    </div>
+    <div class="okr-quarter">
+      <div class="okr-q-label">Q3 · Jul – Sep</div>
+      <div class="okr-objective">Objective: [Q3 objective]</div>
+      <ul class="kr-list">
+        <li>[Key Result 1]</li>
+        <li>[Key Result 2]</li>
+        <li>[Key Result 3]</li>
+      </ul>
+    </div>
+    <div class="okr-quarter">
+      <div class="okr-q-label">Q4 · Oct – Dec</div>
+      <div class="okr-objective">Objective: [Q4 objective]</div>
+      <ul class="kr-list">
+        <li>[Key Result 1]</li>
+        <li>[Key Result 2]</li>
+        <li>[Key Result 3]</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 8: KPIs -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">08</span>
+      <div>
+        <div class="sec-title">KPI Framework</div>
+        <div class="sec-desc">Select 10–15 KPIs that give you a complete view of organizational health. Include leading indicators (inputs you control) and lagging indicators (outcomes you measure). Assign an owner and reporting frequency to each.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead>
+        <tr><th>KPI</th><th>Category</th><th>Formula / Definition</th><th>Baseline</th><th>Target</th><th>Owner</th><th>Frequency</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Monthly Recurring Revenue</td><td>Financial</td><td>Sum of all recurring monthly revenue</td><td>$[X]</td><td>$[Y]</td><td>[CFO/CEO]</td><td>Monthly</td></tr>
+        <tr><td>Gross Margin %</td><td>Financial</td><td>(Revenue – COGS) ÷ Revenue × 100</td><td>[X]%</td><td>[Y]%</td><td>[CFO]</td><td>Monthly</td></tr>
+        <tr><td>New Client Revenue</td><td>Sales</td><td>Revenue from clients acquired this period</td><td>$[X]</td><td>$[Y]</td><td>[Sales Lead]</td><td>Monthly</td></tr>
+        <tr><td>Win Rate</td><td>Sales</td><td>Closed Won ÷ Total Qualified Opportunities × 100</td><td>[X]%</td><td>[Y]%</td><td>[Sales Lead]</td><td>Monthly</td></tr>
+        <tr><td>Client Retention Rate</td><td>Customer</td><td>(Clients at End – New Clients) ÷ Clients at Start × 100</td><td>[X]%</td><td>[Y]%</td><td>[Client Success]</td><td>Quarterly</td></tr>
+        <tr><td>Net Promoter Score</td><td>Customer</td><td>% Promoters – % Detractors</td><td>[X]</td><td>[Y]</td><td>[Client Success]</td><td>Quarterly</td></tr>
+        <tr><td>Utilization Rate</td><td>Operations</td><td>Billable Hours ÷ Total Available Hours × 100</td><td>[X]%</td><td>[Y]%</td><td>[Operations]</td><td>Weekly</td></tr>
+        <tr><td>Employee Satisfaction (eNPS)</td><td>Team</td><td>% Promoters – % Detractors (internal survey)</td><td>[X]</td><td>[Y]</td><td>[HR/People]</td><td>Quarterly</td></tr>
+        <tr><td>[KPI 9]</td><td>[Category]</td><td>[Formula]</td><td>[Baseline]</td><td>[Target]</td><td>[Owner]</td><td>[Freq]</td></tr>
+        <tr><td>[KPI 10]</td><td>[Category]</td><td>[Formula]</td><td>[Baseline]</td><td>[Target]</td><td>[Owner]</td><td>[Freq]</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 9: KEY INITIATIVES -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">09</span>
+      <div>
+        <div class="sec-title">Key Initiatives</div>
+        <div class="sec-desc">Initiatives are the major projects and programs that drive your strategic priorities. Each should have a clear owner, timeline, budget, and expected impact. Limit to 8–12 high-priority initiatives.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead>
+        <tr><th>Initiative</th><th>Priority</th><th>Owner</th><th>Start</th><th>End</th><th>Budget</th><th>Expected Impact</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>[Initiative 1 — e.g., Launch new service line]</td><td>P1</td><td>[Name]</td><td>Q1</td><td>Q2</td><td>$[X]</td><td>+$[Y] new ARR</td><td>Planning</td></tr>
+        <tr><td>[Initiative 2 — e.g., CRM implementation]</td><td>P2</td><td>[Name]</td><td>Q1</td><td>Q3</td><td>$[X]</td><td>20% faster pipeline visibility</td><td>Not started</td></tr>
+        <tr><td>[Initiative 3 — e.g., Team restructure]</td><td>P2</td><td>[Name]</td><td>Q2</td><td>Q2</td><td>$[X]</td><td>[Impact]</td><td>Not started</td></tr>
+        <tr><td>[Initiative 4]</td><td>[P#]</td><td>[Name]</td><td>[Q]</td><td>[Q]</td><td>$[X]</td><td>[Impact]</td><td>[Status]</td></tr>
+        <tr><td>[Initiative 5]</td><td>[P#]</td><td>[Name]</td><td>[Q]</td><td>[Q]</td><td>$[X]</td><td>[Impact]</td><td>[Status]</td></tr>
+        <tr><td>[Initiative 6]</td><td>[P#]</td><td>[Name]</td><td>[Q]</td><td>[Q]</td><td>$[X]</td><td>[Impact]</td><td>[Status]</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 10: TIMELINE / ROADMAP -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">10</span>
+      <div>
+        <div class="sec-title">Annual Roadmap</div>
+        <div class="sec-desc">Map your key initiatives and milestones across the four quarters. This gives leadership a single-page view of what's happening when, enabling resource planning and dependency identification.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead>
+        <tr><th>Priority / Initiative</th><th>Q1 · Jan–Mar</th><th>Q2 · Apr–Jun</th><th>Q3 · Jul–Sep</th><th>Q4 · Oct–Dec</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>P1: [Priority Name]</strong></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td style="padding-left:1.5rem;">— [Initiative 1]</td><td>Launch</td><td>Scale</td><td>Optimize</td><td>Review</td></tr>
+        <tr><td style="padding-left:1.5rem;">— [Initiative 2]</td><td>Plan</td><td>Build</td><td>Launch</td><td></td></tr>
+        <tr><td><strong>P2: [Priority Name]</strong></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td style="padding-left:1.5rem;">— [Initiative 3]</td><td>Hire</td><td>Train &amp; Onboard</td><td>Full Capacity</td><td>Review</td></tr>
+        <tr><td style="padding-left:1.5rem;">— [Initiative 4]</td><td></td><td>Start</td><td>Complete</td><td></td></tr>
+        <tr><td><strong>P3: [Priority Name]</strong></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td style="padding-left:1.5rem;">— [Initiative 5]</td><td>Design</td><td>Pilot</td><td>Roll out</td><td>Review</td></tr>
+        <tr><td><strong>Key Milestones</strong></td><td>[Q1 Milestone]</td><td>[Q2 Milestone]</td><td>[Q3 Milestone]</td><td>[Q4 Milestone]</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 11: RISKS -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">11</span>
+      <div>
+        <div class="sec-title">Risk Register</div>
+        <div class="sec-desc">Identify the top risks to executing your strategic plan. For each risk, assess likelihood and impact, calculate a risk score (L × I), and define your mitigation strategy. Revisit quarterly.</div>
+      </div>
+    </div>
+    <p class="tbl-note" style="margin-bottom:1rem;">Scoring: Likelihood (1–3: Low/Med/High) × Impact (1–3: Low/Med/High) = Risk Score (1=Low, 9=High)</p>
+    <table class="tpl-table">
+      <thead>
+        <tr><th>Risk</th><th>Category</th><th>Likelihood</th><th>Impact</th><th>Score</th><th>Mitigation Strategy</th><th>Owner</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Key client concentration (top 3 clients &gt;40% of revenue)</td>
+          <td>Revenue</td><td>2 – Med</td><td>3 – High</td>
+          <td><span class="risk-high">6 – High</span></td>
+          <td>Diversify client base; add 5 new clients in Q1–Q2</td>
+          <td>[Name]</td><td>Active</td>
+        </tr>
+        <tr>
+          <td>Key personnel departure (critical skill / client relationship)</td>
+          <td>People</td><td>2 – Med</td><td>3 – High</td>
+          <td><span class="risk-high">6 – High</span></td>
+          <td>Retention bonuses, succession planning, knowledge documentation</td>
+          <td>[HR]</td><td>Monitoring</td>
+        </tr>
+        <tr>
+          <td>Technology implementation delay (CRM/systems)</td>
+          <td>Operations</td><td>2 – Med</td><td>2 – Med</td>
+          <td><span class="risk-med">4 – Medium</span></td>
+          <td>Phased rollout, vendor SLAs, parallel operations during transition</td>
+          <td>[Ops Lead]</td><td>Monitoring</td>
+        </tr>
+        <tr>
+          <td>Economic slowdown reducing client budgets</td>
+          <td>Market</td><td>2 – Med</td><td>2 – Med</td>
+          <td><span class="risk-med">4 – Medium</span></td>
+          <td>Diversify service offering; develop lower-cost entry products</td>
+          <td>[CEO]</td><td>Monitoring</td>
+        </tr>
+        <tr>
+          <td>[Risk 5]</td><td>[Category]</td><td>[L]</td><td>[I]</td><td>[Score]</td><td>[Mitigation]</td><td>[Owner]</td><td>[Status]</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 12: OWNERSHIP MATRIX -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">12</span>
+      <div>
+        <div class="sec-title">Strategic Ownership Matrix</div>
+        <div class="sec-desc">Assign clear accountability for each strategic priority. Use this as a quick reference during leadership meetings to confirm who is responsible for what.</div>
+      </div>
+    </div>
+    <table class="tpl-table">
+      <thead>
+        <tr><th>Area</th><th>Priority</th><th>Accountable (A)</th><th>Responsible (R)</th><th>Key Stakeholders</th><th>Report-Out Frequency</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Revenue Growth</td><td>P1</td><td>[CEO / Sales Lead]</td><td>[Sales Team]</td><td>CFO, Board</td><td>Monthly</td></tr>
+        <tr><td>Operational Capacity</td><td>P2</td><td>[COO / Ops Lead]</td><td>[Ops Team]</td><td>CEO, HR</td><td>Monthly</td></tr>
+        <tr><td>Client Experience</td><td>P3</td><td>[Client Success Lead]</td><td>[Delivery Team]</td><td>CEO, Sales</td><td>Monthly</td></tr>
+        <tr><td>[Area 4]</td><td>[P#]</td><td>[Accountable]</td><td>[Responsible]</td><td>[Stakeholders]</td><td>[Freq]</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SECTION 13: REVIEW CADENCE -->
+  <div class="tpl-section">
+    <div class="sec-header">
+      <span class="sec-num">13</span>
+      <div>
+        <div class="sec-title">Review Cadence</div>
+        <div class="sec-desc">Plans without reviews are wishes. Schedule your review cadence now and commit to it. Each review meeting should have a defined owner, agenda, and output.</div>
+      </div>
+    </div>
+    <div class="cadence-row">
+      <div class="cadence-cell label">Monthly Review</div>
+      <div class="cadence-cell"><strong>Owner:</strong> [CEO / Leadership Team Lead] &nbsp;|&nbsp; <strong>Duration:</strong> 60 min &nbsp;|&nbsp; <strong>When:</strong> Last Tuesday of each month<br><strong>Agenda:</strong> KPI review vs. targets, initiative status updates, risk and issue review, upcoming priorities for next 30 days.</div>
+      <div class="cadence-cell"><strong>Output:</strong> Updated KPI dashboard, initiative status, any escalated decisions or new risks added to register.</div>
+    </div>
+    <div class="cadence-row">
+      <div class="cadence-cell label">Quarterly Review</div>
+      <div class="cadence-cell"><strong>Owner:</strong> [CEO] &nbsp;|&nbsp; <strong>Duration:</strong> Half day &nbsp;|&nbsp; <strong>When:</strong> Week 2 of new quarter<br><strong>Agenda:</strong> Full OKR review vs. plan, strategic priority progress, Q+1 planning, risks update, budget vs. actuals, team health check.</div>
+      <div class="cadence-cell"><strong>Output:</strong> OKR scoring (0.0–1.0), updated roadmap, Q+1 OKRs confirmed, any strategic pivots documented.</div>
+    </div>
+    <div class="cadence-row">
+      <div class="cadence-cell label">Annual Review</div>
+      <div class="cadence-cell"><strong>Owner:</strong> [CEO + Board / Advisors] &nbsp;|&nbsp; <strong>Duration:</strong> Full day offsite &nbsp;|&nbsp; <strong>When:</strong> November / December<br><strong>Agenda:</strong> Year-in-review vs. goals, SWOT refresh, new strategic priorities for next year, new annual goals and OKRs, resource planning.</div>
+      <div class="cadence-cell"><strong>Output:</strong> Completed prior-year plan scorecard, new strategic plan for following year.</div>
+    </div>
+    <div class="cadence-row">
+      <div class="cadence-cell label">Weekly Check-In</div>
+      <div class="cadence-cell"><strong>Owner:</strong> [Leadership Team] &nbsp;|&nbsp; <strong>Duration:</strong> 30 min &nbsp;|&nbsp; <strong>When:</strong> Every Monday<br><strong>Agenda:</strong> 3 priorities this week, any blockers or escalations, quick wins from last week.</div>
+      <div class="cadence-cell"><strong>Output:</strong> Team aligned on weekly priorities. Blockers surfaced early.</div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-block">
+    <h2>Ready to Build a Plan That Actually Works?</h2>
+    <p>This template gives you the structure. New Level Consultants provides the facilitation, expertise, and accountability to turn your strategic plan into real results. Book a free discovery call to explore how we can help.</p>
+    <div class="cta-btns">
+      <a href="https://nlcfirm.com/#contact" class="btn-gold">Book a Free Strategy Call</a>
+      <a href="/portal.html" class="btn-outline">Back to Dashboard</a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <span>© 2026 New Level Consultants &nbsp;|&nbsp; <a href="https://nlcfirm.com">nlcfirm.com</a> &nbsp;|&nbsp; <a href="tel:+17864084243">786-408-4243</a></span>
+    <span>Free Resource Library · <a href="/free-resources.html">Explore All Templates</a></span>
+  </div>
+
+</div><!-- /.document -->
+
+</body>
+</html>

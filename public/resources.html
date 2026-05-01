@@ -54,6 +54,15 @@
       .tool-promo-price { font-size: 0.75rem; color: var(--gold); font-weight: 600; }
       .tool-promo-desc { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.3rem; }
 
+      /* Free toolkit promo section */
+      .free-toolkit-promo { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; max-width: 900px; margin: 0 auto; }
+      .free-toolkit-body { margin-bottom: 1.5rem; }
+      .free-toolkit-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+      .free-toolkit-icons { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+      .free-toolkit-icon-card { background: var(--bg-glass); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; text-align: center; }
+      .free-toolkit-icon-emoji { font-size: 1.8rem; margin-bottom: 0.3rem; }
+      .free-toolkit-icon-label { font-size: 0.75rem; font-weight: 600; color: var(--text-dim); }
+
       @media (max-width: 960px) {
         .page-hero { padding: 8rem 1.5rem 3rem; }
         .resource-grid { grid-template-columns: 1fr; }
@@ -61,6 +70,7 @@
         .featured-thumb { height: 200px; }
         .featured-body { padding: 1.5rem; }
         .tools-promo { grid-template-columns: 1fr 1fr; }
+        .free-toolkit-promo { grid-template-columns: 1fr; gap: 1.5rem; }
       }
     </style>
   </head>
@@ -97,6 +107,39 @@
   <div class="eyebrow u-flex-center">Knowledge Hub</div>
   <h1>Free Resources for <em>Smart Leaders</em></h1>
   <p>Expert guides, compliance checklists, industry insights, and practical tools — all free. Because educating our community is how we earn trust.</p>
+</section>
+
+<!-- FREE RESOURCE LIBRARY CTA -->
+<section class="section section-warm">
+  <div class="free-toolkit-promo anim">
+    <div>
+      <div class="section-tag">New: Free Toolkit</div>
+      <h2 class="section-title">5 Professional Templates, <em>Free with an Account</em></h2>
+      <p class="section-body free-toolkit-body">Strategic Planning Worksheet, Financial Model, Project Management Framework, KPI Dashboard, and Business Case Template — built by consultants, ready to use. No credit card. Ever.</p>
+      <div class="free-toolkit-ctas">
+        <a href="/portal-login.html" class="btn btn-gold">Create Free Account →</a>
+        <a href="/free-resources.html" class="btn btn-outline">See All 5 Templates</a>
+      </div>
+    </div>
+    <div class="free-toolkit-icons">
+      <div class="free-toolkit-icon-card">
+        <div class="free-toolkit-icon-emoji">🎯</div>
+        <div class="free-toolkit-icon-label">Strategic Planning</div>
+      </div>
+      <div class="free-toolkit-icon-card">
+        <div class="free-toolkit-icon-emoji">📊</div>
+        <div class="free-toolkit-icon-label">Financial Model</div>
+      </div>
+      <div class="free-toolkit-icon-card">
+        <div class="free-toolkit-icon-emoji">📋</div>
+        <div class="free-toolkit-icon-label">PM Framework</div>
+      </div>
+      <div class="free-toolkit-icon-card">
+        <div class="free-toolkit-icon-emoji">📈</div>
+        <div class="free-toolkit-icon-label">KPI Dashboard</div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- FEATURED RESOURCE -->
