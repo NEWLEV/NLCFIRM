@@ -197,6 +197,21 @@ nav.scrolled .nav-logo img {
   letter-spacing: 0.02em !important;
 }
 
+.nav-login {
+  color: var(--text-dim) !important;
+  font-weight: 500 !important;
+  transition: color 0.25s !important;
+  margin-right: -0.5rem; /* Tighten up next to CTA */
+}
+
+.nav-login:hover {
+  color: var(--gold) !important;
+}
+
+.nav-login::after {
+  display: none !important;
+}
+
 /* ─── HAMBURGER ─────────────────────────────────────── */
 .hamburger {
   display: none;
