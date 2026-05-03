@@ -1,8 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Read the redirect target from the URL (e.g., ?redirect=/downloads/strategic-planning-template/)
+    const urlParams = new URLSearchParams(window.location.search);
+    const redirectTarget = urlParams.get('redirect') || '/portal.html';
+
+    // Sanitize: only allow relative paths to prevent open-redirect
+    const safeRedirect = redirectTarget.startsWith('/') ? redirectTarget : '/portal.html';
+
     // Redirect if already authenticated as a client
     const token = localStorage.getItem('nlc_client_token');
     if (token) {
-      window.location.href = '/portal.html';
+      window.location.href = safeRedirect;
       return;
     }
   
@@ -47,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (res.ok) {
             localStorage.setItem('nlc_client_token', data.token);
             localStorage.setItem('nlc_client_user', JSON.stringify(data.client));
-            window.location.href = '/portal.html';
+            window.location.href = safeRedirect;
           } else {
             showError(data.error || data.errors?.[0]?.msg || 'Login failed.');
             btn.textContent = originalText;
@@ -87,11 +94,11 @@ document.addEventListener('DOMContentLoaded', () => {
           const data = await res.json();
   
           if (res.ok) {
-            showSuccess('Account created successfully. Logging you in...');
+            showSuccess('Account created successfully. Redirecting...');
             localStorage.setItem('nlc_client_token', data.token);
             localStorage.setItem('nlc_client_user', JSON.stringify(data.client));
             setTimeout(() => {
-              window.location.href = '/portal.html';
+              window.location.href = safeRedirect;
             }, 1000);
           } else {
             showError(data.error || data.errors?.[0]?.msg || 'Registration failed.');

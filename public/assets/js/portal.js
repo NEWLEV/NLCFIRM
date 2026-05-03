@@ -21,9 +21,10 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchContainerData('/api/client/profile', null, renderProfile);
   fetchContainerData('/api/client/courses', 'courses-container', renderCourses);
 
-  // Handle URL hash navigation (e.g., /portal.html#courses)
-  if (window.location.hash === '#courses') {
-    const link = document.querySelector('[onclick*="courses"]');
+  // Handle URL hash navigation (e.g., /portal.html#library, /portal.html#courses)
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    const link = document.querySelector('[onclick*="' + hash + '"]');
     if (link) link.click();
   }
 });
