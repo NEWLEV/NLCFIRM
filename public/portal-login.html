@@ -11,36 +11,82 @@
   <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png">
   <link rel="stylesheet" href="/assets/css/styles.css">
   <style>
-    body { background-color: var(--color-bg); min-height: 100vh; display: flex; flex-direction: column; }
-    .portal-header { text-align: center; padding: 2rem; border-bottom: 1px solid var(--color-gold-opacity); background: #fff; }
-    .portal-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-    .auth-container { background: #fff; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); overflow: hidden; max-width: 480px; width: 100%; border: 1px solid var(--color-gold-opacity); }
+    .auth-section { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 8rem 2rem 5rem; position: relative; overflow: hidden; }
+    .auth-section::before { content: ''; position: absolute; top: -20%; left: -10%; width: 600px; height: 600px; background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%); pointer-events: none; }
+    .auth-container { background: var(--bg-glass); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border: 1px solid var(--border-strong); border-radius: var(--radius); width: 100%; max-width: 480px; overflow: hidden; position: relative; z-index: 1; }
     
-    .auth-tabs { display: flex; border-bottom: 1px solid var(--color-gold-opacity); }
-    .auth-tab { flex: 1; text-align: center; padding: 1.25rem; background: var(--color-bg); color: var(--color-slate); font-weight: 600; cursor: pointer; transition: 0.3s; border: none; font-size: 1rem; }
-    .auth-tab.active { background: #fff; color: var(--color-navy); border-bottom: 3px solid var(--color-gold); }
+    .auth-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .auth-tab { flex: 1; padding: 1.25rem; background: transparent; border: none; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: all 0.3s; }
+    .auth-tab.active { color: var(--gold); border-bottom: 2px solid var(--gold); background: rgba(201, 168, 76, 0.05); }
     
-    .auth-body { padding: 2rem; }
+    .auth-body { padding: 3rem 2.5rem; }
     .auth-form { display: none; }
-    .auth-form.active { display: block; }
+    .auth-form.active { display: block; animation: fadeIn 0.4s ease; }
+    
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    .auth-header { text-align: center; margin-bottom: 2.5rem; }
+    .auth-header h1 { font-family: var(--font-display); font-size: 2.2rem; margin-bottom: 0.6rem; color: var(--text); }
+    .auth-header p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
     
     .form-group { margin-bottom: 1.5rem; }
-    .form-group label { display: block; font-size: 0.875rem; font-weight: 600; color: var(--color-navy); margin-bottom: 0.5rem; }
-    .form-group input { width: 100%; padding: 0.75rem 1rem; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 1rem; transition: 0.3s; outline: none; }
-    .form-group input:focus { border-color: var(--color-gold); box-shadow: 0 0 0 3px var(--color-gold-opacity); }
+    .form-group label { display: block; font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 600; }
+    .form-group input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1.1rem; color: var(--text); font-family: var(--font); font-size: 0.95rem; transition: all 0.3s; outline: none; }
+    .form-group input:focus { border-color: var(--gold); box-shadow: 0 0 15px var(--gold-glow); }
     
-    .error-box { background: #fee2e2; color: #b91c1c; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.875rem; display: none; }
-    .success-box { background: #dcfce7; color: #15803d; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.875rem; display: none; }
+    .error-box, .success-box { padding: 1rem; border-radius: var(--radius); font-size: 0.85rem; margin-bottom: 1.5rem; display: none; }
+    .error-box { background: rgba(232, 120, 94, 0.1); border: 1px solid var(--danger); color: #fca5a5; }
+    .success-box { background: rgba(45, 106, 79, 0.1); border: 1px solid var(--success); color: #6ee7b7; }
+    
+    .auth-footer { margin-top: 2rem; text-align: center; font-size: 0.8rem; color: var(--text-muted); }
+    .auth-footer a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+    .auth-footer a:hover { color: var(--gold-light); }
+
+    .u-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .w-full { width: 100%; }
+    
+    @media (max-width: 480px) {
+      .auth-body { padding: 2rem 1.5rem; }
+      .auth-header h1 { font-size: 1.8rem; }
+    }
   </style>
 </head>
 <body>
+  <div id="scroll-progress" class="scroll-progress"></div>
 
-  <header class="portal-header">
-    <a href="/"><img src="/assets/images/logo-stacked.png" alt="NLC Logo" height="60"></a>
-  </header>
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="/" class="nav-logo" aria-label="New Level Consultants Home">
+      <img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants" width="180" height="40">
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/#plans">Plans</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/case-studies.html">Results</a></li>
+      <li><a href="/resources.html">Resources</a></li>
+      <li><a href="tel:+17864084243" class="nav-phone" aria-label="Call us">📞 786-408-4243</a></li>
+      <li><a href="/portal-login.html" class="nav-login active">Login</a></li>
+      <li><a href="/free-resources.html" class="nav-cta">Access Free Toolkit →</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
 
-  <main class="portal-main">
-    <div class="auth-container">
+  <div id="drawer-overlay" class="drawer-overlay" onclick="toggleDrawer()"></div>
+  <div id="mobile-drawer" class="mobile-drawer">
+    <a href="/#services" onclick="toggleDrawer()">Services</a>
+    <a href="/#plans" onclick="toggleDrawer()">Plans</a>
+    <a href="/about.html" onclick="toggleDrawer()">About</a>
+    <a href="/case-studies.html" onclick="toggleDrawer()">Results</a>
+    <a href="/resources.html" onclick="toggleDrawer()">Resources</a>
+    <a href="/portal-login.html" onclick="toggleDrawer()" class="u-text-gold">Login</a>
+    <a href="/free-resources.html" onclick="toggleDrawer()" class="nav-cta">Access Free Toolkit →</a>
+  </div>
+
+  <main class="auth-section">
+    <div class="auth-container anim">
       <div class="auth-tabs">
         <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
         <button class="auth-tab" onclick="switchTab('register')">Create Account</button>
@@ -51,49 +97,103 @@
         <div id="auth-success" class="success-box"></div>
 
         <!-- Login Form -->
-        <form id="form-login" class="auth-form active">
-          <div class="form-group">
-            <label for="login-email">Email Address</label>
-            <input type="email" id="login-email" name="email" required autocomplete="email">
+        <div id="form-login-container" class="auth-form active">
+          <div class="auth-header">
+            <h1>Welcome <em>Back</em></h1>
+            <p>Log in to your client portal to access your tools and reports.</p>
           </div>
-          <div class="form-group">
-            <label for="login-password">Password</label>
-            <input type="password" id="login-password" name="password" required autocomplete="current-password">
-          </div>
-          <button type="submit" class="btn btn-gold w-full" id="btn-login">Access Portal</button>
-        </form>
+          <form id="form-login">
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <input type="email" id="login-email" name="email" required autocomplete="email" placeholder="name@company.com">
+            </div>
+            <div class="form-group">
+              <label for="login-password">Password</label>
+              <input type="password" id="login-password" name="password" required autocomplete="current-password" placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn btn-gold w-full" id="btn-login">Access Portal →</button>
+            <div class="auth-footer">
+              <p><a href="/forgot-password.html">Forgot your password?</a></p>
+            </div>
+          </form>
+        </div>
 
         <!-- Register Form -->
-        <form id="form-register" class="auth-form">
-          <div class="u-grid-2 u-flex-gap-1">
-            <div class="form-group">
-              <label for="reg-first">First Name</label>
-              <input type="text" id="reg-first" name="firstName" required autocomplete="given-name">
+        <div id="form-register-container" class="auth-form">
+          <div class="auth-header">
+            <h1>Join <em>NLC</em></h1>
+            <p>Create a free account to unlock your business strategy toolkit.</p>
+          </div>
+          <form id="form-register">
+            <div class="u-grid-2">
+              <div class="form-group">
+                <label for="reg-first">First Name</label>
+                <input type="text" id="reg-first" name="firstName" required autocomplete="given-name" placeholder="Jane">
+              </div>
+              <div class="form-group">
+                <label for="reg-last">Last Name</label>
+                <input type="text" id="reg-last" name="lastName" required autocomplete="family-name" placeholder="Smith">
+              </div>
             </div>
             <div class="form-group">
-              <label for="reg-last">Last Name</label>
-              <input type="text" id="reg-last" name="lastName" required autocomplete="family-name">
+              <label for="reg-email">Work Email</label>
+              <input type="email" id="reg-email" name="email" required autocomplete="email" placeholder="jane@company.com">
             </div>
-          </div>
-          <div class="form-group">
-            <label for="reg-email">Email Address</label>
-            <input type="email" id="reg-email" name="email" required autocomplete="email">
-          </div>
-          <div class="form-group">
-            <label for="reg-company">Company / Organization (Optional)</label>
-            <input type="text" id="reg-company" name="company" autocomplete="organization">
-          </div>
-          <div class="form-group">
-            <label for="reg-password">Password</label>
-            <input type="password" id="reg-password" name="password" required autocomplete="new-password" minlength="8" placeholder="Min. 8 characters">
-          </div>
-          <button type="submit" class="btn btn-dark w-full" id="btn-register">Create Account</button>
-        </form>
-
+            <div class="form-group">
+              <label for="reg-company">Organization</label>
+              <input type="text" id="reg-company" name="company" autocomplete="organization" placeholder="Your organization name">
+            </div>
+            <div class="form-group">
+              <label for="reg-password">Password</label>
+              <input type="password" id="reg-password" name="password" required autocomplete="new-password" minlength="8" placeholder="Min. 8 characters">
+            </div>
+            <button type="submit" class="btn btn-gold w-full" id="btn-register">Create Free Account →</button>
+            <div class="auth-footer">
+              <p>By creating an account, you agree to our <a href="/terms.html">Terms</a> and <a href="/privacy.html">Privacy Policy</a>.</p>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </main>
 
+  <footer class="footer-main">
+    <div class="footer-grid-4col">
+      <div>
+        <div class="footer-brand"><img src="/assets/images/logo-dark-bg.png" alt="NLC" width="120" height="28"></div>
+        <p class="footer-tagline">Healthcare and business consulting for organizations that refuse to stay at the same level.</p>
+      </div>
+      <div>
+        <h4 class="footer-heading-sm">Solutions</h4>
+        <ul class="footer-link-list">
+          <li class="footer-link-item"><a href="/#services" class="footer-link-a">HIPAA Compliance</a></li>
+          <li class="footer-link-item"><a href="/#services" class="footer-link-a">Operations & SOPs</a></li>
+          <li class="footer-link-item"><a href="/#services" class="footer-link-a">AI Strategy</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading-sm">Company</h4>
+        <ul class="footer-link-list">
+          <li class="footer-link-item"><a href="/about.html" class="footer-link-a">About Us</a></li>
+          <li class="footer-link-item"><a href="/#plans" class="footer-link-a">Pricing</a></li>
+          <li class="footer-link-item"><a href="/contact.html" class="footer-link-a">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading-sm">Contact</h4>
+        <p class="footer-contact-text">info@nlcfirm.com<br>786-408-4243</p>
+      </div>
+    </div>
+    <div class="footer-bottom-row">
+      <div>&copy; 2026 New Level Consultants. All rights reserved.</div>
+      <div class="footer-bottom-links">
+        <a href="/privacy.html" class="u-text-decoration-none">Privacy Policy</a>
+        <a href="/terms.html" class="u-text-decoration-none">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/assets/js/main.js"></script>
   <script src="/assets/js/portal-auth.js" defer></script>
   <script>
     function switchTab(tab) {
@@ -104,10 +204,10 @@
 
       if(tab === 'login') {
         document.querySelectorAll('.auth-tab')[0].classList.add('active');
-        document.getElementById('form-login').classList.add('active');
+        document.getElementById('form-login-container').classList.add('active');
       } else {
         document.querySelectorAll('.auth-tab')[1].classList.add('active');
-        document.getElementById('form-register').classList.add('active');
+        document.getElementById('form-register-container').classList.add('active');
       }
     }
   </script>
