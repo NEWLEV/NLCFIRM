@@ -1,8 +1,14 @@
 const mysql = require('mysql2/promise');
-const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const path = require('path');
 const fs = require('fs');
+
+let sqlite3;
+try {
+  sqlite3 = require('sqlite3').verbose();
+} catch (e) {
+  // SQLite not available in this environment (likely production)
+}
 
 let pool;
 let sqliteDb;
@@ -42,6 +48,12 @@ async function getDb() {
     dbType = 'mysql';
     console.log('✅ Connected to MySQL Database');
   } catch (err) {
+    if (!sqlite3) {
+      console.error(`❌ MySQL Connection Failed: ${err.message}`);
+      console.error('❌ SQLite fallback is not available in this environment.');
+      throw err;
+    }
+
     console.warn(`⚠️ MySQL Connection Failed: ${err.message}. Falling back to SQLite...`);
     
     // Fallback to SQLite
