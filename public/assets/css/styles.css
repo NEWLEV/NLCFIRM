@@ -3391,3 +3391,10 @@ body.chatbot-open .sticky-cta {
     transition-delay: 0s !important;
   }
 }
+
+/* Utility Classes */
+.u-display-none { display: none !important; }
+.u-display-block { display: block !important; }
+.u-hidden { visibility: hidden !important; }
+.u-visible { visibility: visible !important; }
+
