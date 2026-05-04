@@ -52,6 +52,12 @@
   </script>
 </head>
 <body>
+  <!-- ANNOUNCEMENT BANNER (controlled via admin) -->
+  <div id="site-banner" style="display:none;background:var(--gold);color:#0a0c10;text-align:center;padding:0.6rem 2rem;font-size:0.82rem;font-weight:600;position:relative;z-index:2000;">
+    <span id="site-banner-text"></span>
+    <a id="site-banner-link" href="#" style="margin-left:1rem;text-decoration:underline;color:#0a0c10;font-weight:700;display:none;"></a>
+    <button onclick="document.getElementById('site-banner').style.display='none'" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;color:#0a0c10;line-height:1;">×</button>
+  </div>
   <div id="scroll-progress" class="scroll-progress"></div>
 
   <!-- NAV -->
@@ -91,10 +97,10 @@
     <canvas id="hero-canvas" class="hero-canvas"></canvas>
     <div class="hero-left">
       <div class="eyebrow" id="hero-eyebrow">Strategic Implementation Partner</div>
-      <h1 id="hero-title">Practical <em>compliance</em>, operations, and AI guidance.</h1>
-      <p class="hero-sub" id="hero-subtitle">We bridge the gap between software-only tools and enterprise consulting. Get clear roadmaps, dedicated support, and measurable results for your healthcare or growing organization.</p>
+      <h1 id="hero-title">Practical <em>consulting</em> for small businesses that mean business.</h1>
+      <p class="hero-sub" id="hero-subtitle">We help healthcare practices, small businesses, and growing organizations build compliance programs, streamline operations, and implement AI — with clear roadmaps and real results. No enterprise price tag required.</p>
       <div class="hero-actions">
-        <button class="btn btn-gold" onclick="openModal('consult')">Start Free Readiness Check</button>
+        <button class="btn btn-gold" onclick="openModal('consult')">Get a Free Strategy Call</button>
         <a href="#services" class="btn btn-outline">Explore How We Help</a>
       </div>
     </div>
@@ -133,31 +139,31 @@
   <!-- PROBLEM-PATH DIAGNOSTIC CARDS -->
   <section id="services" class="section section-dark">
     <div class="section-header anim">
-      <div class="section-tag section-tag-center">What's your focus?</div>
-      <h2 class="section-title section-title-center">Identify your <em>challenge</em> to find your path.</h2>
-      <p class="section-body section-body-center">Select the area where your organization needs the most clarity right now.</p>
+      <div class="section-tag section-tag-center">What's your challenge?</div>
+      <h2 class="section-title section-title-center">Find your <em>path forward</em> in 30 seconds.</h2>
+      <p class="section-body section-body-center">Pick the area where you need the most clarity. We'll map the fastest route to results.</p>
     </div>
     
     <div class="two-col u-flex-gap-2">
       <div class="diag-card diag-card-elevated anim">
-        <h3 class="diag-card-title">Get HIPAA-Ready</h3>
-        <p class="diag-card-desc">Symptom: You have software, but don't know if your policies, BAAs, or training are actually compliant.</p>
-        <button class="btn btn-outline btn-sm full-width" onclick="openModal('hipaa')">View HIPAA Solutions</button>
+        <h3 class="diag-card-title">📋 Compliance & Risk</h3>
+        <p class="diag-card-desc">You're not sure if your business is actually compliant — with HIPAA, HR law, data privacy, or industry regulations. One audit could cost you everything.</p>
+        <button class="btn btn-outline btn-sm full-width" onclick="openModal('hipaa')">Get a Compliance Roadmap</button>
       </div>
       <div class="diag-card diag-card-elevated anim">
-        <h3 class="diag-card-title">Improve SOPs & Workflows</h3>
-        <p class="diag-card-desc">Symptom: Your team is inconsistent, knowledge is siloed, and training new hires takes too long.</p>
-        <button class="btn btn-outline btn-sm full-width" onclick="openModal('consult')">View Operations Solutions</button>
+        <h3 class="diag-card-title">⚙️ Operations & Systems</h3>
+        <p class="diag-card-desc">Your team runs on tribal knowledge, inconsistent processes, and too many tools. Growth is slowing because your operations can't keep up.</p>
+        <button class="btn btn-outline btn-sm full-width" onclick="openModal('consult')">Fix My Operations</button>
       </div>
       <div class="diag-card diag-card-elevated anim">
-        <h3 class="diag-card-title">Use AI Safely</h3>
-        <p class="diag-card-desc">Symptom: Your staff is using ChatGPT, but you have no policies, governance, or PHI safeguards in place.</p>
-        <button class="btn btn-outline btn-sm full-width" onclick="openModal('ai-content')">View AI Solutions</button>
+        <h3 class="diag-card-title">🤖 Technology & AI</h3>
+        <p class="diag-card-desc">You know AI and automation could save you hours every week, but you don't know where to start — or how to use them safely without exposing your business.</p>
+        <button class="btn btn-outline btn-sm full-width" onclick="openModal('ai-content')">Build My AI Strategy</button>
       </div>
       <div class="diag-card diag-card-elevated anim">
-        <h3 class="diag-card-title">Strengthen Leadership</h3>
-        <p class="diag-card-desc">Symptom: You're growing too fast, missing KPIs, and need fractional executive support to scale.</p>
-        <button class="btn btn-outline btn-sm full-width" onclick="openModal('coaching')">View Growth Solutions</button>
+        <h3 class="diag-card-title">📈 Growth & Strategy</h3>
+        <p class="diag-card-desc">You're working harder than ever but not seeing the results. You need a clear strategy, better financial visibility, and leadership that scales with you.</p>
+        <button class="btn btn-outline btn-sm full-width" onclick="openModal('coaching')">Scale My Business</button>
       </div>
     </div>
   </section>
@@ -350,16 +356,17 @@
       <div>
         <h4 class="footer-heading-sm">Solutions</h4>
         <ul class="footer-link-list">
-          <li class="footer-link-item"><a href="#" onclick="openModal('hipaa')" class="footer-link-a">HIPAA Compliance</a></li>
-          <li class="footer-link-item"><a href="#" onclick="openModal('consult')" class="footer-link-a">Operations & SOPs</a></li>
-          <li class="footer-link-item"><a href="#" onclick="openModal('ai-content')" class="footer-link-a">AI Strategy</a></li>
+          <li class="footer-link-item"><a href="/#services" class="footer-link-a">Compliance & Risk</a></li>
+          <li class="footer-link-item"><a href="/#services" class="footer-link-a">Operations & Systems</a></li>
+          <li class="footer-link-item"><a href="/#services" class="footer-link-a">Technology & AI</a></li>
+          <li class="footer-link-item"><a href="/#services" class="footer-link-a">Growth & Strategy</a></li>
         </ul>
       </div>
       <div>
         <h4 class="footer-heading-sm">Company</h4>
         <ul class="footer-link-list">
           <li class="footer-link-item"><a href="/about.html" class="footer-link-a">About Us</a></li>
-          <li class="footer-link-item"><a href="#pricing" class="footer-link-a">Pricing</a></li>
+          <li class="footer-link-item"><a href="/#plans" class="footer-link-a">Pricing & Plans</a></li>
           <li class="footer-link-item"><a href="/contact.html" class="footer-link-a">Contact</a></li>
         </ul>
       </div>
@@ -521,5 +528,25 @@
   </div>
 
   <script src="/assets/js/main.js"></script>
+  <script>
+    // Announcement Banner — reads from admin settings stored in localStorage
+    (function(){
+      try {
+        var b = JSON.parse(localStorage.getItem('nlc_site_banner') || 'null');
+        if (b && b.enabled && b.text) {
+          var el = document.getElementById('site-banner');
+          document.getElementById('site-banner-text').textContent = b.text;
+          if (b.linkUrl && b.linkLabel) {
+            var la = document.getElementById('site-banner-link');
+            la.href = b.linkUrl;
+            la.textContent = b.linkLabel;
+            la.style.display = 'inline';
+          }
+          if (b.color) el.style.background = b.color;
+          el.style.display = 'block';
+        }
+      } catch(e) {}
+    })();
+  </script>
 </body>
 </html>
