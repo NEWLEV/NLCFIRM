@@ -37,7 +37,7 @@
     }
 
     if (user.role === 'super_admin') {
-      document.querySelectorAll('#nav-users, #nav-audit').forEach(el => el.style.display = '');
+      document.querySelectorAll('#nav-users, #nav-audit').forEach(el => el.classList.remove('u-hidden'));
     }
 
     // Prefill profile

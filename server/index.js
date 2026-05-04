@@ -150,31 +150,33 @@ app.use('/api', generalLimiter, apiRoutes);
 // ─── SECURE DOWNLOADS ─────────────────────────────────
 // /downloads/* requires a valid client JWT UNLESS library_gated is false for free templates
 app.use('/downloads', async (req, res, next) => {
+  // Define free template paths that are eligible for public access
+  const freeTemplates = [
+    '/downloads/business-case-template',
+    '/downloads/financial-model-template',
+    '/downloads/hipaa-compliance-checklist-pack',
+    '/downloads/kpi-dashboard-template',
+    '/downloads/project-management-framework',
+    '/downloads/sop-template-bundle',
+    '/downloads/strategic-planning-template'
+  ];
+
+  // Check if current request is for a free template (normalize path to remove trailing slash)
+  const normalizedPath = req.path.endsWith('/') ? req.path.slice(0, -1) : req.path;
+  const isFreeTemplate = freeTemplates.some(t => normalizedPath.startsWith(t.replace('/downloads', '')));
+
   try {
     // 1. Check if the library is currently gated in the DB
     const db = await getDb();
-    const [rows] = await db.execute('SELECT value FROM site_settings WHERE \`key\` = "library_gated"');
-    const isGated = rows.length > 0 ? rows[0].value === '1' : true; // Default to gated if not found
+    const [rows] = await db.execute('SELECT value FROM site_settings WHERE `key` = "library_gated"');
+    const isGated = rows.length > 0 ? rows[0].value === '1' : true; 
 
-    // 2. Define free template paths that are eligible for public access
-    const freeTemplates = [
-      '/downloads/business-case-template',
-      '/downloads/financial-model-template',
-      '/downloads/hipaa-compliance-checklist-pack',
-      '/downloads/kpi-dashboard-template',
-      '/downloads/project-management-framework',
-      '/downloads/sop-template-bundle',
-      '/downloads/strategic-planning-template'
-    ];
-
-    const isFreeTemplate = freeTemplates.some(t => req.path.startsWith(t.replace('/downloads', '')));
-
-    // 3. If it's a free template and library is NOT gated, allow it
+    // 2. If it's a free template and library is NOT gated, allow it
     if (isFreeTemplate && !isGated) {
       return next();
     }
 
-    // 4. Otherwise, enforce JWT authentication
+    // 3. Otherwise, enforce JWT authentication
     const authHeader = req.headers['authorization'];
     const headerToken = authHeader && authHeader.split(' ')[1];
     const queryToken = req.query.auth;
@@ -191,8 +193,11 @@ app.use('/downloads', async (req, res, next) => {
       next();
     });
   } catch (err) {
-    console.error('Error in downloads middleware:', err);
-    // Fallback to secure if DB fails
+    console.error('Error in downloads middleware (DB down?):', err.message);
+    // FALLBACK: If DB is down, allow access to free templates ONLY
+    if (isFreeTemplate) {
+      return next();
+    }
     res.redirect(`/portal-login.html?redirect=${encodeURIComponent(req.originalUrl)}`);
   }
 });

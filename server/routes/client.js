@@ -17,7 +17,13 @@ function authenticateClient(req, res, next) {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, client) => {
     if (err) return res.status(403).json({ error: 'Invalid or expired token' });
-    if (client.role !== 'client') return res.status(403).json({ error: 'Client privilege required' });
+    
+    // Allow clients, admins, and super_admins to access the portal
+    const allowedRoles = ['client', 'admin', 'super_admin'];
+    if (!allowedRoles.includes(client.role)) {
+      return res.status(403).json({ error: 'Insufficient privileges' });
+    }
+    
     req.client = client;
     next();
   });

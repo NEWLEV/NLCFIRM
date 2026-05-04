@@ -1,33 +1,91 @@
 const mysql = require('mysql2/promise');
+const sqlite3 = require('sqlite3').verbose();
 const bcrypt = require('bcryptjs');
 const path = require('path');
+const fs = require('fs');
 
 let pool;
+let sqliteDb;
 let initialized = false;
+let dbType = 'mysql'; // 'mysql' or 'sqlite'
 
 /**
- * Get the database connection pool (initializes if necessary)
+ * Get a database connection (MySQL or SQLite fallback)
  */
 async function getDb() {
-  if (!pool) {
-    const config = {
-      host: (!process.env.DB_HOST || process.env.DB_HOST === 'localhost') ? '127.0.0.1' : process.env.DB_HOST,
-      port: process.env.DB_PORT || 3306,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD || process.env.DB_PASS,
-      database: process.env.DB_NAME,
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
-      enableKeepAlive: true,
-      keepAliveInitialDelay: 0
+  if (pool) return pool;
+  if (sqliteDb) return sqliteDb;
+
+  // Try MySQL first
+  const config = {
+    host: (!process.env.DB_HOST || process.env.DB_HOST === 'localhost') ? '127.0.0.1' : process.env.DB_HOST,
+    port: process.env.DB_PORT || 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD || process.env.DB_PASS,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0
+  };
+
+  try {
+    if (!config.user || !config.database) {
+      throw new Error("MySQL credentials missing");
+    }
+    
+    const tempPool = mysql.createPool(config);
+    // Test connection
+    await tempPool.execute('SELECT 1');
+    pool = tempPool;
+    dbType = 'mysql';
+    console.log('✅ Connected to MySQL Database');
+  } catch (err) {
+    console.warn(`⚠️ MySQL Connection Failed: ${err.message}. Falling back to SQLite...`);
+    
+    // Fallback to SQLite
+    const dbPath = path.join(__dirname, '..', 'nlcfirm.db');
+    sqliteDb = new sqlite3.Database(dbPath);
+    dbType = 'sqlite';
+    
+    // Add a promise-based execute wrapper to sqliteDb to match mysql2 API
+    sqliteDb.execute = (sql, params = []) => {
+      // Convert MySQL style placeholders (?) if needed (sqlite3 uses ? too)
+      // Convert MySQL-specific syntax (e.g. `NOW()`) to SQLite (e.g. `CURRENT_TIMESTAMP`)
+      let translatedSql = sql
+        .replace(/NOW\(\)/g, "datetime('now')")
+        .replace(/DATE_SUB\(NOW\(\), INTERVAL 30 DAY\)/g, "datetime('now', '-30 days')")
+        .replace(/TINYINT\(1\)/g, "INTEGER")
+        .replace(/AUTO_INCREMENT/g, "AUTOINCREMENT")
+        .replace(/ON UPDATE CURRENT_TIMESTAMP/g, "");
+
+      return new Promise((resolve, reject) => {
+        const isSelect = translatedSql.trim().toUpperCase().startsWith('SELECT');
+        if (isSelect) {
+          sqliteDb.all(translatedSql, params, (err, rows) => {
+            if (err) reject(err);
+            else resolve([rows]);
+          });
+        } else {
+          sqliteDb.run(translatedSql, params, function(err) {
+            if (err) reject(err);
+            else resolve([{ affectedRows: this.changes, insertId: this.lastID }]);
+          });
+        }
+      });
     };
 
-    if (!config.user || !config.database) {
-      console.warn("⚠️ MySQL credentials missing. Ensure DB_USER and DB_NAME are set in .env.");
-    }
+    // Mock getConnection for transactions if needed
+    sqliteDb.getConnection = async () => ({
+      execute: sqliteDb.execute,
+      beginTransaction: async () => sqliteDb.execute('BEGIN TRANSACTION'),
+      commit: async () => sqliteDb.execute('COMMIT'),
+      rollback: async () => sqliteDb.execute('ROLLBACK'),
+      release: () => {}
+    });
 
-    pool = mysql.createPool(config);
+    console.log('✅ Connected to SQLite Database (nlcfirm.db)');
   }
 
   if (!initialized) {
@@ -37,206 +95,156 @@ async function getDb() {
       initialized = true;
     } catch (err) {
       console.error("❌ Database Initialization Error:", err.message);
-      throw err; // Re-throw so callers know it failed
+      throw err;
     }
   }
 
-  return pool;
+  return pool || sqliteDb;
 }
 
-// Helper to handle sqlite-style '?' placeholders vs mysql-style
-// mysql2 supports '?' by default.
-
 async function initTables() {
-  const db = await pool.getConnection();
-  try {
-    // Use multi-line backticks carefully — MySQL syntax slightly different (e.g. AUTO_INCREMENT vs AUTOINCREMENT)
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS admin_users (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
-        display_name VARCHAR(255) NOT NULL DEFAULT '',
-        role VARCHAR(50) NOT NULL DEFAULT 'admin',
-        is_active TINYINT(1) NOT NULL DEFAULT 1,
-        last_login DATETIME,
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      )
-    `);
+  const db = pool || sqliteDb;
+  
+  // Create tables using SQLite-compatible syntax (MySQL also accepts most of this)
+  const tables = [
+    `CREATE TABLE IF NOT EXISTS admin_users (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      email TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      display_name TEXT NOT NULL DEFAULT '',
+      role TEXT NOT NULL DEFAULT 'admin',
+      is_active INTEGER NOT NULL DEFAULT 1,
+      last_login TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS submissions (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      first_name TEXT NOT NULL,
+      last_name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      organization TEXT,
+      org_size TEXT,
+      industry TEXT,
+      message TEXT,
+      contact_method TEXT DEFAULT 'Email',
+      service_type TEXT,
+      admin_notes TEXT,
+      status TEXT NOT NULL DEFAULT 'new',
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS exit_leads (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      email TEXT NOT NULL,
+      source TEXT,
+      notes TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS chat_logs (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      session_id TEXT NOT NULL,
+      role TEXT NOT NULL,
+      message TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS services (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      category TEXT NOT NULL,
+      name TEXT NOT NULL,
+      description TEXT,
+      price TEXT NOT NULL DEFAULT '',
+      price_unit TEXT NOT NULL DEFAULT 'one-time',
+      tags TEXT,
+      is_visible INTEGER NOT NULL DEFAULT 1,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS site_settings (
+      "key" TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      category TEXT NOT NULL DEFAULT 'general',
+      label TEXT NOT NULL DEFAULT '',
+      field_type TEXT NOT NULL DEFAULT 'text',
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS testimonials (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      quote TEXT NOT NULL,
+      author_name TEXT NOT NULL,
+      author_role TEXT NOT NULL DEFAULT '',
+      author_initials TEXT NOT NULL DEFAULT '',
+      rating INTEGER NOT NULL DEFAULT 5,
+      is_visible INTEGER NOT NULL DEFAULT 1,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS faq_items (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      question TEXT NOT NULL,
+      answer TEXT NOT NULL,
+      is_visible INTEGER NOT NULL DEFAULT 1,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS clients (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      email TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      first_name TEXT NOT NULL,
+      last_name TEXT NOT NULL,
+      phone TEXT,
+      company TEXT,
+      is_active INTEGER NOT NULL DEFAULT 1,
+      last_login TEXT,
+      reset_token TEXT,
+      reset_expires TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS client_purchases (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      client_id INTEGER NOT NULL,
+      product_id TEXT NOT NULL,
+      product_name TEXT NOT NULL,
+      access_link TEXT,
+      status TEXT NOT NULL DEFAULT 'active',
+      purchased_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS products (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      product_id TEXT UNIQUE NOT NULL,
+      name TEXT NOT NULL,
+      description TEXT,
+      price DECIMAL(10,2) NOT NULL,
+      delivery_type TEXT NOT NULL DEFAULT 'download',
+      delivery_value TEXT,
+      is_active INTEGER NOT NULL DEFAULT 1,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`,
+    `CREATE TABLE IF NOT EXISTS audit_log (
+      id INTEGER PRIMARY KEY ${dbType === 'mysql' ? 'AUTO_INCREMENT' : 'AUTOINCREMENT'},
+      user_id INTEGER,
+      user_email TEXT,
+      action TEXT NOT NULL,
+      entity_type TEXT,
+      entity_id INTEGER,
+      details TEXT,
+      ip_address TEXT,
+      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )`
+  ];
 
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS submissions (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        first_name VARCHAR(255) NOT NULL,
-        last_name VARCHAR(255) NOT NULL,
-        email VARCHAR(255) NOT NULL,
-        organization VARCHAR(255),
-        org_size VARCHAR(100),
-        industry VARCHAR(255),
-        message TEXT,
-        contact_method VARCHAR(100) DEFAULT 'Email',
-        service_type VARCHAR(255),
-        admin_notes TEXT,
-        status VARCHAR(50) NOT NULL DEFAULT 'new',
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS exit_leads (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(255) NOT NULL,
-        source VARCHAR(255),
-        notes TEXT,
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS chat_logs (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        session_id VARCHAR(255) NOT NULL,
-        role VARCHAR(50) NOT NULL,
-        message TEXT NOT NULL,
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS services (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        category VARCHAR(255) NOT NULL,
-        name VARCHAR(255) NOT NULL,
-        description TEXT,
-        price VARCHAR(100) NOT NULL DEFAULT '',
-        price_unit VARCHAR(100) NOT NULL DEFAULT 'one-time',
-        tags TEXT COMMENT 'JSON array',
-        is_visible TINYINT(1) NOT NULL DEFAULT 1,
-        sort_order INT NOT NULL DEFAULT 0,
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS site_settings (
-        \`key\` VARCHAR(100) PRIMARY KEY,
-        value TEXT NOT NULL,
-        category VARCHAR(100) NOT NULL DEFAULT 'general',
-        label VARCHAR(255) NOT NULL DEFAULT '',
-        field_type VARCHAR(100) NOT NULL DEFAULT 'text',
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS testimonials (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        quote TEXT NOT NULL,
-        author_name VARCHAR(255) NOT NULL,
-        author_role VARCHAR(255) NOT NULL DEFAULT '',
-        author_initials VARCHAR(10) NOT NULL DEFAULT '',
-        rating INT NOT NULL DEFAULT 5,
-        is_visible TINYINT(1) NOT NULL DEFAULT 1,
-        sort_order INT NOT NULL DEFAULT 0,
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS faq_items (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        question TEXT NOT NULL,
-        answer TEXT NOT NULL,
-        is_visible TINYINT(1) NOT NULL DEFAULT 1,
-        sort_order INT NOT NULL DEFAULT 0,
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS clients (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        email VARCHAR(255) UNIQUE NOT NULL,
-        password_hash VARCHAR(255) NOT NULL,
-        first_name VARCHAR(255) NOT NULL,
-        last_name VARCHAR(255) NOT NULL,
-        phone VARCHAR(50),
-        company VARCHAR(255),
-        is_active TINYINT(1) NOT NULL DEFAULT 1,
-        last_login DATETIME,
-        reset_token VARCHAR(255),
-        reset_expires VARCHAR(255),
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS client_purchases (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        client_id INT NOT NULL,
-        product_id VARCHAR(255) NOT NULL,
-        product_name VARCHAR(255) NOT NULL,
-        access_link TEXT,
-        status VARCHAR(50) NOT NULL DEFAULT 'active',
-        purchased_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS products (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        product_id VARCHAR(100) UNIQUE NOT NULL,
-        name VARCHAR(255) NOT NULL,
-        description TEXT,
-        price DECIMAL(10,2) NOT NULL,
-        delivery_type ENUM('download','assessment','course','bundle') NOT NULL DEFAULT 'download',
-        delivery_value TEXT COMMENT 'File path, page URL, or comma-separated product_ids for bundles',
-        is_active TINYINT(1) NOT NULL DEFAULT 1,
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS course_enrollments (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        client_id INT NOT NULL,
-        product_id VARCHAR(100) NOT NULL,
-        progress_json TEXT COMMENT 'JSON object: {moduleId: {completed: bool, score: int}}',
-        completed_at DATETIME,
-        certificate_issued TINYINT(1) NOT NULL DEFAULT 0,
-        enrolled_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (client_id) REFERENCES clients(id) ON DELETE CASCADE
-      )
-    `);
-
-    await db.execute(`
-      CREATE TABLE IF NOT EXISTS audit_log (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT,
-        user_email VARCHAR(255),
-        action VARCHAR(255) NOT NULL,
-        entity_type VARCHAR(100),
-        entity_id INT,
-        details TEXT,
-        ip_address VARCHAR(100),
-        created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-      )
-    `);
-
-    // MySQL indices are normally handled explicitly in CREATE TABLE
-  } finally {
-    db.release();
+  for (const sql of tables) {
+    await db.execute(sql);
   }
 }
 
 async function seedAdmins() {
+  const db = pool || sqliteDb;
   const admins = [
     {
       email: process.env.ADMIN_EMAIL || 'pierre@nlcfirm.com',
@@ -253,25 +261,18 @@ async function seedAdmins() {
   ];
 
   for (const admin of admins) {
-    const [rows] = await pool.execute('SELECT id FROM admin_users WHERE email = ?', [admin.email]);
+    const [rows] = await db.execute('SELECT id FROM admin_users WHERE email = ?', [admin.email]);
     if (rows.length === 0) {
       const hash = bcrypt.hashSync(admin.password, 12);
-      await pool.execute(
+      await db.execute(
         'INSERT INTO admin_users (email, password_hash, display_name, role) VALUES (?, ?, ?, ?)',
         [admin.email, hash, admin.displayName, admin.role]
       );
-      console.log('═══════════════════════════════════════════════════');
-      console.log('  ADMIN ACCOUNT CREATED');
-      console.log(`  Email:    ${admin.email}`);
-      console.log(`  Password: ${admin.password}`);
-      console.log(`  Role:     ${admin.role}`);
-      console.log('  ⚠️  Change this password immediately via Admin Dashboard');
-      console.log('═══════════════════════════════════════════════════');
     }
   }
 
   // Seed site settings
-  const [settings] = await pool.execute('SELECT COUNT(*) as count FROM site_settings');
+  const [settings] = await db.execute('SELECT COUNT(*) as count FROM site_settings');
   if (settings[0].count === 0) {
     const defaults = [
       ['hero_eyebrow', 'Practical Consulting for Small Businesses', 'hero', 'Hero Eyebrow Text', 'text'],
@@ -297,107 +298,7 @@ async function seedAdmins() {
     ];
 
     for (const s of defaults) {
-      await pool.execute('INSERT INTO site_settings (\`key\`, value, category, label, field_type) VALUES (?, ?, ?, ?, ?)', s);
-    }
-  } else {
-    // Migration: Update existing settings to the new small business reframing
-    const migrations = [
-      ['hero_eyebrow', 'Practical Consulting for Small Businesses'],
-      ['hero_title', 'Practical <em>consulting</em> for small businesses that mean business.'],
-      ['hero_subtitle', 'We help healthcare practices, small businesses, and growing organizations build compliance programs, streamline operations, and implement AI — with clear roadmaps and real results. No enterprise price tag required.'],
-    ];
-    for (const [key, value] of migrations) {
-      await pool.execute('UPDATE site_settings SET value = ? WHERE \`key\` = ?', [value, key]);
-    }
-  }
-
-  // Seed testimonials
-  const [testimonials] = await pool.execute('SELECT COUNT(*) as count FROM testimonials');
-  if (testimonials[0].count === 0) {
-    const defaultTestimonials = [
-      ['New Level Consultants transformed our HIPAA program from reactive to proactive. We passed our first external audit with zero findings — something we had never achieved before.', 'Rachel M.', 'COO, Community Health Center', 'RM', 5, 1],
-      ['Their AI automation setup saved our billing team 30+ hours per month. The ROI in the first three months alone justified the entire year\'s retainer cost.', 'Dr. David T.', 'Founder, Telehealth Practice', 'DT', 5, 2],
-      ['The Business Health Assessment felt like a $5,000 consulting deliverable for $97. It gave us a precise roadmap that we\'ve been executing against ever since.', 'Sandra J.', 'Executive Director, Nonprofit', 'SJ', 5, 3],
-    ];
-    for (const t of defaultTestimonials) {
-      await pool.execute('INSERT INTO testimonials (quote, author_name, author_role, author_initials, rating, sort_order) VALUES (?, ?, ?, ?, ?, ?)', t);
-    }
-  }
-
-  // Seed Tier 1 Products
-  const [products] = await pool.execute('SELECT COUNT(*) as count FROM products');
-  if (products[0].count === 0) {
-    const tier1Products = [
-      [
-        'hipaa-checklist',
-        'HIPAA Compliance Checklist Pack',
-        '120+ action items, BAA template, staff acknowledgment forms, breach notification checklist, and a risk assessment worksheet — ready to implement immediately.',
-        67.00,
-        'download',
-        '/downloads/hipaa-compliance-checklist-pack'
-      ],
-      [
-        'sop-bundle',
-        'SOP Template Bundle',
-        '15 ready-to-use Standard Operating Procedure templates covering HR, compliance, operations, and clinical workflows — professionally formatted and fully customizable.',
-        97.00,
-        'download',
-        '/downloads/sop-template-bundle'
-      ],
-      [
-        'bha',
-        'Business Health Assessment',
-        'Scored questionnaire across 8 business dimensions — compliance, finance, operations, HR, marketing, tech, risk, and growth. Instant branded report with priority action plan.',
-        97.00,
-        'assessment',
-        '/tools/business-health-assessment'
-      ],
-      [
-        'frs',
-        'Financial Readiness Score',
-        'Form-based assessment of your financial health — cash flow, funding eligibility, credit positioning, burn rate, and investor readiness — with tailored next steps.',
-        127.00,
-        'assessment',
-        '/tools/financial-readiness-score'
-      ],
-      [
-        'compliance-cert',
-        'Healthcare Compliance Certification',
-        'Self-paced 6-module course covering HIPAA, EHE reporting, Ryan White compliance, risk assessment methodology, breach response, and audit readiness. Certificate included.',
-        297.00,
-        'course',
-        'compliance-cert'
-      ],
-      [
-        'bundle-tier1',
-        'All-in-One Tier 1 Toolkit',
-        'Every Tier 1 digital product in one purchase: HIPAA Checklist Pack, SOP Template Bundle, Business Health Assessment, Financial Readiness Score, and Healthcare Compliance Certification. Save $338.',
-        347.00,
-        'bundle',
-        'hipaa-checklist,sop-bundle,bha,frs,compliance-cert'
-      ],
-    ];
-    for (const p of tier1Products) {
-      await pool.execute(
-        'INSERT INTO products (product_id, name, description, price, delivery_type, delivery_value) VALUES (?, ?, ?, ?, ?, ?)',
-        p
-      );
-    }
-  }
-
-  // Seed FAQs
-  const [faqs] = await pool.execute('SELECT COUNT(*) as count FROM faq_items');
-  if (faqs[0].count === 0) {
-    const defaultFAQs = [
-      ['How quickly can I get started?', 'Productized tools are instant or 24-hour delivery. Retainer plans and à la carte projects onboard within 3–5 business days of your first call.', 1],
-      ['Do you work with organizations outside of healthcare?', 'Yes. While we specialize in healthcare, our compliance, operations, AI, and business development services serve nonprofits, legal practices, and mid-size businesses across industries.', 2],
-      ['Can I cancel a retainer plan at any time?', 'Monthly retainers can be cancelled with 30 days notice. Annual plans include a prorated refund policy after month 3. We never trap clients in long-term contracts.', 3],
-      ['Are the automated reports HIPAA-compliant?', 'Our productized tools are designed with data minimization and do not collect or store PHI. For services requiring PHI handling, we operate under a signed Business Associate Agreement (BAA).', 4],
-      ["What's included in the free consultation?", 'A 20-minute call with a senior consultant to understand your goals, identify your most pressing challenges, and recommend the right starting point — with zero sales pressure.', 5],
-      ['Do you offer nonprofit or multi-location discounts?', 'Yes. Qualified 501(c)(3) organizations receive 10% off retainer plans and 15% off à la carte projects. Multi-location enterprises get custom pricing. Contact us to verify eligibility.', 6],
-    ];
-    for (const f of defaultFAQs) {
-      await pool.execute('INSERT INTO faq_items (question, answer, sort_order) VALUES (?, ?, ?)', f);
+      await db.execute('INSERT INTO site_settings ("key", value, category, label, field_type) VALUES (?, ?, ?, ?, ?)', s);
     }
   }
 }
