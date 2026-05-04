@@ -161,9 +161,16 @@ app.use('/downloads', async (req, res, next) => {
     '/downloads/strategic-planning-template'
   ];
 
-  // Check if current request is for a free template (normalize path to remove trailing slash)
-  const normalizedPath = req.path.endsWith('/') ? req.path.slice(0, -1) : req.path;
-  const isFreeTemplate = freeTemplates.some(t => normalizedPath.startsWith(t.replace('/downloads', '')));
+  // Check if current request is for a free template
+  const normalizedPath = req.path.toLowerCase();
+  const isFreeTemplate = freeTemplates.some(t => {
+    const base = t.replace('/downloads', '').toLowerCase();
+    // Match exact base, base with trailing slash, or any file within that directory
+    return normalizedPath === base || 
+           normalizedPath === base + '/' || 
+           normalizedPath.startsWith(base + '/') ||
+           normalizedPath.startsWith(base + '/index.html');
+  });
 
   try {
     // 1. Check if the library is currently gated in the DB
