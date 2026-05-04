@@ -231,6 +231,31 @@ router.get('/profile', async (req, res) => {
   }
 });
 
+// PATCH /api/client/profile
+router.patch('/profile', [
+  body('firstName').trim().notEmpty().withMessage('First name is required'),
+  body('lastName').trim().notEmpty().withMessage('Last name is required'),
+  body('company').optional().trim(),
+  body('phone').optional().trim()
+], async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+  const { firstName, lastName, company, phone } = req.body;
+
+  try {
+    const db = await getDb();
+    await db.execute(
+      'UPDATE clients SET first_name = ?, last_name = ?, company = ?, phone = ?, updated_at = NOW() WHERE id = ?',
+      [firstName, lastName, company || null, phone || null, req.client.id]
+    );
+    res.json({ message: 'Profile updated successfully' });
+  } catch (err) {
+    console.error('Profile update error:', err);
+    res.status(500).json({ error: 'Failed to update profile' });
+  }
+});
+
 // GET /api/client/purchases
 router.get('/purchases', async (req, res) => {
   try {

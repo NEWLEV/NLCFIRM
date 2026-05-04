@@ -147,6 +147,7 @@
       <span class="u-font-mono u-font-size-0-7 u-text-muted u-letter-spacing-1 u-margin-left-1 u-padding-left-1 u-border-left">CLIENT HUB</span>
     </div>
     <div class="u-flex-center u-flex-gap-1-5">
+      <div id="user-badge-container"></div>
       <span id="user-greeting" class="u-font-size-0-8 u-text-dim u-hidden-mobile">Welcome</span>
       <button class="logout-btn" onclick="logout()">LOGOUT</button>
     </div>
@@ -169,6 +170,9 @@
         </a>
         <a href="#" class="sidebar-link" onclick="showTab('profile', this)">
           <i class="sidebar-icon">👤</i> <span>Profile Settings</span>
+        </a>
+        <a href="#" class="sidebar-link" onclick="showTab('support', this)">
+          <i class="sidebar-icon">💬</i> <span>Support</span>
         </a>
       </nav>
     </aside>
@@ -193,38 +197,50 @@
       <section id="tab-library" class="tab-pane u-display-none">
         <div class="page-header">
           <h1 class="page-title">Free Resource <em>Library</em></h1>
-          <p class="page-subtitle">Your five complimentary strategy templates, frameworks, and models — ready to view, fill in, and print as PDF.</p>
+          <p class="page-subtitle">Your seven complimentary strategy templates, frameworks, and models — ready to view, fill in, and print as PDF.</p>
         </div>
         <div class="product-grid">
           <div class="product-card anim">
             <span class="product-tag">🎯 Template · Strategy</span>
             <div class="product-name">Strategic Planning Worksheet</div>
             <div class="product-date">13 sections · Vision through Review Cadence</div>
-            <a href="/downloads/strategic-planning-template/" class="btn btn-gold w-full">Open Template →</a>
+            <a href="/downloads/strategic-planning-template/index.html" class="btn btn-gold w-full">Open Template →</a>
           </div>
           <div class="product-card anim">
             <span class="product-tag">📊 Template · Finance</span>
             <div class="product-name">Financial Model Template</div>
             <div class="product-date">8 tabs · Revenue, P&amp;L, Cash Flow, Scenarios</div>
-            <a href="/downloads/financial-model-template/" class="btn btn-gold w-full">Open Template →</a>
+            <a href="/downloads/financial-model-template/index.html" class="btn btn-gold w-full">Open Template →</a>
           </div>
           <div class="product-card anim">
             <span class="product-tag">📋 Framework · Project Management</span>
             <div class="product-name">Project Management Framework</div>
             <div class="product-date">10 components · Charter through Post-Review</div>
-            <a href="/downloads/project-management-framework/" class="btn btn-gold w-full">Open Framework →</a>
+            <a href="/downloads/project-management-framework/index.html" class="btn btn-gold w-full">Open Framework →</a>
           </div>
           <div class="product-card anim">
             <span class="product-tag">📈 Template · Performance</span>
             <div class="product-name">Executive KPI Dashboard</div>
             <div class="product-date">40+ metrics across 6 categories</div>
-            <a href="/downloads/kpi-dashboard-template/" class="btn btn-gold w-full">Open Dashboard →</a>
+            <a href="/downloads/kpi-dashboard-template/index.html" class="btn btn-gold w-full">Open Dashboard →</a>
           </div>
           <div class="product-card anim">
             <span class="product-tag">💼 Template · Decision-Making</span>
             <div class="product-name">Business Case Template</div>
             <div class="product-date">11 sections · ROI framework included</div>
-            <a href="/downloads/business-case-template/" class="btn btn-gold w-full">Open Template →</a>
+            <a href="/downloads/business-case-template/index.html" class="btn btn-gold w-full">Open Template →</a>
+          </div>
+          <div class="product-card anim">
+            <span class="product-tag">🛡️ Template · Compliance</span>
+            <div class="product-name">HIPAA Compliance Checklist Pack</div>
+            <div class="product-date">120+ action items · Audit ready</div>
+            <a href="/downloads/hipaa-compliance-checklist-pack/index.html" class="btn btn-gold w-full">Open Checklist →</a>
+          </div>
+          <div class="product-card anim">
+            <span class="product-tag">📋 Template · Operations</span>
+            <div class="product-name">SOP Template Bundle</div>
+            <div class="product-date">15 templates · Fully editable</div>
+            <a href="/downloads/sop-template-bundle/index.html" class="btn btn-gold w-full">Open Bundle →</a>
           </div>
         </div>
       </section>
@@ -266,20 +282,77 @@
           <p class="page-subtitle">Manage your personal credentials and organization details.</p>
         </div>
         <div class="profile-card anim">
-          <div class="profile-item">
-            <span class="profile-label">Identity</span>
-            <span class="profile-value" id="profile-name">—</span>
+          <div id="profile-display-mode">
+            <div class="profile-item">
+              <span class="profile-label">Identity</span>
+              <span class="profile-value" id="profile-name">—</span>
+            </div>
+            <div class="profile-item">
+              <span class="profile-label">Email Address</span>
+              <span class="profile-value" id="profile-email">—</span>
+            </div>
+            <div class="profile-item">
+              <span class="profile-label">Organization</span>
+              <span class="profile-value" id="profile-company">—</span>
+            </div>
+            <div class="profile-item">
+              <span class="profile-label">Phone</span>
+              <span class="profile-value" id="profile-phone">—</span>
+            </div>
+            <div class="u-margin-top-lg u-flex-gap-1">
+              <button class="btn btn-outline" onclick="toggleProfileEdit(true)">Edit Profile</button>
+            </div>
           </div>
-          <div class="profile-item">
-            <span class="profile-label">Email Address</span>
-            <span class="profile-value" id="profile-email">—</span>
-          </div>
-          <div class="profile-item">
-            <span class="profile-label">Organization</span>
-            <span class="profile-value" id="profile-company">—</span>
-          </div>
-          <div class="u-margin-top-lg">
-            <button class="btn btn-outline" onclick="alert('Profile editing is coming soon. Please contact support to update details.')">Edit Profile</button>
+          
+          <form id="profile-edit-form" class="u-display-none" onsubmit="handleProfileUpdate(event)">
+            <div class="form-row">
+              <div class="form-field">
+                <label for="edit-first-name">First Name</label>
+                <input type="text" id="edit-first-name" class="form-input" required>
+              </div>
+              <div class="form-field">
+                <label for="edit-last-name">Last Name</label>
+                <input type="text" id="edit-last-name" class="form-input" required>
+              </div>
+            </div>
+            <div class="form-field">
+              <label for="edit-company">Organization</label>
+              <input type="text" id="edit-company" class="form-input">
+            </div>
+            <div class="form-field">
+              <label for="edit-phone">Phone Number</label>
+              <input type="tel" id="edit-phone" class="form-input">
+            </div>
+            <div id="profile-edit-msg" class="u-margin-bottom-1"></div>
+            <div class="u-flex-gap-1 u-margin-top-1">
+              <button type="button" class="btn btn-outline" onclick="toggleProfileEdit(false)">Cancel</button>
+              <button type="submit" class="btn btn-gold" id="profile-save-btn">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Support Tab -->
+      <section id="tab-support" class="tab-pane u-display-none">
+        <div class="page-header">
+          <h1 class="page-title">Client <em>Support</em></h1>
+          <p class="page-subtitle">Need help with a template, course, or billing? We're here for you.</p>
+        </div>
+        <div class="product-grid">
+          <div class="profile-card anim" style="grid-column: 1 / -1; max-width: none;">
+            <h3 class="u-font-display u-margin-bottom-1">Contact Us</h3>
+            <p class="u-text-dim u-margin-bottom-2">Our support team is available Monday through Friday, 9am - 6pm EST.</p>
+            <div class="profile-item">
+              <span class="profile-label">Email Support</span>
+              <span class="profile-value"><a href="mailto:support@nlcfirm.com" class="u-text-gold u-text-decoration-none">support@nlcfirm.com</a></span>
+            </div>
+            <div class="profile-item">
+              <span class="profile-label">Phone</span>
+              <span class="profile-value"><a href="tel:+17864084243" class="u-text-gold u-text-decoration-none">786-408-4243</a></span>
+            </div>
+            <div class="u-margin-top-lg">
+              <p class="u-text-sm u-text-muted">For urgent consulting inquiries, please call the number above directly.</p>
+            </div>
           </div>
         </div>
       </section>
