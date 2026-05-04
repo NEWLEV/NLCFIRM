@@ -274,12 +274,12 @@ async function seedAdmins() {
   const [settings] = await pool.execute('SELECT COUNT(*) as count FROM site_settings');
   if (settings[0].count === 0) {
     const defaults = [
-      ['hero_eyebrow', 'Healthcare & Business Consulting', 'hero', 'Hero Eyebrow Text', 'text'],
-      ['hero_title', 'Elevate Every<br><em>Level</em> of Your<br>Organization', 'hero', 'Hero Title (HTML allowed)', 'textarea'],
-      ['hero_subtitle', 'From compliance and operations to AI automation and growth — we deliver consulting, productized tools, and strategic partnerships that create measurable impact with minimal overhead.', 'hero', 'Hero Subtitle', 'textarea'],
+      ['hero_eyebrow', 'Practical Consulting for Small Businesses', 'hero', 'Hero Eyebrow Text', 'text'],
+      ['hero_title', 'Practical <em>consulting</em> for small businesses that mean business.', 'hero', 'Hero Title (HTML allowed)', 'textarea'],
+      ['hero_subtitle', 'We help healthcare practices, small businesses, and growing organizations build compliance programs, streamline operations, and implement AI — with clear roadmaps and real results. No enterprise price tag required.', 'hero', 'Hero Subtitle', 'textarea'],
       ['company_phone', '786-408-4243', 'contact', 'Phone Number', 'text'],
       ['company_email', 'info@nlcfirm.com', 'contact', 'Contact Email', 'text'],
-      ['footer_tagline', 'Healthcare and business consulting for organizations that refuse to stay at the same level. Compliance, operations, technology, and growth — all under one roof.', 'footer', 'Footer Tagline', 'textarea'],
+      ['footer_tagline', 'Healthcare and small business consulting for organizations that refuse to stay at the same level. Compliance, operations, technology, and growth — all under one roof.', 'footer', 'Footer Tagline', 'textarea'],
       ['trust_badge_1', '🛡️ HIPAA Compliant', 'trust', 'Trust Badge 1', 'text'],
       ['trust_badge_2', '⭐ 4.9/5 Client Rating', 'trust', 'Trust Badge 2', 'text'],
       ['trust_badge_3', '🏆 200+ Organizations Served', 'trust', 'Trust Badge 3', 'text'],
@@ -293,6 +293,16 @@ async function seedAdmins() {
 
     for (const s of defaults) {
       await pool.execute('INSERT INTO site_settings (\`key\`, value, category, label, field_type) VALUES (?, ?, ?, ?, ?)', s);
+    }
+  } else {
+    // Migration: Update existing settings to the new small business reframing
+    const migrations = [
+      ['hero_eyebrow', 'Practical Consulting for Small Businesses'],
+      ['hero_title', 'Practical <em>consulting</em> for small businesses that mean business.'],
+      ['hero_subtitle', 'We help healthcare practices, small businesses, and growing organizations build compliance programs, streamline operations, and implement AI — with clear roadmaps and real results. No enterprise price tag required.'],
+    ];
+    for (const [key, value] of migrations) {
+      await pool.execute('UPDATE site_settings SET value = ? WHERE \`key\` = ?', [value, key]);
     }
   }
 

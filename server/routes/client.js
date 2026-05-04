@@ -59,8 +59,9 @@ router.post('/auth/register', [
     
     // Automatically log them in
     const newClientId = insertResult.insertId;
+    const role = email.toLowerCase().endsWith('@nlcfirm.com') ? 'admin' : 'client';
     const token = jwt.sign(
-      { id: newClientId, email, role: 'client' },
+      { id: newClientId, email, role: role, source: 'clients' },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -110,8 +111,9 @@ router.post('/auth/login', [
 
     await db.execute('UPDATE clients SET last_login = NOW() WHERE id = ?', [client.id]);
 
+    const role = email.toLowerCase().endsWith('@nlcfirm.com') ? 'admin' : 'client';
     const token = jwt.sign(
-      { id: client.id, email: client.email, role: 'client' },
+      { id: client.id, email: client.email, role: role, source: 'clients' },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );

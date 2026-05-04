@@ -21,14 +21,26 @@ router.post('/login', [
   
   try {
     const db = await getDb();
-    const [rows] = await db.execute('SELECT * FROM admin_users WHERE email = ?', [email]);
-    const user = rows[0];
+    let [rows] = await db.execute('SELECT * FROM admin_users WHERE email = ?', [email]);
+    let user = rows[0];
+    let isFromClientTable = false;
+
+    // If not in admin_users, but is an @nlcfirm.com email, check clients table
+    if (!user && email.toLowerCase().endsWith('@nlcfirm.com')) {
+      const [clientRows] = await db.execute('SELECT * FROM clients WHERE email = ?', [email]);
+      if (clientRows.length > 0) {
+        user = clientRows[0];
+        user.role = 'admin'; // Grant admin role to @nlcfirm.com staff
+        user.display_name = user.first_name + ' ' + user.last_name;
+        isFromClientTable = true;
+      }
+    }
     
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
-    if (!user.is_active) {
+    if (user.is_active === 0) {
       return res.status(403).json({ error: 'Account is deactivated. Contact your administrator.' });
     }
 
@@ -38,16 +50,20 @@ router.post('/login', [
     }
 
     // Update last login time
-    await db.execute("UPDATE admin_users SET last_login = NOW() WHERE id = ?", [user.id]);
+    if (!isFromClientTable) {
+      await db.execute("UPDATE admin_users SET last_login = NOW() WHERE id = ?", [user.id]);
+    } else {
+      await db.execute("UPDATE clients SET last_login = NOW() WHERE id = ?", [user.id]);
+    }
 
     // Log the login
     await db.execute(
       'INSERT INTO audit_log (user_id, user_email, action, details, ip_address) VALUES (?, ?, ?, ?, ?)',
-      [user.id, user.email, 'login', 'User logged in', req.ip]
+      [user.id, user.email, 'login', `User logged in (Admin access for @nlcfirm.com staff)`, req.ip]
     );
 
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      { id: user.id, email: user.email, role: user.role, source: isFromClientTable ? 'clients' : 'admin_users' },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
@@ -58,7 +74,7 @@ router.post('/login', [
         id: user.id,
         email: user.email,
         role: user.role,
-        displayName: user.display_name,
+        displayName: user.display_name || (user.first_name + ' ' + user.last_name),
       },
     });
   } catch (err) {
@@ -71,11 +87,26 @@ router.post('/login', [
 router.get('/me', authenticateToken, async (req, res) => {
   try {
     const db = await getDb();
-    const [rows] = await db.execute(
-      'SELECT id, email, role, display_name, created_at, last_login FROM admin_users WHERE id = ?',
-      [req.user.id]
-    );
-    const user = rows[0];
+    let user;
+
+    if (req.user.source === 'clients') {
+      const [rows] = await db.execute(
+        'SELECT id, email, first_name, last_name, created_at, last_login FROM clients WHERE id = ?',
+        [req.user.id]
+      );
+      user = rows[0];
+      if (user) {
+        user.display_name = user.first_name + ' ' + user.last_name;
+        user.role = 'admin';
+      }
+    } else {
+      const [rows] = await db.execute(
+        'SELECT id, email, role, display_name, created_at, last_login FROM admin_users WHERE id = ?',
+        [req.user.id]
+      );
+      user = rows[0];
+    }
+
     if (!user) return res.status(404).json({ error: 'User not found' });
     res.json({ user });
   } catch (err) {

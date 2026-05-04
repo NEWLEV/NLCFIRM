@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New Level Consultants | Healthcare & Business Consulting | HIPAA, Compliance, AI Automation</title>
+    <meta name="description" content="New Level Consultants delivers healthcare consulting, HIPAA compliance, AI automation, and business growth strategies. Retainer plans from $797/mo. Instant tools from $67. Book a free discovery call today." />
+    <meta name="keywords" content="healthcare consulting, HIPAA compliance, business consulting, AI automation, medical billing optimization, telehealth strategy, compliance audit, Ryan White reporting, SOC 2 consulting, healthcare SEO" />
+    <link rel="canonical" href="https://nlcfirm.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="New Level Consultants — Healthcare & Business Consulting" />
+    <meta property="og:description" content="Compliance, operations, AI automation, and growth — all under one roof. Retainer plans from $797/mo. Instant tools from $67." />
+    <meta property="og:url" content="https://nlcfirm.com/" />
+    <meta property="og:site_name" content="New Level Consultants" />
+    <meta property="og:image" content="https://nlcfirm.com/assets/images/logo-stacked.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="New Level Consultants — Healthcare & Business Consulting" />
+    <meta name="twitter:description" content="Compliance, operations, AI automation, and growth. Retainer plans from $797/mo." />
+    <meta name="twitter:image" content="https://nlcfirm.com/assets/images/logo-stacked.png" />
+    <meta name="robots" content="index, follow" />
+    <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+
+    <!-- Schema.org Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "New Level Consultants",
+        "url": "https://nlcfirm.com",
+        "logo": "https://nlcfirm.com/assets/images/logo-stacked.png",
+        "description": "Healthcare and business consulting firm specializing in HIPAA compliance, AI automation, operations optimization, and strategic growth.",
+        "priceRange": "$67 - $2997/mo",
+        "areaServed": "US",
+        "serviceType": ["Healthcare Consulting", "HIPAA Compliance", "AI Automation", "Business Consulting", "Medical Billing Optimization"],
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "200",
+          "bestRating": "5"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Consulting Services",
+          "itemListElement": [
+            { "@type": "Offer", "name": "Starter Retainer", "price": "797", "priceCurrency": "USD", "description": "Monthly consulting retainer with compliance, HR guidance, and strategic direction." },
+            { "@type": "Offer", "name": "Growth Retainer", "price": "1497", "priceCurrency": "USD", "description": "Hands-on strategy, compliance, and operations support with a named advisor." },
+            { "@type": "Offer", "name": "Enterprise Retainer", "price": "2997", "priceCurrency": "USD", "description": "Comprehensive strategic partnership for large organizations." },
+            { "@type": "Offer", "name": "Business Health Assessment", "price": "97", "priceCurrency": "USD", "description": "Instant scored assessment across 8 business dimensions with branded PDF report." }
+          ]
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          { "@type": "Question", "name": "How quickly can I get started with New Level Consultants?", "acceptedAnswer": { "@type": "Answer", "text": "Productized tools are instant or 24-hour delivery. Retainer plans and à la carte projects onboard within 3–5 business days of your first call." } },
+          { "@type": "Question", "name": "Do you work with organizations outside of healthcare?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. While we specialize in healthcare, our compliance, operations, AI, and business development services serve nonprofits, legal practices, and mid-size businesses across industries." } },
+          { "@type": "Question", "name": "Can I cancel a retainer plan at any time?", "acceptedAnswer": { "@type": "Answer", "text": "Monthly retainers can be cancelled with 30 days notice. Annual plans include a prorated refund policy after month 3." } },
+          { "@type": "Question", "name": "Are the automated reports HIPAA-compliant?", "acceptedAnswer": { "@type": "Answer", "text": "Our productized tools are designed with data minimization and do not collect or store PHI. For services requiring PHI handling, we operate under a signed BAA." } },
+          { "@type": "Question", "name": "What is included in the free consultation?", "acceptedAnswer": { "@type": "Answer", "text": "A 20-minute call with a senior consultant to understand your goals, identify challenges, and recommend the right starting point — zero sales pressure." } }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+
+<!-- SCROLL PROGRESS BAR -->
+<div class="scroll-progress" id="scroll-progress"></div>
+
+<!-- NAV -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="New Level Consultants Home">
+    <img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants" width="180" height="40">
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#plans">Plans</a></li>
+    <li><a href="#products">Instant Tools</a></li>
+    <li><a href="/about.html">About</a></li>
+    <li><a href="/case-studies.html">Results</a></li>
+    <li><a href="/resources.html">Resources</a></li>
+    <li><a href="tel:+17864084243" class="nav-phone" aria-label="Call us">📞 786-408-4243</a></li>
+    <li><a href="#" class="nav-cta" onclick="openModal('consult');return false;" id="nav-cta-btn">Get Started Free</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="drawer-overlay" id="drawer-overlay" onclick="toggleDrawer()"></div>
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="#services" onclick="toggleDrawer()">Services</a>
+  <a href="#plans" onclick="toggleDrawer()">Plans</a>
+  <a href="#products" onclick="toggleDrawer()">Instant Tools</a>
+  <a href="/about.html" onclick="toggleDrawer()">About</a>
+  <a href="/case-studies.html" onclick="toggleDrawer()">Results</a>
+  <a href="/resources.html" onclick="toggleDrawer()">Resources</a>
+  <a href="tel:+17864084243">📞 786-408-4243</a>
+  <a href="#" onclick="openModal('consult');toggleDrawer();return false;" class="nav-cta">Get Started Free →</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="hero">
+  <div class="hero-left">
+    <div class="eyebrow" id="hero-eyebrow">Healthcare &amp; Business Consulting</div>
+    <h1 id="hero-title">Elevate Every<br><em>Level</em> of Your<br>Organization</h1>
+    <p class="hero-sub" id="hero-subtitle">From compliance and operations to AI automation and growth — we deliver consulting, productized tools, and strategic partnerships that create measurable impact with minimal overhead.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn btn-gold" onclick="openModal('consult');return false;" id="hero-cta">Book Free Discovery Call</a>
+      <a href="#plans" class="btn btn-outline">View Pricing Plans</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="stat-num" data-count="200" data-suffix="+">0</div><div class="stat-label">Clients Served</div></div>
+      <div><div class="stat-num" data-count="98" data-suffix="%">0</div><div class="stat-label">Retention Rate</div></div>
+      <div><div class="stat-num" data-count="15" data-suffix="+">0</div><div class="stat-label">Years Experience</div></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-geo"></div>
+    <div class="hero-geo2"></div>
+    <div class="hero-cards">
+      <div class="hero-cards-label">Featured Offerings →</div>
+      <div class="hero-card visible">
+        <div class="hc-tag">Most Popular</div>
+        <div class="hc-title">Growth Retainer Plan</div>
+        <div class="hc-price">$1,497 <small>/ month</small></div>
+      </div>
+      <div class="hero-card visible">
+        <div class="hc-tag">Automated Tool — Instant</div>
+        <div class="hc-title">Business Health Assessment</div>
+        <div class="hc-price">$97 <small>instant PDF</small></div>
+      </div>
+      <div class="hero-card visible">
+        <div class="hc-tag">Healthcare Specialized</div>
+        <div class="hc-title">HIPAA Ongoing Monitoring</div>
+        <div class="hc-price">$497 <small>/ month</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar anim" id="trust-bar">
+  <div class="trust-item" id="trust-1"><span class="trust-icon">🛡️</span> HIPAA Compliant</div>
+  <div class="trust-item" id="trust-2"><span class="trust-icon">⭐</span> 4.9/5 Client Rating</div>
+  <div class="trust-item" id="trust-3"><span class="trust-icon">🏆</span> 200+ Organizations Served</div>
+  <div class="trust-item" id="trust-4"><span class="trust-icon">🔒</span> SOC 2 Ready</div>
+  <div class="trust-item" id="trust-5"><span class="trust-icon">💯</span> 30-Day Money-Back Guarantee</div>
+</div>
+
+<!-- FIND YOUR SOLUTION — Psychology-driven guided quiz -->
+<section class="section section-dark" id="solution-finder">
+  <div class="anim section-header u-text-center">
+    <div class="section-tag section-tag-center">Not Sure Where to Start?</div>
+    <h2 class="section-title section-title-center">Find Your <em>Perfect Solution</em> in 30 Seconds</h2>
+    <p class="section-body u-margin-auto">Answer 3 quick questions and we'll recommend exactly what you need — no call required.</p>
+  </div>
+  <div class="quiz-container anim" id="quiz-container">
+    <div class="quiz-progress"><div class="quiz-progress-fill" id="quiz-progress-fill"></div></div>
+    <div class="quiz-step active" id="quiz-step-1">
+      <div class="quiz-question">What best describes your organization?</div>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="quizSelect(1,'healthcare')"><span class="quiz-icon">🏥</span>Healthcare Practice or Clinic</button>
+        <button class="quiz-option" onclick="quizSelect(1,'nonprofit')"><span class="quiz-icon">🤝</span>Nonprofit Organization</button>
+        <button class="quiz-option" onclick="quizSelect(1,'business')"><span class="quiz-icon">🏢</span>Small / Mid-Size Business</button>
+        <button class="quiz-option" onclick="quizSelect(1,'enterprise')"><span class="quiz-icon">🌐</span>Enterprise / Multi-Location</button>
+      </div>
+    </div>
+    <div class="quiz-step" id="quiz-step-2">
+      <div class="quiz-question">What's your biggest challenge right now?</div>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="quizSelect(2,'compliance')"><span class="quiz-icon">⚖️</span>Compliance & Risk (HIPAA, SOC 2, etc.)</button>
+        <button class="quiz-option" onclick="quizSelect(2,'operations')"><span class="quiz-icon">⚙️</span>Operations & Efficiency</button>
+        <button class="quiz-option" onclick="quizSelect(2,'growth')"><span class="quiz-icon">📈</span>Revenue Growth & Marketing</button>
+        <button class="quiz-option" onclick="quizSelect(2,'technology')"><span class="quiz-icon">🤖</span>Technology & AI Automation</button>
+      </div>
+    </div>
+    <div class="quiz-step" id="quiz-step-3">
+      <div class="quiz-question">What's your budget comfort level?</div>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="quizSelect(3,'starter')"><span class="quiz-icon">🌱</span>Just exploring — under $200</button>
+        <button class="quiz-option" onclick="quizSelect(3,'growth')"><span class="quiz-icon">🚀</span>Ready to invest — $500–$1,500/mo</button>
+        <button class="quiz-option" onclick="quizSelect(3,'enterprise')"><span class="quiz-icon">💎</span>Serious commitment — $1,500+/mo</button>
+        <button class="quiz-option" onclick="quizSelect(3,'project')"><span class="quiz-icon">📋</span>One-time project budget</button>
+      </div>
+    </div>
+    <div class="quiz-step" id="quiz-result" class="u-hidden">
+      <div class="quiz-result-card" id="quiz-result-card">
+        <div class="quiz-result-tag">Your Recommended Path</div>
+        <div class="quiz-result-title" id="quiz-result-title"></div>
+        <div class="quiz-result-desc" id="quiz-result-desc"></div>
+        <div class="quiz-result-actions">
+          <button class="btn btn-gold" id="quiz-result-cta" onclick="openModal('consult')">Get Started →</button>
+          <button class="btn btn-outline" onclick="resetQuiz()">Retake Quiz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES WE SERVE -->
+<section class="section" id="industries">
+  <div class="anim section-header u-text-center">
+    <div class="section-tag section-tag-center">Who We Serve</div>
+    <h2 class="section-title section-title-center">Trusted Across <em>Industries</em></h2>
+    <p class="section-body u-margin-auto">Whether you're a community health center or a scaling tech startup, we speak your language and understand your regulatory landscape.</p>
+  </div>
+  <div class="industries-grid anim">
+    <div class="industry-card"><div class="industry-icon">🏥</div><div class="industry-name">Healthcare</div><div class="industry-desc">Clinics, hospitals, community health centers, behavioral health, and telehealth practices.</div></div>
+    <div class="industry-card"><div class="industry-icon">🤝</div><div class="industry-name">Nonprofits</div><div class="industry-desc">501(c)(3) organizations, foundations, and mission-driven entities with compliance needs.</div></div>
+    <div class="industry-card"><div class="industry-icon">⚖️</div><div class="industry-name">Legal</div><div class="industry-desc">Law firms and legal service providers seeking operational efficiency and compliance.</div></div>
+    <div class="industry-card"><div class="industry-icon">💻</div><div class="industry-name">Technology</div><div class="industry-desc">SaaS companies, tech startups, and digital agencies needing SOC 2 & data privacy.</div></div>
+    <div class="industry-card"><div class="industry-icon">💰</div><div class="industry-name">Finance</div><div class="industry-desc">Financial services, fintech, and accounting firms with regulatory requirements.</div></div>
+    <div class="industry-card"><div class="industry-icon">🏛️</div><div class="industry-name">Government</div><div class="industry-desc">Public sector agencies and government contractors requiring strict compliance standards.</div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS — Editorial Timeline -->
+<section class="section section-warm" id="process">
+  <div class="two-col anim u-flex-start">
+    <div>
+      <div class="section-tag">How It Works</div>
+      <h2 class="section-title">Simple. Transparent.<br><em>Results-Driven.</em></h2>
+      <p class="section-body">Whether you need a $97 instant tool or a full strategic retainer, we make it easy to start and fast to see results.</p>
+      <a href="#" class="btn btn-gold" onclick="openModal('consult');return false;">Book Free Discovery Call</a>
+    </div>
+    <div class="editorial-steps">
+      <div class="e-step">
+        <div class="e-step-num">01</div>
+        <div class="e-step-body">
+          <div class="e-step-title">Choose Your Entry Point</div>
+          <div class="e-step-desc">Buy an instant tool online, book a free call, or choose a retainer plan — no gatekeeping. Start with a $67 checklist or jump straight to a Growth retainer.</div>
+        </div>
+      </div>
+      <div class="e-step">
+        <div class="e-step-num">02</div>
+        <div class="e-step-body">
+          <div class="e-step-title">Assessment &amp; Roadmap</div>
+          <div class="e-step-desc">We assess your current state, identify critical gaps, and deliver a prioritized action plan within your first week. No guesswork — just data-driven priorities.</div>
+        </div>
+      </div>
+      <div class="e-step">
+        <div class="e-step-num">03</div>
+        <div class="e-step-body">
+          <div class="e-step-title">Delivery &amp; Implementation</div>
+          <div class="e-step-desc">Deliverables executed on time, documented, and presented with measurable outcomes. You'll see results within the first 30 days.</div>
+        </div>
+      </div>
+      <div class="e-step">
+        <div class="e-step-num">04</div>
+        <div class="e-step-body">
+          <div class="e-step-title">Ongoing Optimization</div>
+          <div class="e-step-desc">Retainer clients receive continuous monitoring, reporting, KPI dashboards, and strategic guidance. We don't just set it up — we keep it running.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RETAINER PLANS -->
+<section class="section" id="plans">
+  <div class="two-col anim">
+    <div>
+      <div class="section-tag">Retainer Plans</div>
+      <h2 class="section-title">Monthly Plans for<br><em>Long-Term Growth</em></h2>
+      <p class="section-body">Our retainer model keeps you supported every step — from regulatory compliance to technology integration — with a dedicated consultant in your corner.</p>
+      <div class="billing-toggle">
+        <span class="t-label active" id="lbl-monthly">Monthly</span>
+        <div class="toggle-track" id="billing-toggle" onclick="toggleBilling()" role="switch" aria-checked="false" aria-label="Toggle annual billing"><div class="toggle-knob"></div></div>
+        <span class="t-label" id="lbl-annual">Annual</span>
+        <span class="save-badge save-badge-dim" id="save-badge">Save 15%</span>
+      </div>
+    </div>
+    <div></div>
+  </div>
+
+  <div class="plans-row anim">
+    <div class="plan">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><span class="cur">$</span><span id="p-starter">797</span></div>
+      <div class="plan-cadence">per month</div>
+      <div class="plan-saving" id="note-starter">&nbsp;</div>
+      <p class="plan-desc">For small organizations needing structured compliance, HR guidance, and strategic direction — without a full-time hire.</p>
+      <ul class="plan-features">
+        <li>2 consulting sessions/month (60 min each)</li>
+        <li>Compliance calendar &amp; regulatory alerts</li>
+        <li>Monthly performance snapshot report</li>
+        <li>1 SOP or policy document per quarter</li>
+        <li>Email support (48-hr response)</li>
+        <li>Access to full template library</li>
+        <li class="dimmed">Dedicated account manager</li>
+        <li class="dimmed">Priority phone support</li>
+        <li class="dimmed">Custom KPI dashboard</li>
+      </ul>
+      <button class="btn btn-outline full-width" onclick="openModal('starter')" id="starter-plan-btn">Get Started</button>
+    </div>
+
+    <div class="plan featured">
+      <div class="plan-badge">Most Popular</div>
+      <div class="plan-name">Growth</div>
+      <div class="plan-price"><span class="cur">$</span><span id="p-growth">1,497</span></div>
+      <div class="plan-cadence">per month</div>
+      <div class="plan-saving" id="note-growth">&nbsp;</div>
+      <div class="plan-urgency">Only 3 spots remaining this month</div>
+      <p class="plan-desc">For growing healthcare practices and businesses that need hands-on strategy, compliance, and operations support with a named advisor.</p>
+      <ul class="plan-features">
+        <li>4 consulting sessions/month (90 min each)</li>
+        <li>Full compliance program management</li>
+        <li>Live KPI dashboard with monthly review</li>
+        <li>Unlimited SOP and policy development</li>
+        <li>Priority email + phone support</li>
+        <li>Dedicated account manager</li>
+        <li>Quarterly business health assessment</li>
+        <li>Staff training coordination</li>
+        <li class="dimmed">Quarterly on-site advisory visit</li>
+      </ul>
+      <button class="btn btn-gold full-width" onclick="openModal('growth')" id="growth-plan-btn">Get Started</button>
+    </div>
+
+    <div class="plan">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price"><span class="cur">$</span><span id="p-enterprise">2,997</span></div>
+      <div class="plan-cadence">per month</div>
+      <div class="plan-saving" id="note-enterprise">&nbsp;</div>
+      <p class="plan-desc">Comprehensive strategic partnership for large healthcare organizations, multi-site practices, or high-growth companies scaling operations.</p>
+      <ul class="plan-features">
+        <li>Unlimited consulting (8+ sessions/month)</li>
+        <li>Enterprise compliance management &amp; audits</li>
+        <li>Custom reporting dashboard &amp; analytics</li>
+        <li>Full HR, operations &amp; technology advisory</li>
+        <li>24/7 priority support hotline</li>
+        <li>Dedicated senior account manager</li>
+        <li>Quarterly on-site advisory visits</li>
+        <li>Grant writing &amp; funding identification</li>
+        <li>Executive coaching (2 sessions/month)</li>
+      </ul>
+      <button class="btn btn-dark full-width" onclick="openModal('enterprise')" id="enterprise-plan-btn">Get Started</button>
+    </div>
+  </div>
+  <p class="form-note">All plans include a 30-day onboarding period. Annual plans billed upfront. Nonprofit discount available — ask us.</p>
+</section>
+
+<!-- WHY NLC vs IN-HOUSE -->
+<section class="section section-warm">
+  <div class="anim">
+    <div class="section-tag">Why NLC</div>
+    <h2 class="section-title">NLC vs. Hiring <em>In-House</em></h2>
+    <p class="section-body">See how a dedicated consulting partner compares to the cost and complexity of building an internal team.</p>
+  </div>
+  <table class="compare-table anim">
+    <thead><tr><th>Capability</th><th>New Level Consultants</th><th>In-House Hire</th></tr></thead>
+    <tbody>
+      <tr><td>Annual Cost</td><td><span class="check">$9,564 – $35,964</span></td><td>$85,000 – $150,000+</td></tr>
+      <tr><td>HIPAA Compliance Expertise</td><td><span class="check">✦</span></td><td><span class="cross">✕</span> Varies</td></tr>
+      <tr><td>AI & Automation Setup</td><td><span class="check">✦</span></td><td><span class="cross">✕</span> Rare</td></tr>
+      <tr><td>Multi-Discipline Coverage</td><td><span class="check">✦</span> Compliance, Ops, Tech, HR, Marketing</td><td><span class="cross">✕</span> 1 specialty</td></tr>
+      <tr><td>Onboarding Time</td><td><span class="check">3–5 days</span></td><td>30–90 days</td></tr>
+      <tr><td>Scalability</td><td><span class="check">✦</span> Instant plan upgrades</td><td><span class="cross">✕</span> New hire needed</td></tr>
+      <tr><td>Risk of Turnover</td><td><span class="check">✦</span> Zero</td><td>High (avg 2yr tenure)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- A LA CARTE SERVICES -->
+<section class="section section-dark" id="services">
+  <div class="section-header anim">
+    <div class="section-tag">À La Carte Services</div>
+    <h2 class="section-title">Every Service, <em>Priced Transparently</em></h2>
+    <p class="section-body">Need something specific? Filter by what matters to you — industry, service type, or budget.</p>
+  </div>
+
+  <!-- SERVICE FILTERS -->
+  <div class="service-filters anim" id="service-filters">
+    <div class="filter-group">
+      <label class="filter-label">Filter by Need</label>
+      <div class="filter-pills" id="filter-need">
+        <button class="filter-pill active" data-filter="all" onclick="filterServices('need','all')">All Services</button>
+        <button class="filter-pill" data-filter="compliance" onclick="filterServices('need','compliance')">⚖️ Compliance</button>
+        <button class="filter-pill" data-filter="healthcare" onclick="filterServices('need','healthcare')">🏥 Healthcare</button>
+        <button class="filter-pill" data-filter="operations" onclick="filterServices('need','operations')">⚙️ Operations</button>
+        <button class="filter-pill" data-filter="technology" onclick="filterServices('need','technology')">💻 Technology & AI</button>
+        <button class="filter-pill" data-filter="hr" onclick="filterServices('need','hr')">👥 HR & Workforce</button>
+        <button class="filter-pill" data-filter="marketing" onclick="filterServices('need','marketing')">📈 Marketing</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <label class="filter-label">Budget Range</label>
+      <div class="filter-pills" id="filter-budget">
+        <button class="filter-pill active" data-filter="all" onclick="filterServices('budget','all')">Any Budget</button>
+        <button class="filter-pill" data-filter="under-1000" onclick="filterServices('budget','under-1000')">Under $1,000</button>
+        <button class="filter-pill" data-filter="1000-2500" onclick="filterServices('budget','1000-2500')">$1,000 – $2,500</button>
+        <button class="filter-pill" data-filter="over-2500" onclick="filterServices('budget','over-2500')">$2,500+</button>
+        <button class="filter-pill" data-filter="recurring" onclick="filterServices('budget','recurring')">🔄 Recurring/Monthly</button>
+      </div>
+    </div>
+    <div class="filter-results-count"><span id="filter-count">All</span> services shown</div>
+  </div>
+
+  <div id="dynamic-services-container">
+    <!-- Dynamic categories and services will be injected here -->
+  </div>
+
+  <div id="static-services-fallback">
+
+  <div class="service-cat anim">
+    <div class="cat-header" onclick="toggleCat(this)" role="button" aria-expanded="true">
+      <div class="cat-icon">🏥</div><div class="cat-name">Healthcare-Specific Consulting</div>
+      <div class="cat-chevron">▾</div>
+    </div>
+    <div class="services-list cat-collapsible">
+      <div class="service-item"><div class="service-name">HIPAA Compliance Program Setup</div><div class="service-desc">Full policies, BAA templates, workforce training plan, and risk assessment. Delivered in 30 days.</div><div class="service-footer"><div class="service-price">$1,200 <small>one-time</small></div><div class="tags"><span class="tag tag-hot">High Demand</span><button class="add-btn" onclick="openModal('hipaa')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">HIPAA Ongoing Compliance Monitoring</div><div class="service-desc">Monthly policy reviews, breach-response readiness, annual risk analysis, and staff training updates.</div><div class="service-footer"><div class="service-price">$497 <small>/ month</small></div><div class="tags"><span class="tag tag-rec">Recurring</span><button class="add-btn" onclick="openModal('hipaa-ongoing')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">Ryan White / EHE Program Reporting</div><div class="service-desc">Expert preparation of Ryan White Part A &amp; EHE performance reports and compliance documentation.</div><div class="service-footer"><div class="service-price">$1,500 <small>per cycle</small></div><div class="tags"><span class="tag tag-hot">Specialized</span><button class="add-btn" onclick="openModal('ryan')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">Credentialing &amp; Payer Contracting</div><div class="service-desc">Full credentialing support with payers, contract negotiation, and reimbursement optimization.</div><div class="service-footer"><div class="service-price">$1,800 <small>per provider</small></div><div class="tags"><button class="add-btn" onclick="openModal('cred')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">Medical Billing Optimization</div><div class="service-desc">Audit billing workflows, reduce denial rates, improve collections, and train staff on proper coding.</div><div class="service-footer"><div class="service-price">$750 <small>+ % of savings</small></div><div class="tags"><span class="tag tag-rec">Recurring</span><button class="add-btn" onclick="openModal('billing')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">Telehealth Platform Strategy</div><div class="service-desc">Vendor selection, workflow integration, patient acquisition setup, and compliance alignment.</div><div class="service-footer"><div class="service-price">$2,500 <small>project</small></div><div class="tags"><button class="add-btn" onclick="openModal('telehealth')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">Mental Health Program Development</div><div class="service-desc">Design evidence-based clinical programs for community health, telehealth, or grant-funded initiatives.</div><div class="service-footer"><div class="service-price">$3,500 <small>project</small></div><div class="tags"><button class="add-btn" onclick="openModal('mhp')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">Healthcare Practice Acquisition Advisory</div><div class="service-desc">Due diligence support, valuation guidance, and post-acquisition integration planning.</div><div class="service-footer"><div class="service-price">$4,500 <small>project</small></div><div class="tags"><button class="add-btn" onclick="openModal('acq')">Inquire</button></div></div></div>
+    </div>
+  </div>
+
+  <div class="service-cat anim">
+    <div class="cat-header" onclick="toggleCat(this)" role="button" aria-expanded="true">
+      <div class="cat-icon">⚖️</div><div class="cat-name">Compliance &amp; Risk Management</div>
+      <div class="cat-chevron">▾</div>
+    </div>
+    <div class="services-list cat-collapsible">
+      <div class="service-item"><div class="service-name">Regulatory Compliance Audit</div><div class="service-desc">Comprehensive audit across federal, state, and industry-specific regulations with gap report.</div><div class="service-footer"><div class="service-price">$1,500 <small>one-time</small></div><div class="tags"><button class="add-btn" onclick="openModal('reg-audit')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">SOC 2 / Data Privacy Consulting</div><div class="service-desc">Readiness assessment, gap analysis, and implementation support for SOC 2 or CCPA/GDPR alignment.</div><div class="service-footer"><div class="service-price">$3,200 <small>project</small></div><div class="tags"><span class="tag tag-rec">Recurring</span><button class="add-btn" onclick="openModal('soc2')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">ADA &amp; Accessibility Compliance</div><div class="service-desc">Physical and digital accessibility audit with remediation roadmap and documentation support.</div><div class="service-footer"><div class="service-price">$950 <small>one-time</small></div><div class="tags"><span class="tag tag-auto">Online Available</span><button class="add-btn" onclick="openModal('ada')">Inquire</button></div></div></div>
+      <div class="service-item"><div class="service-name">Business Continuity &amp; Disaster Recovery</div><div class="service-desc">Custom BCP/DRP documentation, tabletop exercises, and recovery time objective planning.</div><div class="service-footer"><div class="service-price">$1,800 <small>project</small></div><div class="tags"><button class="add-btn" onclick="openModal('bcp')">Inquire</button></div></div></div>
+    </div>
+  </div>
+
+  <div class="two-col anim">
+    <div class="service-cat">
+      <div class="cat-header" onclick="toggleCat(this)" role="button" aria-expanded="true">
+        <div class="cat-icon">⚙️</div><div class="cat-name">Operations &amp; Process</div>
+        <div class="cat-chevron">▾</div>
+      </div>
+      <div class="services-list cat-collapsible">
+        <div class="service-item"><div class="service-name">Workflow Optimization</div><div class="service-desc">Map, analyze, and rebuild inefficient workflows to reduce waste and improve throughput.</div><div class="service-footer"><div class="service-price">$2,200 <small>project</small></div><div class="tags"><button class="add-btn" onclick="openModal('workflow')">Inquire</button></div></div></div>
+        <div class="service-item"><div class="service-name">SOP Development Package</div><div class="service-desc">Up to 10 custom standard operating procedures written, reviewed, and formatted.</div><div class="service-footer"><div class="service-price">$1,400 <small>package</small></div><div class="tags"><button class="add-btn" onclick="openModal('sop')">Inquire</button></div></div></div>
+        <div class="service-item"><div class="service-name">KPI Framework &amp; Dashboard</div><div class="service-desc">Define metrics, build reporting dashboards, and train your team on data-driven decisions.</div><div class="service-footer"><div class="service-price">$1,750 <small>+ $297/mo</small></div><div class="tags"><span class="tag tag-rec">Recurring</span><button class="add-btn" onclick="openModal('kpi')">Inquire</button></div></div></div>
+      </div>
+    </div>
+    <div class="service-cat">
+      <div class="cat-header" onclick="toggleCat(this)" role="button" aria-expanded="true">
+        <div class="cat-icon">💻</div><div class="cat-name">Technology &amp; AI</div>
+        <div class="cat-chevron">▾</div>
+      </div>
+      <div class="services-list cat-collapsible">
+        <div class="service-item"><div class="service-name">AI Automation Strategy &amp; Setup</div><div class="service-desc">Identify opportunities, select tools, build workflows, and train your staff on AI.</div><div class="service-footer"><div class="service-price">$2,800 <small>project</small></div><div class="tags"><span class="tag tag-hot">High ROI</span><button class="add-btn" onclick="openModal('ai')">Inquire</button></div></div></div>
+        <div class="service-item"><div class="service-name">Cybersecurity Risk Assessment</div><div class="service-desc">Evaluate your security posture, identify vulnerabilities, and deliver remediation roadmap.</div><div class="service-footer"><div class="service-price">$1,400 <small>one-time</small></div><div class="tags"><button class="add-btn" onclick="openModal('cyber')">Inquire</button></div></div></div>
+        <div class="service-item"><div class="service-name">AI Chatbot Setup for Healthcare</div><div class="service-desc">HIPAA-aware chatbot for intake, FAQs, or scheduling — fully configured and branded.</div><div class="service-footer"><div class="service-price">$1,900 <small>+ $197/mo</small></div><div class="tags"><span class="tag tag-new">New</span><button class="add-btn" onclick="openModal('chatbot')">Inquire</button></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSTANT TOOLS -->
+<section class="section" id="products">
+  <div class="section-header anim">
+    <div class="section-tag">Instant-Access Tools</div>
+    <h2 class="section-title">Buy Online. <em>Get Results Today.</em></h2>
+    <p class="section-body">Automated, productized services — purchase, answer a short form, and receive your deliverable in minutes to 24 hours. No calls, no waiting.</p>
+  </div>
+  <div class="product-grid anim" id="instant-tools">
+    <div class="product-card"><div class="product-icon">📊</div><div class="product-name">Business Health Assessment</div><p class="product-desc">Scored questionnaire across 8 dimensions — compliance, finance, operations, HR, marketing, tech, risk, and growth. Instant interactive report with priority action plan.</p><div class="product-footer"><div class="product-price">$97 <small>instant report</small></div><div><span class="instant-badge">⚡ Instant</span><button class="btn btn-gold btn-sm-gold" onclick="openCheckoutModal('bha', 'Business Health Assessment', 97)">Buy Now</button></div></div></div>
+    <div class="product-card"><div class="product-icon">💰</div><div class="product-name">Financial Readiness Score</div><p class="product-desc">Form-based assessment of your financial health — cash flow, funding eligibility, credit positioning, and investor readiness — with tailored next steps.</p><div class="product-footer"><div class="product-price">$127 <small>instant report</small></div><div><span class="instant-badge">⚡ Instant</span><button class="btn btn-gold btn-sm-gold" onclick="openCheckoutModal('frs', 'Financial Readiness Score', 127)">Buy Now</button></div></div></div>
+    <div class="product-card"><div class="product-icon">✅</div><div class="product-name">HIPAA Compliance Checklist Pack</div><p class="product-desc">120+ action items, BAA template, staff acknowledgment forms, breach notification checklist, and a risk assessment worksheet — ready to implement immediately.</p><div class="product-footer"><div class="product-price">$67 <small>download</small></div><div><span class="instant-badge">⚡ Instant</span><button class="btn btn-gold btn-sm-gold" onclick="openCheckoutModal('hipaa-checklist', 'HIPAA Compliance Checklist Pack', 67)">Buy Now</button></div></div></div>
+    <div class="product-card"><div class="product-icon">📋</div><div class="product-name">SOP Template Bundle</div><p class="product-desc">15 ready-to-use Standard Operating Procedure templates covering HR, compliance, operations, and clinical workflows — professionally formatted and fully customizable.</p><div class="product-footer"><div class="product-price">$97 <small>15 templates</small></div><div><span class="instant-badge">⚡ Instant</span><button class="btn btn-gold btn-sm-gold" onclick="openCheckoutModal('sop-bundle', 'SOP Template Bundle', 97)">Buy Now</button></div></div></div>
+    <div class="product-card"><div class="product-icon">🤖</div><div class="product-name">AI Content Refresh Agent</div><p class="product-desc">Monthly AI-powered audit of your website — flags outdated content, compliance issues, and SEO gaps. Delivers prioritized rewrite suggestions.</p><div class="product-footer"><div class="product-price">$197 <small>/ month</small></div><div><span class="instant-badge">New</span><button class="btn btn-gold btn-sm-gold" onclick="openModal('ai-content')">Subscribe</button></div></div></div>
+  </div>
+  <div class="bundle-card anim">
+    <div class="bundle-info">
+      <div class="section-tag">Bundle &amp; Save — 51% Off</div>
+      <div class="product-name u-font-size-1-9">All-in-One Tier 1 Toolkit — <span class="u-color-gold">$347</span> <span class="u-font-size-1 u-text-line-through u-text-muted">$685</span></div>
+      <p class="product-desc u-margin-top-0-5">Save $338. Includes every Tier 1 digital product:</p>
+      <ul class="u-margin-top-0-5 u-padding-left-1-25 u-text-muted u-font-size-0-9 u-line-height-2">
+        <li>✅ HIPAA Compliance Checklist Pack ($67)</li>
+        <li>✅ SOP Template Bundle ($97)</li>
+        <li>✅ Business Health Assessment ($97)</li>
+        <li>✅ Financial Readiness Score ($127)</li>
+        <li>✅ Healthcare Compliance Certification ($297)</li>
+      </ul>
+    </div>
+    <div class="bundle-price">
+      <button class="btn btn-gold" onclick="openCheckoutModal('bundle-tier1', 'All-in-One Tier 1 Toolkit', 347)">Get the Bundle →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ROI CALCULATOR -->
+<section class="section section-warm" id="roi-section">
+  <div class="two-col">
+    <div class="anim">
+      <div class="section-tag">ROI Calculator</div>
+      <h2 class="section-title">See How Much You Could <em>Save</em></h2>
+      <p class="section-body">Use our interactive calculator to estimate the potential return on investment from working with NLC. Adjust the sliders to match your organization.</p>
+    </div>
+    <div class="roi-calc anim">
+      <div class="roi-field"><label for="roi-emp">Number of Employees</label><div class="range-val" id="roi-emp-val">25</div><input type="range" min="5" max="200" value="25" id="roi-emp" oninput="calcROI()"></div>
+      <div class="roi-field"><label for="roi-comp">Monthly Compliance Spend ($)</label><div class="range-val" id="roi-comp-val">$3,000</div><input type="range" min="500" max="20000" step="500" value="3000" id="roi-comp" oninput="calcROI()"></div>
+      <div class="roi-field"><label for="roi-hrs">Estimated Hours Lost to Inefficiency / Week</label><div class="range-val" id="roi-hrs-val">15</div><input type="range" min="2" max="60" value="15" id="roi-hrs" oninput="calcROI()"></div>
+      <div class="roi-result">
+        <div>Estimated Annual Savings</div>
+        <div class="big" id="roi-total">$62,400</div>
+        <div class="sub">Based on industry averages and NLC client outcomes</div>
+      </div>
+      <div class="u-margin-top-1 u-flex-center u-flex-gap-0-5">
+        <input type="email" id="roi-email" class="u-flex-1 u-padding-0-65-1 u-border-e2e8f0 u-radius-8 u-font-size-0-9 u-outline-none" placeholder="Email me this report">
+        <button class="btn btn-gold u-white-space-nowrap u-padding-0-65-1-2" onclick="submitROIReport()">Send Report</button>
+      </div>
+      <button class="btn btn-dark full-width u-margin-top-0-75" onclick="openModal('consult')">Discuss Your ROI — Free Call</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- TRAINING -->
+<section class="section section-dark">
+  <div class="section-header anim">
+    <div class="section-tag">Training &amp; Education</div>
+    <h2 class="section-title">Learn Once. <em>Scale Forever.</em></h2>
+    <p class="section-body">Certifications, webinars, and coaching programs for healthcare administrators, compliance officers, and business leaders who want to lead with confidence.</p>
+  </div>
+  <div class="training-grid anim">
+    <div class="product-card"><div class="product-icon">🎓</div><div class="product-name">Healthcare Compliance Certification</div><p class="product-desc">Self-paced 6-module course covering HIPAA, EHE & Ryan White Reporting, Risk Assessment, Breach Response, Staff Training, and Audit Readiness. Certificate included. Access in your Client Portal.</p><div class="product-footer"><div class="product-price">$297 <small>one-time</small></div><div><span class="instant-badge">⚡ Instant Access</span><button class="btn btn-dark btn-sm" onclick="openCheckoutModal('compliance-cert', 'Healthcare Compliance Certification', 297)">Enroll Now</button></div></div></div>
+    <div class="product-card"><div class="product-icon">📡</div><div class="product-name">Monthly Compliance Webinar</div><p class="product-desc">Live monthly webinar covering regulatory updates, best practices, and open Q&amp;A with senior consultants. Recordings included.</p><div class="product-footer"><div class="product-price">$47 <small>/ month</small></div><button class="btn btn-dark btn-sm" onclick="openModal('webinar')">Subscribe</button></div></div>
+    <div class="product-card"><div class="product-icon">🎯</div><div class="product-name">Executive Coaching Subscription</div><p class="product-desc">Bi-weekly 1:1 sessions with a senior advisor. Focus on leadership, decision-making, and scaling your organization.</p><div class="product-footer"><div class="product-price">$597 <small>/ month</small></div><button class="btn btn-dark btn-sm" onclick="openModal('coaching')">Get Started</button></div></div>
+  </div>
+</section>
+
+<!-- CASE STUDIES / RESULTS -->
+<section class="section section-dark" id="case-studies">
+  <div class="section-header anim u-text-center">
+    <div class="section-tag section-tag-center">Proven Results</div>
+    <h2 class="section-title section-title-center">Real Organizations. <em>Real Outcomes.</em></h2>
+    <p class="section-body u-margin-auto">These aren't hypothetical numbers. These are documented results from clients who trusted us with their biggest challenges.</p>
+  </div>
+  <div class="case-studies-grid anim">
+    <div class="case-card">
+      <div class="case-industry">🏥 Community Health Center</div>
+      <div class="case-title">HIPAA Compliance Overhaul</div>
+      <div class="case-metrics">
+        <div class="case-metric"><div class="case-metric-value" data-count="0" data-suffix="">32%</div><div class="case-metric-label">Audit Findings Before</div></div>
+        <div class="case-metric-arrow">→</div>
+        <div class="case-metric"><div class="case-metric-value case-metric-highlight">0</div><div class="case-metric-label">Findings After NLC</div></div>
+      </div>
+      <div class="case-quote">"Zero findings on our first external audit — that had never happened before."</div>
+      <a href="/case-studies.html" class="case-link">Read Full Case Study →</a>
+    </div>
+    <div class="case-card">
+      <div class="case-industry">💻 Telehealth Practice</div>
+      <div class="case-title">AI Billing Automation</div>
+      <div class="case-metrics">
+        <div class="case-metric"><div class="case-metric-value case-metric-highlight">30+</div><div class="case-metric-label">Hours Saved/Month</div></div>
+        <div class="case-metric-arrow">→</div>
+        <div class="case-metric"><div class="case-metric-value case-metric-highlight">$127K</div><div class="case-metric-label">Annual Savings</div></div>
+      </div>
+      <div class="case-quote">"The ROI in the first quarter justified the entire year's retainer."</div>
+      <a href="/case-studies.html" class="case-link">Read Full Case Study →</a>
+    </div>
+    <div class="case-card">
+      <div class="case-industry">🤝 Nonprofit Organization</div>
+      <div class="case-title">Operations & Grant Reporting</div>
+      <div class="case-metrics">
+        <div class="case-metric"><div class="case-metric-value case-metric-highlight">40%</div><div class="case-metric-label">Efficiency Increase</div></div>
+        <div class="case-metric-arrow">→</div>
+        <div class="case-metric"><div class="case-metric-value case-metric-highlight">$2.1M</div><div class="case-metric-label">Grant Funding Secured</div></div>
+      </div>
+      <div class="case-quote">"NLC helped us restructure and secure funding we didn't think was possible."</div>
+      <a href="/case-studies.html" class="case-link">Read Full Case Study →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS — Enhanced Marquee -->
+<section class="section">
+  <div class="section-header anim u-text-center">
+    <div class="section-tag section-tag-center">Client Testimonials</div>
+    <h2 class="section-title section-title-center">What Our Clients <em>Say & Achieve</em></h2>
+  </div>
+  <div class="testimonial-marquee anim">
+    <div class="marquee-track" id="marquee-track">
+      <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-quote">"New Level Consultants transformed our HIPAA program from reactive to proactive. We passed our first external audit with zero findings — something we had never achieved before."</div><div class="tcard-meta"><div class="tcard-avatar">RM</div><div><div class="tcard-name">Rachel M.</div><div class="tcard-role">COO, Community Health Center</div></div></div></div>
+      <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-quote">"Their AI automation setup saved our billing team 30+ hours per month. The ROI in the first three months alone justified the entire year's retainer cost."</div><div class="tcard-meta"><div class="tcard-avatar">DT</div><div><div class="tcard-name">Dr. David T.</div><div class="tcard-role">Founder, Telehealth Practice</div></div></div></div>
+      <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-quote">"The Business Health Assessment felt like a $5,000 consulting deliverable for $97. It gave us a precise roadmap that we've been executing against ever since."</div><div class="tcard-meta"><div class="tcard-avatar">SJ</div><div><div class="tcard-name">Sandra J.</div><div class="tcard-role">Executive Director, Nonprofit</div></div></div></div>
+      <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-quote">"We were spending $12K/month on compliance consultants. NLC's Growth Plan gave us better coverage for less than $1,500/month. It's not even close."</div><div class="tcard-meta"><div class="tcard-avatar">JW</div><div><div class="tcard-name">James W.</div><div class="tcard-role">CEO, Multi-Site Medical Group</div></div></div></div>
+      <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-quote">"Their SOP templates alone saved our team 2 weeks of work. The quality is on par with what a Big 4 firm would deliver for 10x the cost."</div><div class="tcard-meta"><div class="tcard-avatar">LP</div><div><div class="tcard-name">Linda P.</div><div class="tcard-role">Practice Manager, Dental Group</div></div></div></div>
+      <div class="tcard"><div class="tcard-stars">★★★★★</div><div class="tcard-quote">"Best investment we made this year. The cybersecurity assessment identified 14 critical vulnerabilities our IT team missed. Could have prevented a breach."</div><div class="tcard-meta"><div class="tcard-avatar">MR</div><div><div class="tcard-name">Michael R.</div><div class="tcard-role">CTO, Healthcare Startup</div></div></div></div>
+    </div>
+  </div>
+  <div id="testimonials-container" class="u-hidden"></div>
+</section>
+
+<!-- NEWSLETTER LEAD GEN -->
+<section class="section section-warm" id="newsletter">
+  <div class="newsletter-container anim">
+    <div class="newsletter-content">
+      <div class="section-tag">Stay Ahead of the Curve</div>
+      <h2 class="section-title">Join <em>2,000+ Healthcare Leaders</em></h2>
+      <p class="section-body">Weekly insights on compliance updates, AI trends, operational best practices, and exclusive tools — delivered straight to your inbox. Unsubscribe anytime.</p>
+      <div class="newsletter-form" id="newsletter-form">
+        <input type="email" placeholder="Enter your email address" id="newsletter-email" aria-label="Email for newsletter">
+        <button class="btn btn-gold" onclick="submitNewsletter()">Subscribe Free →</button>
+      </div>
+      <div class="newsletter-proof">📬 Join Dr. Sarah K., Marcus T., and 2,000+ subscribers</div>
+    </div>
+    <div class="newsletter-perks">
+      <div class="perk"><span class="perk-icon">📊</span><span>Weekly compliance alerts</span></div>
+      <div class="perk"><span class="perk-icon">🤖</span><span>AI & automation insights</span></div>
+      <div class="perk"><span class="perk-icon">📋</span><span>Free templates & checklists</span></div>
+      <div class="perk"><span class="perk-icon">🎓</span><span>Early access to webinars</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="two-col">
+    <div class="anim">
+      <div class="section-tag">FAQ</div>
+      <h2 class="section-title">Common <em>Questions</em></h2>
+      <p class="section-body">Can't find what you're looking for? Book a free 20-minute discovery call — we'll answer everything with no pressure.</p>
+      <a href="#" onclick="openModal('consult');return false;" class="btn btn-gold">Book Free Call</a>
+    </div>
+    <div class="faq-list anim" id="faq-container">
+      <!-- Dynamic FAQ items will be injected here -->
+      <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">How quickly can I get started? <span class="faq-arrow">+</span></div><div class="faq-a">Productized tools are instant or 24-hour delivery. Retainer plans and à la carte projects onboard within 3–5 business days of your first call.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">Do you work with organizations outside of healthcare? <span class="faq-arrow">+</span></div><div class="faq-a">Yes. While we specialize in healthcare, our compliance, operations, AI, and business development services serve nonprofits, legal practices, and mid-size businesses across industries.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">Can I cancel a retainer plan at any time? <span class="faq-arrow">+</span></div><div class="faq-a">Monthly retainers can be cancelled with 30 days notice. Annual plans include a prorated refund policy after month 3. We never trap clients in long-term contracts.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">Are the automated reports HIPAA-compliant? <span class="faq-arrow">+</span></div><div class="faq-a">Our productized tools are designed with data minimization and do not collect or store PHI. For services requiring PHI handling, we operate under a signed Business Associate Agreement (BAA).</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">What's included in the free consultation? <span class="faq-arrow">+</span></div><div class="faq-a">A 20-minute call with a senior consultant to understand your goals, identify your most pressing challenges, and recommend the right starting point — with zero sales pressure.</div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFAQ(this)">Do you offer nonprofit or multi-location discounts? <span class="faq-arrow">+</span></div><div class="faq-a">Yes. Qualified 501(c)(3) organizations receive 10% off retainer plans and 15% off à la carte projects. Multi-location enterprises get custom pricing. Contact us to verify eligibility.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-tag section-tag-center">Ready to Begin?</div>
+  <h2 class="section-title section-title-center" id="cta-heading">Start at Any Level.<br><em>Grow Without Limits.</em></h2>
+  <p id="cta-body">Whether you start with a $97 self-serve tool today or explore a full strategic partnership — every client gets a clear, results-oriented plan from day one.</p>
+  <div class="cta-btns">
+    <button class="btn btn-dark" onclick="openModal('consult')">Book Free Discovery Call</button>
+    <a href="#products" class="btn btn-outline">Explore Instant Tools</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="/assets/images/logo-dark-bg.png" alt="NLC" width="120" height="28">
+      </div>
+      <p class="footer-tagline" id="footer-tagline">Healthcare and business consulting for organizations that refuse to stay at the same level. Compliance, operations, technology, and growth — all under one roof.</p>
+    </div>
+    <div>
+      <div class="footer-heading">Services</div>
+      <ul class="footer-links">
+        <li><a href="#services">Healthcare Consulting</a></li>
+        <li><a href="#services">Compliance &amp; Risk</a></li>
+        <li><a href="#services">Operations</a></li>
+        <li><a href="#services">Technology &amp; AI</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Plans &amp; Tools</div>
+      <ul class="footer-links">
+        <li><a href="#plans">Starter — $797/mo</a></li>
+        <li><a href="#plans">Growth — $1,497/mo</a></li>
+        <li><a href="#plans">Enterprise — $2,997/mo</a></li>
+        <li><a href="#products">Instant Tools</a></li>
+        <li><a href="#products">Bundle — $347</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">Company</div>
+      <ul class="footer-links">
+        <li><a href="/about.html">About NLC</a></li>
+        <li><a href="/case-studies.html">Case Studies</a></li>
+        <li><a href="/resources.html">Resources</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#" onclick="openModal('consult');return false;">Free Consultation</a></li>
+        <li><a href="tel:+17864084243">📞 786-408-4243</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 New Level Consultants. All rights reserved.</span>
+    <span><a href="/privacy.html">Privacy Policy</a> · <a href="/terms.html">Terms of Service</a> · <a href="/hipaa-notice.html">HIPAA Notice</a></span>
+  </div>
+
+</footer>
+
+<!-- STICKY CTA BAR -->
+<div class="sticky-cta" id="sticky-cta">
+  <div class="sticky-cta-text">Ready to transform your organization? <strong>Book a free call today.</strong></div>
+  <div class="sticky-cta-btns">
+    <a href="tel:+17864084243" class="btn btn-outline btn-sm">📞 Call Now</a>
+    <button class="btn btn-gold btn-sm-gold" onclick="openModal('consult')">Get Started</button>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModalOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalDirect()" aria-label="Close modal">&times;</button>
+    <div class="modal-title" id="modal-title">Get Started</div>
+    <p class="modal-sub" id="modal-sub">Fill out the form below and we'll be in touch within 1 business day.</p>
+    <div class="step-indicators" id="step-indicators"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+    <div class="form-step active" id="form-step-1">
+      <div class="form-row"><div class="form-field"><label for="f-first">First Name</label><input type="text" placeholder="Jane" id="f-first" required></div><div class="form-field"><label for="f-last">Last Name</label><input type="text" placeholder="Smith" id="f-last" required></div></div>
+      <div class="form-field"><label for="f-email">Email Address</label><input type="email" placeholder="jane@yourorg.com" id="f-email" required></div>
+      <button class="btn btn-gold full-width" onclick="nextStep(2)">Continue →</button>
+    </div>
+    <div class="form-step" id="form-step-2">
+      <div class="form-field"><label for="f-org">Organization</label><input type="text" placeholder="Your organization name" id="f-org"></div>
+      <div class="form-field"><label for="f-size">Organization Size</label><select id="f-size"><option value="">Select...</option><option>1-10 employees</option><option>11-50 employees</option><option>51-200 employees</option><option>200+ employees</option></select></div>
+      <div class="form-field"><label for="f-industry">Industry</label><select id="f-industry"><option value="">Select...</option><option>Healthcare</option><option>Nonprofit</option><option>Legal</option><option>Technology</option><option>Other</option></select></div>
+      <div class="form-nav"><button class="btn btn-outline form-nav-back" onclick="nextStep(1)">← Back</button><button class="btn btn-gold form-nav-next" onclick="nextStep(3)">Continue →</button></div>
+    </div>
+    <div class="form-step" id="form-step-3">
+      <div class="form-field"><label for="f-msg">How can we help?</label><textarea placeholder="Describe your challenge or what you're looking for..." id="f-msg"></textarea></div>
+      <div class="form-field"><label for="f-contact">Preferred Contact Method</label><select id="f-contact"><option>Email</option><option>Phone</option><option>Either works</option></select></div>
+      <div class="form-nav"><button class="btn btn-outline form-nav-back" onclick="nextStep(2)">← Back</button><button class="btn btn-gold form-nav-next" onclick="submitModal()">Submit Request →</button></div>
+    </div>
+    <p class="form-note">We respond within 1 business day. No spam, ever.</p>
+  </div>
+</div>
+
+<!-- CHATBOT WIDGET -->
+<button class="chatbot-trigger" id="chatbot-trigger" onclick="toggleChat()" aria-label="Open chat">💬</button>
+<div class="chatbot-window" id="chatbot-window">
+  <div class="chatbot-header"><span>NLC Assistant</span><button class="chatbot-close" onclick="toggleChat()" aria-label="Close chat">&times;</button></div>
+  <div class="chatbot-messages" id="chat-messages">
+    <div class="chat-msg bot">Hi! 👋 I'm NLC's virtual assistant. I can help you find the right service, answer pricing questions, or connect you with a consultant. What can I help you with?</div>
+    <div class="chat-quick-replies">
+      <button class="chat-pill" onclick="quickReply('pricing')">💰 Pricing</button>
+      <button class="chat-pill" onclick="quickReply('hipaa')">🛡️ HIPAA Help</button>
+      <button class="chat-pill" onclick="quickReply('book')">📞 Book a Call</button>
+      <button class="chat-pill" onclick="quickReply('tools')">⚡ Instant Tools</button>
+    </div>
+  </div>
+  <div class="chatbot-input"><input type="text" id="chat-input" placeholder="Type your question..." onkeypress="if(event.key==='Enter')sendChat()"><button onclick="sendChat()">Send</button></div>
+</div>
+
+<!-- SOCIAL PROOF TOAST -->
+<div class="social-toast" id="social-toast">
+  <div class="toast-avatar" id="toast-avatar">SJ</div>
+  <div><div class="toast-text" id="toast-text"><strong>Sandra J.</strong> purchased Business Health Assessment</div><div class="toast-time" id="toast-time">2 minutes ago</div></div>
+</div>
+
+<!-- EXIT INTENT POPUP -->
+<div class="exit-overlay" id="exit-overlay" onclick="if(event.target===this)closeExit()">
+  <div class="exit-modal">
+    <h3>Wait — grab your <em>free resource</em></h3>
+    <p>Get our HIPAA Quick-Start Checklist (25 critical items) free — just enter your email. No spam, just value.</p>
+    <input type="email" placeholder="Enter your email..." id="exit-email">
+    <button class="btn btn-gold full-width" onclick="submitExit()">Send Me the Checklist →</button>
+    <button class="exit-dismiss" onclick="closeExit()">No thanks, I'll pass</button>
+  </div>
+</div>
+
+<!-- COOKIE CONSENT -->
+<div class="cookie-bar" id="cookie-bar">
+  <p>We use cookies to improve your experience and analyze site traffic. By continuing, you agree to our <a href="#">Privacy Policy</a>.</p>
+  <div class="cookie-btns">
+    <button class="cookie-accept" onclick="acceptCookies()">Accept All</button>
+    <button class="cookie-decline" onclick="declineCookies()">Decline</button>
+  </div>
+</div>
+
+  <!-- PAYPAL CHECKOUT MODAL -->
+  <div id="checkout-modal" class="modal">
+    <div class="modal-content u-max-width-400 u-text-center">
+      <span class="close" onclick="closeCheckoutModal()">&times;</span>
+      <h3 class="u-margin-bottom-0-5 u-font-display u-font-size-1-5">Secure Checkout</h3>
+      <p class="u-color-slate u-margin-bottom-2">You are purchasing <strong id="checkout-product-name" class="u-color-navy">Item</strong> for <strong id="checkout-product-price" class="u-color-gold">$0</strong>.</p>
+      
+      <!-- PayPal Button Container -->
+      <div id="paypal-button-container"></div>
+      
+      <p class="u-font-size-0-8 u-color-slate u-margin-top-1-5 u-border-top-e2e8f0 u-padding-top-1">
+        By continuing, you agree to our Terms of Service and Privacy Policy. Upon successful payment, a secure Client Portal account will be automatically created for you to access your digital downloads.
+      </p>
+    </div>
+  </div>
+
+  <script src="/assets/js/main.js" defer></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=<%= PAYPAL_CLIENT_ID %>&currency=USD" id="paypal-sdk"></script>
+  <script>
+    // Dynamically set PayPal client-id from server config
+    (function() {
+      var sdk = document.getElementById('paypal-sdk');
+      if (sdk) {
+        fetch('/api/config/paypal').then(r => r.json()).then(cfg => {
+          if (cfg && cfg.clientId && cfg.clientId !== 'test') {
+            var s = document.createElement('script');
+            s.src = 'https://www.paypal.com/sdk/js?client-id=' + cfg.clientId + '&currency=USD';
+            s.onload = function() { window.__paypalReady = true; };
+            document.head.appendChild(s);
+            sdk.remove();
+          } else {
+            console.warn('PayPal: Running in sandbox/test mode. Configure PAYPAL_CLIENT_ID in .env for live payments.');
+          }
+        }).catch(() => {});
+      }
+    })();
+  </script>
+  <script src="/assets/js/checkout.js"></script>
+</body>
+</html>
