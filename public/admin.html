@@ -10,14 +10,36 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png">
   <link rel="stylesheet" href="/assets/css/admin.css">
+  <style>
+    /* Inline styles moved to internal block to resolve warnings */
+    .settings-help { font-size: 0.82rem; color: var(--text-dim, #aaa); margin-bottom: 1.2rem; }
+    .settings-saved-msg { display: none; color: #5ad19b; font-size: 0.8rem; margin-top: 0.5rem; }
+    .flex-center-gap { display: flex; align-items: center; gap: 1rem; }
+    .flex-center-gap-small { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; }
+    .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .quick-link-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem; background: var(--bg-elevated, rgba(255, 255, 255, 0.04)); border-radius: 6px; }
+    .quick-link-url { color: var(--gold, #c9a84c); font-size: 0.75rem; }
+    .library-status { font-size: 0.75rem; color: var(--text-dim, #aaa); margin-top: 0.5rem; }
+    .library-status strong { color: #5ad19b; }
+    .stat-grid-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+    
+    /* New cleanup classes */
+    .settings-card-full { grid-column: 1 / -1; }
+    .form-label-bold { font-weight: 600; font-size: 0.85rem; }
+    .checkbox-ui { width: 18px; height: 18px; }
+    .u-margin-bottom-sm { margin-bottom: 1rem; }
+    .u-margin-top-sm { margin-top: 1rem; }
+    .quick-links-list { display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem; }
+    .label-sm { font-size: 0.82rem; }
+  </style>
 </head>
 <body class="admin-page">
 
   <!-- HEADER -->
   <header class="admin-header">
     <div class="admin-header-left">
-      <a href="/"><img src="/assets/images/logo-dark-bg.png" alt="NLC" height="28"></a>
-      <h1>Admin Dashboard</h1>
+      <a href="/"><img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants" width="180" height="40"></a>
+      <h1 class="u-hide-mobile">Admin Dashboard</h1>
     </div>
     <div class="admin-header-right">
       <span class="admin-role-badge" id="admin-role-badge"></span>
@@ -61,10 +83,10 @@
           <span class="sidebar-icon">🤝</span> Clients
         </button>
         <div class="sidebar-divider"></div>
-        <button class="sidebar-link" data-tab="users" id="nav-users" class="u-hidden">
+        <button class="sidebar-link u-hidden" data-tab="users" id="nav-users">
           <span class="sidebar-icon">👥</span> Users
         </button>
-        <button class="sidebar-link" data-tab="audit-log" id="nav-audit" class="u-hidden">
+        <button class="sidebar-link u-hidden" data-tab="audit-log" id="nav-audit">
           <span class="sidebar-icon">📜</span> Audit Log
         </button>
         <button class="sidebar-link" data-tab="settings">
@@ -226,23 +248,23 @@
         <div class="settings-grid">
 
           <!-- Announcement Banner -->
-          <div class="settings-card" style="grid-column:1/-1;">
+          <div class="settings-card settings-card-full">
             <h3>📢 Announcement Banner</h3>
-            <p style="font-size:0.82rem;color:var(--text-dim,#aaa);margin-bottom:1.2rem;">Display a dismissible banner at the top of the homepage. Great for promotions, new services, or important notices.</p>
-            <div class="form-field" style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem;">
-              <label style="font-weight:600;font-size:0.85rem;">Enable Banner</label>
-              <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-                <input type="checkbox" id="banner-enabled" style="width:18px;height:18px;"> Active
+            <p class="settings-help">Display a dismissible banner at the top of the homepage. Great for promotions, new services, or important notices.</p>
+            <div class="form-field flex-center-gap u-margin-bottom-sm">
+              <label class="form-label-bold">Enable Banner</label>
+              <label class="flex-center-gap-small">
+                <input type="checkbox" id="banner-enabled" class="checkbox-ui"> Active
               </label>
             </div>
             <div class="form-field"><label>Banner Message</label><input type="text" id="banner-text" placeholder="e.g. 🎉 New service: AI Business Audit — now available!"></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div class="grid-2col">
               <div class="form-field"><label>Link Label (optional)</label><input type="text" id="banner-link-label" placeholder="Learn More"></div>
               <div class="form-field"><label>Link URL (optional)</label><input type="text" id="banner-link-url" placeholder="/about.html"></div>
             </div>
             <div class="form-field">
-              <label>Banner Color</label>
-              <select id="banner-color">
+              <label for="banner-color">Banner Color</label>
+              <select id="banner-color" title="Banner Color" aria-label="Select Banner Color">
                 <option value="#c9a84c">Gold (default)</option>
                 <option value="#1a6b3c">Success Green</option>
                 <option value="#1d4ed8">Info Blue</option>
@@ -251,61 +273,61 @@
               </select>
             </div>
             <button class="btn btn-gold" onclick="saveAnnouncementBanner()">Save Banner Settings</button>
-            <div id="banner-saved-msg" style="display:none;color:#5ad19b;font-size:0.8rem;margin-top:0.5rem;">✓ Saved! The homepage banner will update on next page load.</div>
+            <div id="banner-saved-msg" class="settings-saved-msg">✓ Saved! The homepage banner will update on next page load.</div>
           </div>
 
           <!-- Hero Content -->
           <div class="settings-card">
             <h3>🏠 Homepage Hero</h3>
-            <p style="font-size:0.82rem;color:var(--text-dim,#aaa);margin-bottom:1.2rem;">Override the homepage headline and subtext for A/B testing or seasonal messaging.</p>
+            <p class="settings-help">Override the homepage headline and subtext for A/B testing or seasonal messaging.</p>
             <div class="form-field"><label>Hero Headline</label><input type="text" id="hero-headline" placeholder="Practical consulting for small businesses that mean business."></div>
             <div class="form-field"><label>Hero Subtext</label><textarea id="hero-subtext" rows="3" placeholder="We help healthcare practices, small businesses..."></textarea></div>
             <div class="form-field"><label>Primary CTA Text</label><input type="text" id="hero-cta" placeholder="Get a Free Strategy Call"></div>
             <button class="btn btn-gold" onclick="saveHeroContent()">Save Hero Content</button>
-            <div id="hero-saved-msg" style="display:none;color:#5ad19b;font-size:0.8rem;margin-top:0.5rem;">✓ Saved!</div>
+            <div id="hero-saved-msg" class="settings-saved-msg">✓ Saved!</div>
           </div>
 
           <!-- Contact Info -->
           <div class="settings-card">
             <h3>📞 Contact Information</h3>
-            <p style="font-size:0.82rem;color:var(--text-dim,#aaa);margin-bottom:1.2rem;">Update phone number and email displayed across the site.</p>
+            <p class="settings-help">Update phone number and email displayed across the site.</p>
             <div class="form-field"><label>Phone Number</label><input type="text" id="contact-phone" placeholder="786-408-4243"></div>
             <div class="form-field"><label>Email Address</label><input type="text" id="contact-email" placeholder="info@nlcfirm.com"></div>
             <div class="form-field"><label>Office Location (optional)</label><input type="text" id="contact-location" placeholder="Miami, FL"></div>
             <button class="btn btn-gold" onclick="saveContactInfo()">Save Contact Info</button>
-            <div id="contact-saved-msg" style="display:none;color:#5ad19b;font-size:0.8rem;margin-top:0.5rem;">✓ Saved!</div>
+            <div id="contact-saved-msg" class="settings-saved-msg">✓ Saved!</div>
           </div>
 
           <!-- Free Library Access Control -->
           <div class="settings-card">
             <h3>📚 Free Library Access</h3>
-            <p style="font-size:0.82rem;color:var(--text-dim,#aaa);margin-bottom:1.2rem;">Control whether the 5 strategy templates require login or are fully public.</p>
-            <div class="form-field" style="display:flex;align-items:center;gap:1rem;">
-              <label style="font-weight:600;font-size:0.85rem;">Require Login to Access Templates</label>
-              <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-                <input type="checkbox" id="library-gated" style="width:18px;height:18px;"> Gated
+            <p class="settings-help">Control whether the 5 strategy templates require login or are fully public.</p>
+            <div class="form-field flex-center-gap">
+              <label class="form-label-bold">Require Login to Access Templates</label>
+              <label class="flex-center-gap-small">
+                <input type="checkbox" id="library-gated" class="checkbox-ui"> Gated
               </label>
             </div>
-            <p style="font-size:0.75rem;color:var(--text-dim,#aaa);margin-top:0.5rem;">Currently: <strong id="library-access-status" style="color:#5ad19b;">Public (No Login Required)</strong></p>
-            <button class="btn btn-gold" style="margin-top:1rem;" onclick="saveLibraryAccess()">Save Access Setting</button>
-            <div id="library-saved-msg" style="display:none;color:#5ad19b;font-size:0.8rem;margin-top:0.5rem;">✓ Saved!</div>
+            <p class="library-status">Currently: <strong id="library-access-status">Public (No Login Required)</strong></p>
+            <button class="btn btn-gold u-margin-top-sm" onclick="saveLibraryAccess()">Save Access Setting</button>
+            <div id="library-saved-msg" class="settings-saved-msg">✓ Saved!</div>
           </div>
 
           <!-- Quick Stats -->
           <div class="settings-card">
             <h3>📊 Quick Overview</h3>
-            <div style="display:flex;flex-direction:column;gap:0.8rem;margin-top:0.5rem;">
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem;background:var(--bg-elevated,rgba(255,255,255,0.04));border-radius:6px;">
-                <span style="font-size:0.82rem;">Homepage</span><a href="https://nlcfirm.com" target="_blank" style="color:var(--gold,#c9a84c);font-size:0.75rem;">View Live ↗</a>
+            <div class="quick-links-list">
+              <div class="quick-link-row">
+                <span class="label-sm">Homepage</span><a href="https://nlcfirm.com" target="_blank" rel="noopener" class="quick-link-url">View Live ↗</a>
               </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem;background:var(--bg-elevated,rgba(255,255,255,0.04));border-radius:6px;">
-                <span style="font-size:0.82rem;">Client Portal</span><a href="https://nlcfirm.com/portal.html" target="_blank" style="color:var(--gold,#c9a84c);font-size:0.75rem;">View Live ↗</a>
+              <div class="quick-link-row">
+                <span class="label-sm">Client Portal</span><a href="https://nlcfirm.com/portal.html" target="_blank" rel="noopener" class="quick-link-url">View Live ↗</a>
               </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem;background:var(--bg-elevated,rgba(255,255,255,0.04));border-radius:6px;">
-                <span style="font-size:0.82rem;">Free Resources</span><a href="https://nlcfirm.com/free-resources.html" target="_blank" style="color:var(--gold,#c9a84c);font-size:0.75rem;">View Live ↗</a>
+              <div class="quick-link-row">
+                <span class="label-sm">Free Resources</span><a href="https://nlcfirm.com/free-resources.html" target="_blank" rel="noopener" class="quick-link-url">View Live ↗</a>
               </div>
-              <div style="display:flex;justify-content:space-between;align-items:center;padding:0.6rem;background:var(--bg-elevated,rgba(255,255,255,0.04));border-radius:6px;">
-                <span style="font-size:0.82rem;">Login Page</span><a href="https://nlcfirm.com/portal-login.html" target="_blank" style="color:var(--gold,#c9a84c);font-size:0.75rem;">View Live ↗</a>
+              <div class="quick-link-row">
+                <span class="label-sm">Login Page</span><a href="https://nlcfirm.com/portal-login.html" target="_blank" rel="noopener" class="quick-link-url">View Live ↗</a>
               </div>
             </div>
           </div>
@@ -313,15 +335,15 @@
           <!-- Social Proof Numbers -->
           <div class="settings-card">
             <h3>⭐ Social Proof Numbers</h3>
-            <p style="font-size:0.82rem;color:var(--text-dim,#aaa);margin-bottom:1rem;">Update the trust statistics displayed on the homepage.</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
+            <p class="settings-help">Update the trust statistics displayed on the homepage.</p>
+            <div class="stat-grid-mini">
               <div class="form-field"><label>Stat 1 Number</label><input type="text" id="stat1-num" placeholder="150+"></div>
               <div class="form-field"><label>Stat 1 Label</label><input type="text" id="stat1-label" placeholder="Clients Served"></div>
               <div class="form-field"><label>Stat 2 Number</label><input type="text" id="stat2-num" placeholder="98%"></div>
               <div class="form-field"><label>Stat 2 Label</label><input type="text" id="stat2-label" placeholder="Client Satisfaction"></div>
             </div>
-            <button class="btn btn-gold" onclick="saveSocialProof()">Save Numbers</button>
-            <div id="proof-saved-msg" style="display:none;color:#5ad19b;font-size:0.8rem;margin-top:0.5rem;">✓ Saved!</div>
+            <button class="btn btn-gold u-margin-top-sm" onclick="saveSocialProof()">Save Numbers</button>
+            <div id="proof-saved-msg" class="settings-saved-msg">✓ Saved!</div>
           </div>
 
         </div>
@@ -445,110 +467,5 @@
 
 
   <script src="/assets/js/admin.js"></script>
-  <script>
-    // ─── WEBSITE CONTROLS ───────────────────────────────────
-    function showMsg(id) {
-      var el = document.getElementById(id);
-      if (!el) return;
-      el.style.display = 'block';
-      setTimeout(function() { el.style.display = 'none'; }, 3000);
-    }
-
-    function saveAnnouncementBanner() {
-      var data = {
-        enabled: document.getElementById('banner-enabled').checked,
-        text: document.getElementById('banner-text').value.trim(),
-        linkLabel: document.getElementById('banner-link-label').value.trim(),
-        linkUrl: document.getElementById('banner-link-url').value.trim(),
-        color: document.getElementById('banner-color').value
-      };
-      localStorage.setItem('nlc_site_banner', JSON.stringify(data));
-      showMsg('banner-saved-msg');
-    }
-
-    function saveHeroContent() {
-      var data = {
-        headline: document.getElementById('hero-headline').value.trim(),
-        subtext: document.getElementById('hero-subtext').value.trim(),
-        cta: document.getElementById('hero-cta').value.trim()
-      };
-      localStorage.setItem('nlc_hero_content', JSON.stringify(data));
-      showMsg('hero-saved-msg');
-    }
-
-    function saveContactInfo() {
-      var data = {
-        phone: document.getElementById('contact-phone').value.trim(),
-        email: document.getElementById('contact-email').value.trim(),
-        location: document.getElementById('contact-location').value.trim()
-      };
-      localStorage.setItem('nlc_contact_info', JSON.stringify(data));
-      showMsg('contact-saved-msg');
-    }
-
-    function saveLibraryAccess() {
-      var gated = document.getElementById('library-gated').checked;
-      localStorage.setItem('nlc_library_gated', gated ? '1' : '0');
-      var statusEl = document.getElementById('library-access-status');
-      statusEl.textContent = gated ? 'Gated (Login Required)' : 'Public (No Login Required)';
-      statusEl.style.color = gated ? '#f59e0b' : '#5ad19b';
-      showMsg('library-saved-msg');
-    }
-
-    function saveSocialProof() {
-      var data = {
-        stat1: { num: document.getElementById('stat1-num').value.trim(), label: document.getElementById('stat1-label').value.trim() },
-        stat2: { num: document.getElementById('stat2-num').value.trim(), label: document.getElementById('stat2-label').value.trim() }
-      };
-      localStorage.setItem('nlc_social_proof', JSON.stringify(data));
-      showMsg('proof-saved-msg');
-    }
-
-    function loadWebsiteControls() {
-      try {
-        var banner = JSON.parse(localStorage.getItem('nlc_site_banner') || 'null');
-        if (banner) {
-          document.getElementById('banner-enabled').checked = !!banner.enabled;
-          document.getElementById('banner-text').value = banner.text || '';
-          document.getElementById('banner-link-label').value = banner.linkLabel || '';
-          document.getElementById('banner-link-url').value = banner.linkUrl || '';
-          if (banner.color) document.getElementById('banner-color').value = banner.color;
-        }
-        var hero = JSON.parse(localStorage.getItem('nlc_hero_content') || 'null');
-        if (hero) {
-          document.getElementById('hero-headline').value = hero.headline || '';
-          document.getElementById('hero-subtext').value = hero.subtext || '';
-          document.getElementById('hero-cta').value = hero.cta || '';
-        }
-        var contact = JSON.parse(localStorage.getItem('nlc_contact_info') || 'null');
-        if (contact) {
-          document.getElementById('contact-phone').value = contact.phone || '';
-          document.getElementById('contact-email').value = contact.email || '';
-          document.getElementById('contact-location').value = contact.location || '';
-        }
-        var gated = localStorage.getItem('nlc_library_gated');
-        if (gated !== null) {
-          document.getElementById('library-gated').checked = gated === '1';
-          var statusEl = document.getElementById('library-access-status');
-          statusEl.textContent = gated === '1' ? 'Gated (Login Required)' : 'Public (No Login Required)';
-          statusEl.style.color = gated === '1' ? '#f59e0b' : '#5ad19b';
-        }
-        var proof = JSON.parse(localStorage.getItem('nlc_social_proof') || 'null');
-        if (proof) {
-          if (proof.stat1) { document.getElementById('stat1-num').value = proof.stat1.num || ''; document.getElementById('stat1-label').value = proof.stat1.label || ''; }
-          if (proof.stat2) { document.getElementById('stat2-num').value = proof.stat2.num || ''; document.getElementById('stat2-label').value = proof.stat2.label || ''; }
-        }
-      } catch(e) {}
-    }
-
-    // Load controls when Website Controls tab is opened
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.sidebar-link').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          if (this.dataset.tab === 'website-controls') loadWebsiteControls();
-        });
-      });
-    });
-  </script>
 </body>
 </html>

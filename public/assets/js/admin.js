@@ -800,7 +800,7 @@
 
   // ─── CLIENTS ──────────────────────────────────────
   function loadClients() {
-    api('/api/clients').then(r => r.json()).then(function (data) {
+    api('/api/admin/clients').then(r => r.json()).then(function (data) {
       var tbody = document.getElementById('clients-tbody');
       tbody.innerHTML = (data.clients || []).map(function (c) {
         return '<tr>' +
@@ -898,6 +898,7 @@
           '</div>' +
           '<div class="user-actions">' +
             (isSelf ? '<span style="font-size:0.7rem;color:var(--text-muted)">You</span>' :
+              '<button class="btn btn-outline btn-xs btn-edit-user" data-id="' + u.id + '">Edit</button> ' +
               '<button class="btn btn-outline btn-xs btn-toggle-user" data-id="' + u.id + '" data-active="' + u.is_active + '">' +
                 (u.is_active ? 'Deactivate' : 'Activate') + '</button>') +
           '</div></div>';
@@ -905,6 +906,11 @@
       container.querySelectorAll('.btn-toggle-user').forEach(btn => {
         btn.addEventListener('click', function() {
           toggleUserActive(this.dataset.id, this.dataset.active === 'false');
+        });
+      });
+      container.querySelectorAll('.btn-edit-user').forEach(btn => {
+        btn.addEventListener('click', function() {
+          editUser(Number(this.dataset.id));
         });
       });
     }).catch(function () {
@@ -916,6 +922,40 @@
     if (!confirm(activate ? 'Activate this user?' : 'Deactivate this user?')) return;
     api('/auth/users/' + id, { method: 'PATCH', body: JSON.stringify({ is_active: activate }) }).then(function (res) {
       if (res.ok) { showToast(activate ? 'User activated' : 'User deactivated'); loadUsers(); }
+    });
+  }
+
+  function editUser(id) {
+    api('/auth/users').then(r => r.json()).then(function (data) {
+      var u = data.users.find(function (x) { return x.id === id; });
+      if (u) openEditUserModal(u);
+    });
+  }
+
+  function openEditUserModal(d) {
+    setText('admin-modal-title', 'Edit Admin User');
+    var body = document.getElementById('admin-modal-body');
+    body.innerHTML =
+      '<form id="edit-user-form">' +
+      formField('edit-user-name', 'Display Name', 'text', d.display_name || d.email) +
+      formField('edit-user-role', 'Role', 'select', d.role, ['admin', 'super_admin']) +
+      '<button type="submit" class="btn btn-gold full-width">Update User</button></form>';
+    
+    body.querySelector('#edit-user-form').addEventListener('submit', function(e) { 
+      e.preventDefault(); 
+      updateUser(d.id); 
+    });
+    document.getElementById('admin-modal').classList.add('open');
+  }
+
+  function updateUser(id) {
+    var payload = {
+      displayName: document.getElementById('edit-user-name').value,
+      role: document.getElementById('edit-user-role').value,
+    };
+    api('/auth/users/' + id, { method: 'PATCH', body: JSON.stringify(payload) }).then(function (res) {
+      if (res.ok) { showToast('User updated'); closeAdminModal(); loadUsers(); }
+      else res.json().then(function (d) { alert(d.error || d.errors?.[0]?.msg || 'Error'); });
     });
   }
 
@@ -1108,37 +1148,128 @@
     return html;
   }
 
-  function closeAdminModal() {
-    document.getElementById('admin-modal').classList.remove('open');
-  }
+  // ═══════════════════════════════════════════════════════
+  //  WEBSITE CONTROLS
+  // ═══════════════════════════════════════════════════════
 
-  function closeDetailDrawer() {
-    document.getElementById('detail-drawer').classList.remove('open');
-  }
+  function loadWebsiteControls() {
+    api('/api/settings').then(r => r.json()).then(function (data) {
+      if (!data.settings) return;
+      const s = {};
+      data.settings.forEach(item => { s[item.key] = item.value; });
 
-  function handleFileUpload(fileId, urlId) {
-    var fileInput = document.getElementById(fileId);
-    var urlInput = document.getElementById(urlId);
-    if (!fileInput.files[0]) return;
+      // Banner
+      const bannerEnabled = document.getElementById('banner-enabled');
+      if (bannerEnabled) bannerEnabled.checked = s['banner_enabled'] === '1';
+      const bannerText = document.getElementById('banner-text');
+      if (bannerText) bannerText.value = s['banner_text'] || '';
+      const bannerLink = document.getElementById('banner-link-url');
+      if (bannerLink) bannerLink.value = s['banner_link'] || '';
+      const bannerColor = document.getElementById('banner-color');
+      if (bannerColor) bannerColor.value = s['banner_color'] || '#c9a84c';
 
-    var formData = new FormData();
-    formData.append('file', fileInput.files[0]);
+      // Hero
+      const heroHeadline = document.getElementById('hero-headline');
+      if (heroHeadline) heroHeadline.value = s['hero_title'] || '';
+      const heroSubtext = document.getElementById('hero-subtext');
+      if (heroSubtext) heroSubtext.value = s['hero_subtitle'] || '';
 
-    fetch('/api/upload', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer ' + token },
-      body: formData
-    }).then(r => r.json()).then(data => {
-      if (data.url) {
-        urlInput.value = data.url;
-        showToast('File uploaded');
-      } else {
-        alert(data.error || 'Upload failed');
+      // Contact
+      const contactPhone = document.getElementById('contact-phone');
+      if (contactPhone) contactPhone.value = s['company_phone'] || '';
+      const contactEmail = document.getElementById('contact-email');
+      if (contactEmail) contactEmail.value = s['company_email'] || '';
+
+      // Library
+      const libGated = document.getElementById('library-gated');
+      if (libGated) libGated.checked = s['library_gated'] === '1';
+      const libStatus = document.getElementById('library-access-status');
+      if (libStatus) {
+        const isGated = s['library_gated'] === '1';
+        libStatus.textContent = isGated ? 'Gated (Login Required)' : 'Public (No Login Required)';
+        libStatus.style.color = isGated ? '#f59e0b' : '#5ad19b';
       }
     });
   }
 
-  // To maintain compatibility with dynamic HTML if needed, though we moved to listeners
+  function saveAnnouncementBanner() {
+    const updates = [
+      { key: 'banner_enabled', value: document.getElementById('banner-enabled').checked ? '1' : '0' },
+      { key: 'banner_text', value: document.getElementById('banner-text').value },
+      { key: 'banner_link', value: document.getElementById('banner-link-url').value },
+      { key: 'banner_color', value: document.getElementById('banner-color').value }
+    ];
+    api('/api/settings', {
+      method: 'PATCH',
+      body: JSON.stringify({ updates: updates })
+    }).then(r => {
+      if (r.ok) {
+        showToast('Banner settings saved');
+        document.getElementById('banner-saved-msg').style.display = 'block';
+      }
+    });
+  }
+
+  function saveHeroContent() {
+    const updates = [
+      { key: 'hero_title', value: document.getElementById('hero-headline').value },
+      { key: 'hero_subtitle', value: document.getElementById('hero-subtext').value }
+    ];
+    api('/api/settings', {
+      method: 'PATCH',
+      body: JSON.stringify({ updates: updates })
+    }).then(r => {
+      if (r.ok) {
+        showToast('Hero content saved');
+        document.getElementById('hero-saved-msg').style.display = 'block';
+      }
+    });
+  }
+
+  function saveContactInfo() {
+    const updates = [
+      { key: 'company_phone', value: document.getElementById('contact-phone').value },
+      { key: 'company_email', value: document.getElementById('contact-email').value }
+    ];
+    api('/api/settings', {
+      method: 'PATCH',
+      body: JSON.stringify({ updates: updates })
+    }).then(r => {
+      if (r.ok) {
+        showToast('Contact info saved');
+        document.getElementById('contact-saved-msg').style.display = 'block';
+      }
+    });
+  }
+
+  function saveLibraryAccess() {
+    const gated = document.getElementById('library-gated').checked;
+    const updates = [
+      { key: 'library_gated', value: gated ? '1' : '0' }
+    ];
+    api('/api/settings', {
+      method: 'PATCH',
+      body: JSON.stringify({ updates: updates })
+    }).then(r => {
+      if (r.ok) {
+        const libStatus = document.getElementById('library-access-status');
+        libStatus.textContent = gated ? 'Gated (Login Required)' : 'Public (No Login Required)';
+        libStatus.style.color = gated ? '#f59e0b' : '#5ad19b';
+        showToast('Library access updated');
+        document.getElementById('library-saved-msg').style.display = 'block';
+      }
+    });
+  }
+
+  // To maintain compatibility with dynamic HTML if needed
+  window.saveAnnouncementBanner = saveAnnouncementBanner;
+  window.saveHeroContent = saveHeroContent;
+  window.saveContactInfo = saveContactInfo;
+  window.saveLibraryAccess = saveLibraryAccess;
+  window.logout = logout;
   window.openGrantAccessModal = openGrantAccessModal;
+
+  // Update loaders
+  tabLoaders['website-controls'] = loadWebsiteControls;
 
 })();

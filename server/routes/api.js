@@ -856,4 +856,41 @@ router.post('/admin/upload', authenticateToken, requireRole('super_admin', 'admi
   });
 });
 
+// POST /api/admin/grant-access
+router.post('/admin/grant-access', authenticateToken, requireRole('super_admin', 'admin'), (req, res) => {
+  upload.single('file')(req, res, async function (err) {
+    if (err instanceof multer.MulterError) {
+      return res.status(400).json({ error: 'Multer error: ' + err.message });
+    } else if (err) {
+      return res.status(400).json({ error: err.message });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
+    const { clientId, productName, notes } = req.body;
+    if (!clientId || !productName) {
+      return res.status(400).json({ error: 'Client ID and Product Name are required' });
+    }
+
+    try {
+      const db = await getDb();
+      const fileUrl = `/uploads/${req.file.filename}`;
+      const productId = `custom-${Date.now()}`;
+      
+      const [result] = await db.execute(`
+        INSERT INTO client_purchases (client_id, product_id, product_name, access_link)
+        VALUES (?, ?, ?, ?)
+      `, [clientId, productId, productName, fileUrl]);
+
+      auditLog(req, 'grant_access', 'client', clientId, `Granted custom product access: ${productName}`);
+      res.status(201).json({ message: 'Access granted successfully', id: result.insertId });
+    } catch (dbErr) {
+      console.error('Grant Access DB Error:', dbErr);
+      res.status(500).json({ error: 'Failed to grant access' });
+    }
+  });
+});
+
 module.exports = router;

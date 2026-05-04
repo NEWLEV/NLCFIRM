@@ -289,6 +289,11 @@ async function seedAdmins() {
       ['cta_body', 'Whether you start with a $97 self-serve tool today or explore a full strategic partnership — every client gets a clear, results-oriented plan from day one.', 'cta', 'CTA Section Body', 'textarea'],
       ['meta_title', 'New Level Consultants | Healthcare & Business Consulting | HIPAA, Compliance, AI Automation', 'seo', 'Meta Title', 'text'],
       ['meta_description', 'New Level Consultants delivers healthcare consulting, HIPAA compliance, AI automation, and business growth strategies. Retainer plans from $797/mo. Instant tools from $67. Book a free discovery call today.', 'seo', 'Meta Description', 'textarea'],
+      ['banner_enabled', '1', 'banner', 'Show Announcement Banner', 'toggle'],
+      ['banner_text', '🚀 Q2 Strategy Open: 3 slots remaining for full strategic partnership.', 'banner', 'Banner Text', 'text'],
+      ['banner_link', '/#contact', 'banner', 'Banner Link', 'text'],
+      ['banner_color', '#0f1724', 'banner', 'Banner Background Color', 'text'],
+      ['library_gated', '0', 'system', 'Require Login for Free Library', 'toggle'],
     ];
 
     for (const s of defaults) {

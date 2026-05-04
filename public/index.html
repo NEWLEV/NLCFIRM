@@ -49,14 +49,19 @@
       { "@type": "Question", "name": "How quickly can we get started?", "acceptedAnswer": { "@type": "Answer", "text": "Self-serve tools are available immediately. Retainer plans and project engagements onboard within 3-5 business days of your first call." } }
     ]
   }
-  </script>
+  <style>
+    /* Announcement Banner Styles */
+    #site-banner { display: none; background: var(--gold); color: #0a0c10; text-align: center; padding: 0.6rem 2rem; font-size: 0.82rem; font-weight: 600; position: relative; z-index: 2000; }
+    #site-banner-link { margin-left: 1rem; text-decoration: underline; color: #0a0c10; font-weight: 700; display: none; }
+    #site-banner-close { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.1rem; color: #0a0c10; line-height: 1; }
+  </style>
 </head>
 <body>
   <!-- ANNOUNCEMENT BANNER (controlled via admin) -->
-  <div id="site-banner" style="display:none;background:var(--gold);color:#0a0c10;text-align:center;padding:0.6rem 2rem;font-size:0.82rem;font-weight:600;position:relative;z-index:2000;">
+  <div id="site-banner">
     <span id="site-banner-text"></span>
-    <a id="site-banner-link" href="#" style="margin-left:1rem;text-decoration:underline;color:#0a0c10;font-weight:700;display:none;"></a>
-    <button onclick="document.getElementById('site-banner').style.display='none'" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1.1rem;color:#0a0c10;line-height:1;">×</button>
+    <a id="site-banner-link" href="#"></a>
+    <button id="site-banner-close" onclick="document.getElementById('site-banner').style.display='none'">×</button>
   </div>
   <div id="scroll-progress" class="scroll-progress"></div>
 
@@ -529,23 +534,23 @@
 
   <script src="/assets/js/main.js"></script>
   <script>
-    // Announcement Banner — reads from admin settings stored in localStorage
+    // Announcement Banner — reads from server-injected settings
     (function(){
       try {
-        var b = JSON.parse(localStorage.getItem('nlc_site_banner') || 'null');
-        if (b && b.enabled && b.text) {
+        var s = window.NLC_SETTINGS || {};
+        if (s.banner_enabled === '1' && s.banner_text) {
           var el = document.getElementById('site-banner');
-          document.getElementById('site-banner-text').textContent = b.text;
-          if (b.linkUrl && b.linkLabel) {
+          document.getElementById('site-banner-text').textContent = s.banner_text;
+          if (s.banner_link) {
             var la = document.getElementById('site-banner-link');
-            la.href = b.linkUrl;
-            la.textContent = b.linkLabel;
+            la.href = s.banner_link;
+            la.textContent = 'Learn More';
             la.style.display = 'inline';
           }
-          if (b.color) el.style.background = b.color;
+          if (s.banner_color) el.style.background = s.banner_color;
           el.style.display = 'block';
         }
-      } catch(e) {}
+      } catch(e) { console.error('Banner error:', e); }
     })();
   </script>
 </body>

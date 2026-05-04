@@ -27,6 +27,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const link = document.querySelector('[onclick*="' + hash + '"]');
     if (link) link.click();
   }
+
+  // Append auth token to secure download links (using event delegation for dynamic links)
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('a[href^="/downloads/"]');
+    if (link) {
+      e.preventDefault();
+      const href = link.getAttribute('href');
+      const sep = href.includes('?') ? '&' : '?';
+      window.location.href = href + sep + 'auth=' + encodeURIComponent(token);
+    }
+  });
 });
 
 async function fetchContainerData(endpoint, containerId, renderCallback) {

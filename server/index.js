@@ -88,23 +88,42 @@ app.use(compression());
 
 // ─── DYNAMIC HTML DELIVERY (Injection) ────────────────
 const fs = require('fs');
-function sendInjectedHtml(req, res, filePath) {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) return res.status(500).send('Error loading page');
+
+async function sendInjectedHtml(req, res, filePath) {
+  try {
+    const data = fs.readFileSync(filePath, 'utf8');
+    const db = await getDb();
+    const [settingsRows] = await db.execute('SELECT `key`, value FROM site_settings');
+    const settings = {};
+    settingsRows.forEach(s => { settings[s.key] = s.value; });
+
+    let injected = data;
+    // Inject PayPal
+    injected = injected.replace(/<%= PAYPAL_CLIENT_ID %>/g, process.env.PAYPAL_CLIENT_ID || 'AZqVCL__cDUGrTbkSoagrKi6wd8KOqDJ_vGY5YR-IATzoZPnbBDkzIc7HbTzQSfAiPxIUycDxQoBjlyp');
     
-    // Replace EJS-style placeholders with env variables
-    const injected = data.replace(/<%= PAYPAL_CLIENT_ID %>/g, process.env.PAYPAL_CLIENT_ID || 'AZqVCL__cDUGrTbkSoagrKi6wd8KOqDJ_vGY5YR-IATzoZPnbBDkzIc7HbTzQSfAiPxIUycDxQoBjlyp');
+    // Inject Site Settings into a global object for JS access
+    const settingsJson = JSON.stringify(settings).replace(/</g, '\\u003c');
+    injected = injected.replace('</head>', `<script>window.NLC_SETTINGS = ${settingsJson};</script></head>`);
+
+    // Dynamic Text Replacements (SEO & Hero)
+    if (settings.hero_title) injected = injected.replace(/<%= HERO_TITLE %>/g, settings.hero_title);
+    if (settings.hero_subtitle) injected = injected.replace(/<%= HERO_SUBTITLE %>/g, settings.hero_subtitle);
+    if (settings.meta_title) injected = injected.replace(/<title>.*?<\/title>/, `<title>${settings.meta_title}</title>`);
     
-    res.send(injected);
-  });
+    return res.send(injected);
+  } catch (err) {
+    console.error('Injection error:', err);
+    // Fallback to basic file send if DB fails
+    return res.sendFile(filePath);
+  }
 }
 
 // Intercept HTML requests to inject variables
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   if (req.path === '/' || req.path.endsWith('.html')) {
     const filePath = path.join(__dirname, '..', 'public', req.path === '/' ? 'index.html' : req.path);
     if (fs.existsSync(filePath)) {
-      return sendInjectedHtml(req, res, filePath);
+      return await sendInjectedHtml(req, res, filePath);
     }
   }
   next();
@@ -129,24 +148,53 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api', generalLimiter, apiRoutes);
 
 // ─── SECURE DOWNLOADS ─────────────────────────────────
-// /downloads/* requires a valid client JWT passed as ?token= or Authorization header
-app.use('/downloads', (req, res, next) => {
-  const authHeader = req.headers['authorization'];
-  const headerToken = authHeader && authHeader.split(' ')[1];
-  const queryToken = req.query.auth;
-  const token = headerToken || queryToken;
+// /downloads/* requires a valid client JWT UNLESS library_gated is false for free templates
+app.use('/downloads', async (req, res, next) => {
+  try {
+    // 1. Check if the library is currently gated in the DB
+    const db = await getDb();
+    const [rows] = await db.execute('SELECT value FROM site_settings WHERE \`key\` = "library_gated"');
+    const isGated = rows.length > 0 ? rows[0].value === '1' : true; // Default to gated if not found
 
-  if (!token) {
-    // Redirect to portal login with return path
-    return res.redirect(`/portal-login.html?redirect=${encodeURIComponent(req.originalUrl)}`);
-  }
+    // 2. Define free template paths that are eligible for public access
+    const freeTemplates = [
+      '/downloads/business-case-template',
+      '/downloads/financial-model-template',
+      '/downloads/hipaa-compliance-checklist-pack',
+      '/downloads/kpi-dashboard-template',
+      '/downloads/project-management-framework',
+      '/downloads/sop-template-bundle',
+      '/downloads/strategic-planning-template'
+    ];
 
-  jwt.verify(token, process.env.JWT_SECRET || 'dev-secret', (err, decoded) => {
-    if (err || decoded.role !== 'client') {
+    const isFreeTemplate = freeTemplates.some(t => req.path.startsWith(t.replace('/downloads', '')));
+
+    // 3. If it's a free template and library is NOT gated, allow it
+    if (isFreeTemplate && !isGated) {
+      return next();
+    }
+
+    // 4. Otherwise, enforce JWT authentication
+    const authHeader = req.headers['authorization'];
+    const headerToken = authHeader && authHeader.split(' ')[1];
+    const queryToken = req.query.auth;
+    const token = headerToken || queryToken;
+
+    if (!token) {
       return res.redirect(`/portal-login.html?redirect=${encodeURIComponent(req.originalUrl)}`);
     }
-    next();
-  });
+
+    jwt.verify(token, process.env.JWT_SECRET || 'dev-secret', (err, decoded) => {
+      if (err || (decoded.role !== 'client' && decoded.role !== 'admin' && decoded.role !== 'super_admin')) {
+        return res.redirect(`/portal-login.html?redirect=${encodeURIComponent(req.originalUrl)}`);
+      }
+      next();
+    });
+  } catch (err) {
+    console.error('Error in downloads middleware:', err);
+    // Fallback to secure if DB fails
+    res.redirect(`/portal-login.html?redirect=${encodeURIComponent(req.originalUrl)}`);
+  }
 });
 
 // ─── DYNAMIC ROUTES ───────────────────────────────────
@@ -181,12 +229,29 @@ app.get('*', (req, res) => {
   if (req.path.startsWith('/api') || req.path.startsWith('/auth')) {
     return res.status(404).json({ error: 'Not found' });
   }
-  const filePath = path.join(__dirname, '..', 'public', req.path === '/' ? 'index.html' : req.path);
-  if (fs.existsSync(filePath) && filePath.endsWith('.html')) {
-    sendInjectedHtml(req, res, filePath);
-  } else {
-    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+
+  const reqPath = req.path === '/' ? 'index.html' : req.path;
+  let filePath = path.join(__dirname, '..', 'public', reqPath);
+
+  // If path resolves to a directory, look for index.html inside it
+  if (fs.existsSync(filePath)) {
+    try {
+      const stat = fs.statSync(filePath);
+      if (stat.isDirectory()) {
+        const indexPath = path.join(filePath, 'index.html');
+        if (fs.existsSync(indexPath)) {
+          return sendInjectedHtml(req, res, indexPath);
+        }
+      } else if (filePath.endsWith('.html')) {
+        return sendInjectedHtml(req, res, filePath);
+      }
+    } catch (e) {
+      console.error('SPA fallback stat error:', e);
+    }
   }
+
+  // Final fallback: serve homepage
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 // ─── ERROR HANDLER ────────────────────────────────────

@@ -292,3 +292,6 @@ body { font-family: var(--font); background: var(--bg); color: var(--text); -web
 .u-padding-right-md { padding-right: 1rem !important; }
 .u-text-center { text-align: center !important; }
 .u-hidden { display: none !important; }
+.u-hide-mobile { display: block; }
+@media (max-width: 768px) { .u-hide-mobile { display: none !important; } }
+.admin-header-left img { height: 40px !important; width: auto; }
