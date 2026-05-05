@@ -3368,6 +3368,30 @@ body.chatbot-open .sticky-cta {
   margin-bottom: 1.5rem;
 }
 
+.pricing-card-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.pricing-card-features li {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 0.8rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  line-height: 1.4;
+}
+
+.pricing-card-features li::before {
+  content: '✓';
+  color: var(--gold);
+  font-weight: bold;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
     animation-delay: -1ms !important;
