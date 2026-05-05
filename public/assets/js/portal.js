@@ -240,16 +240,14 @@ function toggleProfileEdit(show) {
   const msg = document.getElementById('profile-edit-msg');
 
   if (show) {
-    displayMode.classList.remove('u-display-block');
-    displayMode.classList.add('u-display-none');
-    editForm.classList.remove('u-display-none');
-    editForm.classList.add('u-display-block');
+    displayMode.style.display = 'none';
+    editForm.classList.remove('u-display-none-important');
+    editForm.style.display = 'block';
     if (msg) msg.textContent = '';
   } else {
-    editForm.classList.remove('u-display-block');
-    editForm.classList.add('u-display-none');
-    displayMode.classList.remove('u-display-none');
-    displayMode.classList.add('u-display-block');
+    editForm.style.display = 'none';
+    editForm.classList.add('u-display-none-important');
+    displayMode.style.display = 'block';
   }
 }
 
