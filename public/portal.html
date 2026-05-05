@@ -26,7 +26,7 @@
     /* Sticky Header */
     .portal-nav {
       position: fixed; top: 0; left: 0; right: 0; height: 70px;
-      background: rgba(5, 6, 8, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      background: rgba(5, 6, 8, 0.85); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--glass-border);
       z-index: 1000;
       display: flex; align-items: center; justify-content: space-between;
@@ -129,7 +129,7 @@
     }
     
     .product-card {
-      background: var(--card-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: var(--card-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
       border: 1px solid var(--glass-border); border-radius: 16px;
       padding: 2.5rem;
       transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -181,7 +181,7 @@
     
     /* Profile Layout */
     .profile-card {
-      background: var(--card-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      background: var(--card-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
       border: 1px solid var(--glass-border); border-radius: 16px;
       padding: 3.5rem; max-width: 800px;
       animation: fadeUp 0.6s ease forwards;
@@ -216,12 +216,12 @@
     }
     @media (max-width: 900px) {
       .portal-layout { flex-direction: column; padding-top: 70px; }
-      .portal-sidebar { width: 100%; position: relative; top: 0; height: auto; padding: 1rem 1.5rem; border-right: none; border-bottom: 1px solid var(--glass-border); flex-direction: row; overflow-x: auto; scrollbar-width: none; background: rgba(5, 6, 8, 0.95); }
+      .portal-sidebar { width: 100%; position: relative; top: 0; height: auto; padding: 1rem 1.5rem; border-right: none; border-bottom: 1px solid var(--glass-border); flex-direction: row; overflow-x: auto; background: rgba(5, 6, 8, 0.95); }
       .portal-sidebar::-webkit-scrollbar { display: none; }
       .sidebar-menu { flex-direction: row; gap: 0.5rem; }
       .sidebar-link { padding: 0.8rem 1.2rem; white-space: nowrap; border-radius: 30px; }
       .sidebar-link.active::before { display: none; }
-      .portal-main { margin-left: 0; padding: 2rem 1.5rem; min-height: auto; }
+      .portal-main { margin-left: 0; padding: 2rem 1.5rem; min-height: 0; }
       .page-title { font-size: 2.2rem; }
       .product-grid { grid-template-columns: 1fr; }
       .profile-item { grid-template-columns: 1fr; gap: 0.5rem; }
@@ -232,6 +232,14 @@
     @media (max-width: 600px) {
       .greeting { display: none; }
     }
+
+    /* Support & Profile Utility Classes */
+    .support-card { grid-column: 1 / -1; max-width: none; }
+    .support-title { font-size: 2rem; }
+    .support-subtitle { margin-bottom: 3rem; }
+    .support-link { color: var(--gold); text-decoration: none; }
+    .support-footer { font-size: 0.85rem; color: var(--text-muted); padding-top: 2rem; border-top: 1px solid var(--glass-border); }
+    .u-display-none-important { display: none !important; }
   </style>
 </head>
 <body>
@@ -425,7 +433,7 @@
             </div>
           </div>
           
-          <form id="profile-edit-form" style="display: none;" onsubmit="handleProfileUpdate(event)">
+          <form id="profile-edit-form" class="u-display-none-important" onsubmit="handleProfileUpdate(event)">
             <div class="form-row">
               <div class="form-field">
                 <label for="edit-first-name">First Name</label>
@@ -460,21 +468,21 @@
           <p class="page-subtitle">Need help with a template, course, or billing? We're here for you.</p>
         </div>
         <div class="product-grid">
-          <div class="profile-card" style="grid-column: 1 / -1; max-width: none;">
-            <h3 class="page-title" style="font-size: 2rem;">Contact Us</h3>
-            <p class="page-subtitle" style="margin-bottom: 3rem;">Our support team is available Monday through Friday, 9am - 6pm EST.</p>
+          <div class="profile-card support-card">
+            <h3 class="page-title support-title">Contact Us</h3>
+            <p class="page-subtitle support-subtitle">Our support team is available Monday through Friday, 9am - 6pm EST.</p>
             
             <div class="profile-item">
               <span class="profile-label">Email Support</span>
-              <span class="profile-value"><a href="mailto:support@nlcfirm.com" style="color: var(--gold); text-decoration: none;">support@nlcfirm.com</a></span>
+              <span class="profile-value"><a href="mailto:support@nlcfirm.com" class="support-link">support@nlcfirm.com</a></span>
             </div>
             <div class="profile-item">
               <span class="profile-label">Phone</span>
-              <span class="profile-value"><a href="tel:+17864084243" style="color: var(--gold); text-decoration: none;">786-408-4243</a></span>
+              <span class="profile-value"><a href="tel:+17864084243" class="support-link">786-408-4243</a></span>
             </div>
             
             <div class="u-margin-top-lg">
-              <p style="font-size: 0.85rem; color: var(--text-muted); padding-top: 2rem; border-top: 1px solid var(--glass-border);">For urgent consulting inquiries, please call the number above directly.</p>
+              <p class="support-footer">For urgent consulting inquiries, please call the number above directly.</p>
             </div>
           </div>
         </div>
