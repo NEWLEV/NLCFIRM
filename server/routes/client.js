@@ -221,11 +221,29 @@ router.use(authenticateClient);
 router.get('/profile', async (req, res) => {
   try {
     const db = await getDb();
-    const [rows] = await db.execute(
-      'SELECT id, email, first_name, last_name, phone, company, created_at FROM clients WHERE id = ?',
-      [req.client.id]
-    );
-    res.json({ client: rows[0] || null });
+    
+    if (req.client.source === 'admin_users') {
+      const [rows] = await db.execute(
+        'SELECT id, email, display_name, role, created_at FROM admin_users WHERE id = ?',
+        [req.client.id]
+      );
+      const admin = rows[0] || null;
+      if (admin) {
+        // Map admin fields to client expected format
+        const nameParts = (admin.display_name || '').split(' ');
+        const first_name = nameParts[0] || '';
+        const last_name = nameParts.slice(1).join(' ') || '';
+        res.json({ client: { id: admin.id, email: admin.email, first_name, last_name, phone: '', company: 'NLC Admin', created_at: admin.created_at } });
+      } else {
+        res.json({ client: null });
+      }
+    } else {
+      const [rows] = await db.execute(
+        'SELECT id, email, first_name, last_name, phone, company, created_at FROM clients WHERE id = ?',
+        [req.client.id]
+      );
+      res.json({ client: rows[0] || null });
+    }
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch profile' });
   }
@@ -245,10 +263,19 @@ router.patch('/profile', [
 
   try {
     const db = await getDb();
-    await db.execute(
-      'UPDATE clients SET first_name = ?, last_name = ?, company = ?, phone = ?, updated_at = NOW() WHERE id = ?',
-      [firstName, lastName, company || null, phone || null, req.client.id]
-    );
+    
+    if (req.client.source === 'admin_users') {
+      await db.execute(
+        'UPDATE admin_users SET display_name = ? WHERE id = ?',
+        [`${firstName} ${lastName}`, req.client.id]
+      );
+    } else {
+      await db.execute(
+        'UPDATE clients SET first_name = ?, last_name = ?, company = ?, phone = ?, updated_at = NOW() WHERE id = ?',
+        [firstName, lastName, company || null, phone || null, req.client.id]
+      );
+    }
+    
     res.json({ message: 'Profile updated successfully' });
   } catch (err) {
     console.error('Profile update error:', err);
