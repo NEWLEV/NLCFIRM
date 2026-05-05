@@ -11,49 +11,35 @@
   <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png">
   <link rel="stylesheet" href="/assets/css/styles.css">
   <style>
+    /* Premium Portal Styles */
     :root {
-      --sidebar-width: 260px;
+      --sidebar-width: 280px;
+      --portal-bg: #050608;
+      --card-bg: rgba(18, 21, 28, 0.6);
+      --glass-border: rgba(201, 168, 76, 0.15);
+      --glass-glow: rgba(201, 168, 76, 0.05);
+      --active-glow: rgba(201, 168, 76, 0.15);
     }
     
-    .portal-nav img { max-height: 40px; width: auto; object-fit: contain; display: block; }
+    body { background: var(--portal-bg); }
     
-    .portal-nav { 
-      display: flex; align-items: center; justify-content: space-between; 
-      padding: 0.75rem 2rem; 
-      background: var(--bg-glass); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); 
-      border-bottom: 1px solid var(--border); 
-      position: sticky; top: 0; z-index: 1000;
+    /* Sticky Header */
+    .portal-nav {
+      position: fixed; top: 0; left: 0; right: 0; height: 70px;
+      background: rgba(5, 6, 8, 0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      z-index: 1000;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem;
     }
     
-    .portal-layout { display: flex; min-height: calc(100vh - 60px); }
+    .portal-nav-brand { display: flex; align-items: center; gap: 1.5rem; text-decoration: none; }
+    .portal-nav-brand img { height: 32px; }
+    .portal-nav-badge { font-family: var(--font-mono); font-size: 0.65rem; padding: 0.35rem 0.8rem; background: var(--glass-glow); border: 1px solid var(--glass-border); border-radius: 20px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
     
-    .portal-sidebar { 
-      width: var(--sidebar-width); 
-      background: var(--bg-card); 
-      border-right: 1px solid var(--border); 
-      padding: 2.5rem 1rem; 
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-    }
-    
-    .sidebar-menu { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
-    .sidebar-link { 
-      display: flex; align-items: center; gap: 0.8rem; 
-      padding: 0.85rem 1.25rem; 
-      color: var(--text-dim); text-decoration: none; 
-      border-radius: var(--radius); 
-      font-size: 0.82rem; font-weight: 500; 
-      transition: all 0.3s;
-      border: 1px solid transparent;
-    }
-    .sidebar-link:hover { color: var(--text); background: var(--bg-elevated); }
-    .sidebar-link.active { 
-      color: var(--gold); 
-      background: var(--gold-glow); 
-      border-color: var(--border-strong); 
-      font-weight: 600;
-    }
+    .portal-user-area { display: flex; align-items: center; gap: 1.5rem; }
+    .greeting { font-size: 0.85rem; color: var(--text-dim); }
+    .greeting strong { color: var(--text); font-weight: 600; }
     
     .logout-btn { 
       background: transparent; border: 1px solid var(--border-strong); 
@@ -63,127 +49,247 @@
       transition: all 0.3s; 
     }
     .logout-btn:hover { border-color: var(--gold); color: var(--gold); background: var(--gold-glow); }
+
+    /* Layout */
+    .portal-layout {
+      display: flex;
+      padding-top: 70px; /* offset for fixed header */
+      min-height: 100vh;
+    }
     
-    .portal-main { flex: 1; padding: 3.5rem 3rem; overflow-y: auto; }
-    .page-header { margin-bottom: 3.5rem; }
-    .page-title { font-size: 2.8rem; color: var(--text); margin-bottom: 0.75rem; font-family: var(--font-display); }
-    .page-subtitle { color: var(--text-dim); font-size: 1.05rem; max-width: 60ch; line-height: 1.6; }
+    /* Sidebar */
+    .portal-sidebar {
+      width: var(--sidebar-width);
+      position: fixed; top: 70px; bottom: 0; left: 0;
+      background: linear-gradient(180deg, rgba(10, 12, 16, 0.4) 0%, rgba(5, 6, 8, 0.8) 100%);
+      border-right: 1px solid var(--glass-border);
+      padding: 2.5rem 1.5rem;
+      z-index: 900;
+      display: flex; flex-direction: column;
+    }
     
-    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
-    .product-card { 
-      background: var(--bg-card); border: 1px solid var(--border); 
-      border-radius: var(--radius-lg); padding: 2rem; 
-      transition: all 0.3s ease;
+    .sidebar-menu { display: flex; flex-direction: column; gap: 0.5rem; list-style: none; margin: 0; padding: 0; }
+    
+    .sidebar-link {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      color: var(--text-dim);
+      text-decoration: none;
+      font-size: 0.9rem; font-weight: 500;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
+      border: 1px solid transparent;
     }
-    .product-card:hover { 
-      transform: translateY(-5px); 
-      border-color: var(--border-strong); 
-      box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
-    }
-    .product-card::after {
-      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px;
-      background: linear-gradient(90deg, var(--gold-dark), var(--gold));
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .product-card:hover::after { opacity: 1; }
     
-    .product-tag { 
-      font-family: var(--font-mono); font-size: 0.62rem; 
-      letter-spacing: 0.12em; text-transform: uppercase; 
-      color: var(--gold); margin-bottom: 1rem; display: block; 
+    .sidebar-link:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
     }
-    .product-name { font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 0.6rem; color: var(--text); }
-    .product-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 1.75rem; }
     
-    .progress-container { margin-bottom: 1.5rem; }
-    .progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.5rem; }
-    .progress-bar-bg { height: 6px; background: var(--surface); border-radius: 3px; }
-    .progress-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-
-    .profile-card {
-      background: var(--bg-glass); border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg); padding: 3rem;
-      max-width: 700px;
+    .sidebar-link.active {
+      color: var(--gold);
+      background: var(--active-glow);
+      border-color: var(--glass-border);
     }
-    .profile-item { margin-bottom: 2rem; display: grid; grid-template-columns: 140px 1fr; gap: 1rem; align-items: baseline; }
-    .profile-label { font-size: 0.7rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); }
-    .profile-value { font-size: 1.1rem; color: var(--text); }
-
+    
+    .sidebar-link.active::before {
+      content: ''; position: absolute; left: 0; top: 10%; height: 80%; width: 3px;
+      background: var(--gold); border-radius: 0 4px 4px 0;
+    }
+    
+    .sidebar-icon { font-size: 1.2rem; font-style: normal; opacity: 0.7; transition: opacity 0.3s; }
+    .sidebar-link:hover .sidebar-icon, .sidebar-link.active .sidebar-icon { opacity: 1; filter: drop-shadow(0 0 8px var(--gold-glow)); }
+    
+    /* Main Content */
+    .portal-main {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      padding: 4rem 5rem;
+      position: relative;
+      min-height: calc(100vh - 70px);
+    }
+    
+    /* Background effects */
+    .portal-main::before {
+      content: ''; position: fixed; top: 0; right: 0; width: 800px; height: 800px;
+      background: radial-gradient(circle, var(--gold-glow) 0%, transparent 60%);
+      pointer-events: none; z-index: -1;
+    }
+    
+    .page-header { margin-bottom: 4rem; animation: fadeUp 0.6s ease forwards; }
+    .page-title { font-family: var(--font-display); font-size: 3rem; margin-bottom: 1rem; letter-spacing: -0.02em; color: var(--text); }
+    .page-title em { color: var(--gold); font-style: italic; }
+    .page-subtitle { font-size: 1.1rem; color: var(--text-dim); line-height: 1.6; max-width: 600px; }
+    
+    /* Product Grid */
+    .product-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 2rem;
+    }
+    
+    .product-card {
+      background: var(--card-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border); border-radius: 16px;
+      padding: 2.5rem;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex; flex-direction: column; height: 100%;
+      position: relative; overflow: hidden;
+      animation: fadeUp 0.6s ease forwards;
+      opacity: 0;
+    }
+    
+    .product-card:nth-child(1) { animation-delay: 0.1s; }
+    .product-card:nth-child(2) { animation-delay: 0.2s; }
+    .product-card:nth-child(3) { animation-delay: 0.3s; }
+    .product-card:nth-child(4) { animation-delay: 0.4s; }
+    .product-card:nth-child(5) { animation-delay: 0.5s; }
+    .product-card:nth-child(6) { animation-delay: 0.6s; }
+    
+    .product-card::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(135deg, rgba(201, 168, 76, 0.1) 0%, transparent 50%);
+      opacity: 0; transition: opacity 0.4s; z-index: 0; pointer-events: none;
+    }
+    
+    .product-card:hover {
+      transform: translateY(-8px);
+      border-color: var(--border-strong);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(201, 168, 76, 0.05);
+    }
+    
+    .product-card:hover::before { opacity: 1; }
+    
+    .product-card > * { position: relative; z-index: 1; }
+    
+    .product-tag { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.2rem; display: inline-block; background: var(--glass-glow); padding: 0.4rem 1rem; border-radius: 20px; border: 1px solid var(--glass-border); }
+    .product-name { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 0.8rem; color: var(--text); line-height: 1.3; }
+    .product-date { font-size: 0.85rem; color: var(--text-dim); margin-bottom: 2rem; line-height: 1.6; flex: 1; }
+    
+    .product-card .btn { width: 100%; text-align: center; }
+    
+    /* Empty State */
     .empty-state {
-      text-align: center; padding: 5rem 2rem;
-      background: var(--bg-elevated); border: 1px dashed var(--border);
-      border-radius: var(--radius-lg); grid-column: 1 / -1;
+      grid-column: 1 / -1;
+      background: rgba(255, 255, 255, 0.02); border: 1px dashed var(--border-strong);
+      border-radius: 16px; padding: 6rem 2rem;
+      text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      animation: fadeUp 0.6s ease forwards;
     }
-    .empty-icon { font-size: 3rem; margin-bottom: 1.5rem; display: block; }
-    .empty-text { color: var(--text-dim); font-size: 1rem; margin-bottom: 2rem; }
+    .empty-icon { font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.8; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+    .empty-text { font-size: 1.1rem; color: var(--text-dim); margin-bottom: 2rem; }
+    
+    /* Profile Layout */
+    .profile-card {
+      background: var(--card-bg); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border); border-radius: 16px;
+      padding: 3.5rem; max-width: 800px;
+      animation: fadeUp 0.6s ease forwards;
+    }
+    .profile-item { display: grid; grid-template-columns: 180px 1fr; gap: 1.5rem; align-items: center; margin-bottom: 2.5rem; padding-bottom: 2.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .profile-item:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .profile-label { font-size: 0.75rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); }
+    .profile-value { font-size: 1.15rem; color: var(--text); font-weight: 500; }
 
+    /* Tabs transition */
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+      animation: fadeIn 0.4s ease;
+    }
+    
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .portal-main { padding: 3rem; }
+    }
     @media (max-width: 900px) {
-      .portal-sidebar { width: 80px; padding: 2rem 0.5rem; }
-      .sidebar-link span { display: none; }
-      .sidebar-link { justify-content: center; padding: 1rem; }
+      .portal-layout { flex-direction: column; padding-top: 70px; }
+      .portal-sidebar { width: 100%; position: relative; top: 0; height: auto; padding: 1rem 1.5rem; border-right: none; border-bottom: 1px solid var(--glass-border); flex-direction: row; overflow-x: auto; scrollbar-width: none; background: rgba(5, 6, 8, 0.95); }
+      .portal-sidebar::-webkit-scrollbar { display: none; }
+      .sidebar-menu { flex-direction: row; gap: 0.5rem; }
+      .sidebar-link { padding: 0.8rem 1.2rem; white-space: nowrap; border-radius: 30px; }
+      .sidebar-link.active::before { display: none; }
+      .portal-main { margin-left: 0; padding: 2rem 1.5rem; min-height: auto; }
       .page-title { font-size: 2.2rem; }
+      .product-grid { grid-template-columns: 1fr; }
+      .profile-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .profile-value { font-size: 1.05rem; }
+      .profile-card { padding: 2rem; }
     }
     
     @media (max-width: 600px) {
-      .portal-layout { flex-direction: column; }
-      .portal-sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 1rem; flex-direction: row; overflow-x: auto; }
-      .sidebar-menu { flex-direction: row; }
-      .portal-main { padding: 2rem 1.5rem; }
+      .greeting { display: none; }
     }
-
-    /* Utilities */
-    .u-display-none { display: none !important; }
-    .u-display-block { display: block !important; }
   </style>
 </head>
 <body>
-  <div id="scroll-progress" class="scroll-progress"></div>
-
+  
   <header class="portal-nav">
-    <div class="u-flex-center u-flex-gap-1">
-      <a href="/"><img src="/assets/images/logo-dark-bg.png" alt="NLC" height="32"></a>
-      <span class="u-font-mono u-font-size-0-7 u-text-muted u-letter-spacing-1 u-margin-left-1 u-padding-left-1 u-border-left">CLIENT HUB</span>
-    </div>
-    <div class="u-flex-center u-flex-gap-1-5">
-      <div id="user-badge-container"></div>
-      <span id="user-greeting" class="u-font-size-0-8 u-text-dim u-hidden-mobile">Welcome</span>
+    <a href="/" class="portal-nav-brand">
+      <img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants">
+      <span class="portal-nav-badge">Client Hub</span>
+    </a>
+    <div class="portal-user-area">
+      <span class="greeting" id="user-greeting">Welcome back, <strong>Client</strong></span>
       <button class="logout-btn" onclick="logout()">LOGOUT</button>
     </div>
   </header>
 
   <div class="portal-layout">
     <aside class="portal-sidebar">
-      <nav class="sidebar-menu">
-        <a href="#" class="sidebar-link active" onclick="showTab('purchases', this)">
-          <i class="sidebar-icon">📦</i> <span>My Tools & Content</span>
-        </a>
-        <a href="#" class="sidebar-link" onclick="showTab('courses', this)">
-          <i class="sidebar-icon">🎓</i> <span>My Courses</span>
-        </a>
-        <a href="#" class="sidebar-link" onclick="showTab('library', this)">
-          <i class="sidebar-icon">📚</i> <span>Free Library</span>
-        </a>
-        <a href="#" class="sidebar-link" onclick="showTab('subscriptions', this)">
-          <i class="sidebar-icon">💳</i> <span>Subscriptions</span>
-        </a>
-        <a href="#" class="sidebar-link" onclick="showTab('profile', this)">
-          <i class="sidebar-icon">👤</i> <span>Profile Settings</span>
-        </a>
-        <a href="#" class="sidebar-link" onclick="showTab('support', this)">
-          <i class="sidebar-icon">💬</i> <span>Support</span>
-        </a>
-      </nav>
+      <ul class="sidebar-menu">
+        <li>
+          <a href="#" class="sidebar-link active" onclick="showTab('purchases', this)">
+            <i class="sidebar-icon">📦</i> <span>My Tools &amp; Content</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link" onclick="showTab('courses', this)">
+            <i class="sidebar-icon">🎓</i> <span>My Courses</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link" onclick="showTab('library', this)">
+            <i class="sidebar-icon">📚</i> <span>Free Library</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link" onclick="showTab('subscriptions', this)">
+            <i class="sidebar-icon">💳</i> <span>Subscriptions</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link" onclick="showTab('profile', this)">
+            <i class="sidebar-icon">👤</i> <span>Profile Settings</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="sidebar-link" onclick="showTab('support', this)">
+            <i class="sidebar-icon">💬</i> <span>Support</span>
+          </a>
+        </li>
+      </ul>
     </aside>
 
     <main class="portal-main">
       
       <!-- Purchases Tab -->
-      <section id="tab-purchases" class="tab-pane active u-display-block">
-        <div class="page-header anim">
+      <section id="tab-purchases" class="tab-pane active">
+        <div class="page-header">
           <h1 class="page-title">Digital <em>Assets</em></h1>
-          <p class="page-subtitle">Access your purchased strategy toolkits, diagnostic assessments, and executive resources.</p>
+          <p class="page-subtitle">Access your purchased strategy toolkits, diagnostic assessments, and exclusive executive resources.</p>
         </div>
         <div class="product-grid" id="purchases-container">
           <div class="empty-state">
@@ -194,59 +300,73 @@
       </section>
 
       <!-- Free Library Tab -->
-      <section id="tab-library" class="tab-pane u-display-none">
+      <section id="tab-library" class="tab-pane">
         <div class="page-header">
           <h1 class="page-title">Free Resource <em>Library</em></h1>
-          <p class="page-subtitle">Your seven complimentary strategy templates, frameworks, and models — ready to view, fill in, and print as PDF.</p>
+          <p class="page-subtitle">Your complimentary strategy templates, frameworks, and models — ready to view, fill in, and deploy.</p>
         </div>
         <div class="product-grid">
-          <div class="product-card anim">
+          <div class="product-card">
             <span class="product-tag">🎯 Template · Strategy</span>
             <div class="product-name">Strategic Planning Worksheet</div>
-            <div class="product-date">13 sections · Vision through Review Cadence</div>
-            <a href="/downloads/strategic-planning-template/index.html" class="btn btn-gold w-full">Open Template →</a>
+            <div class="product-date">A complete, end-to-end strategic planning template from vision and mission through SWOT analysis, KPIs, and risk register.</div>
+            <div class="u-margin-top-auto">
+              <a href="/downloads/strategic-planning-template/index.html" class="btn btn-gold w-full">Open Template →</a>
+            </div>
           </div>
-          <div class="product-card anim">
+          <div class="product-card">
             <span class="product-tag">📊 Template · Finance</span>
             <div class="product-name">Financial Model Template</div>
-            <div class="product-date">8 tabs · Revenue, P&amp;L, Cash Flow, Scenarios</div>
-            <a href="/downloads/financial-model-template/index.html" class="btn btn-gold w-full">Open Template →</a>
+            <div class="product-date">Professional 8-tab financial model structure: Assumptions, Revenue, P&amp;L, Cash Flow, Scenario Analysis, and Dashboard.</div>
+            <div class="u-margin-top-auto">
+              <a href="/downloads/financial-model-template/index.html" class="btn btn-gold w-full">Open Template →</a>
+            </div>
           </div>
-          <div class="product-card anim">
-            <span class="product-tag">📋 Framework · Project Management</span>
+          <div class="product-card">
+            <span class="product-tag">📋 Framework · PM</span>
             <div class="product-name">Project Management Framework</div>
-            <div class="product-date">10 components · Charter through Post-Review</div>
-            <a href="/downloads/project-management-framework/index.html" class="btn btn-gold w-full">Open Framework →</a>
+            <div class="product-date">A complete toolkit covering every phase from kick-off to closure. Includes a project charter, RACI matrix, timeline, and risk register.</div>
+            <div class="u-margin-top-auto">
+              <a href="/downloads/project-management-framework/index.html" class="btn btn-gold w-full">Open Framework →</a>
+            </div>
           </div>
-          <div class="product-card anim">
+          <div class="product-card">
             <span class="product-tag">📈 Template · Performance</span>
             <div class="product-name">Executive KPI Dashboard</div>
-            <div class="product-date">40+ metrics across 6 categories</div>
-            <a href="/downloads/kpi-dashboard-template/index.html" class="btn btn-gold w-full">Open Dashboard →</a>
+            <div class="product-date">A comprehensive dashboard structure with 40+ sample metrics, formulas, and reporting frequency guidance.</div>
+            <div class="u-margin-top-auto">
+              <a href="/downloads/kpi-dashboard-template/index.html" class="btn btn-gold w-full">Open Dashboard →</a>
+            </div>
           </div>
-          <div class="product-card anim">
-            <span class="product-tag">💼 Template · Decision-Making</span>
+          <div class="product-card">
+            <span class="product-tag">💼 Template · Strategy</span>
             <div class="product-name">Business Case Template</div>
-            <div class="product-date">11 sections · ROI framework included</div>
-            <a href="/downloads/business-case-template/index.html" class="btn btn-gold w-full">Open Template →</a>
+            <div class="product-date">A polished, board-ready business case framework that walks you through every section, including financial impact and ROI.</div>
+            <div class="u-margin-top-auto">
+              <a href="/downloads/business-case-template/index.html" class="btn btn-gold w-full">Open Template →</a>
+            </div>
           </div>
-          <div class="product-card anim">
+          <div class="product-card">
             <span class="product-tag">🛡️ Template · Compliance</span>
-            <div class="product-name">HIPAA Compliance Checklist Pack</div>
-            <div class="product-date">120+ action items · Audit ready</div>
-            <a href="/downloads/hipaa-compliance-checklist-pack/index.html" class="btn btn-gold w-full">Open Checklist →</a>
+            <div class="product-name">HIPAA Compliance Checklist</div>
+            <div class="product-date">A comprehensive set of checklists covering Privacy, Security, and Breach Notification rules with 120+ action items.</div>
+            <div class="u-margin-top-auto">
+              <a href="/downloads/hipaa-compliance-checklist-pack/index.html" class="btn btn-gold w-full">Open Checklist →</a>
+            </div>
           </div>
-          <div class="product-card anim">
+          <div class="product-card">
             <span class="product-tag">📋 Template · Operations</span>
             <div class="product-name">SOP Template Bundle</div>
-            <div class="product-date">15 templates · Fully editable</div>
-            <a href="/downloads/sop-template-bundle/index.html" class="btn btn-gold w-full">Open Bundle →</a>
+            <div class="product-date">A library of 15 essential Standard Operating Procedure (SOP) templates designed to standardize your operations.</div>
+            <div class="u-margin-top-auto">
+              <a href="/downloads/sop-template-bundle/index.html" class="btn btn-gold w-full">Open Bundle →</a>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- Subscriptions Tab -->
-      <section id="tab-subscriptions" class="tab-pane u-display-none">
+      <section id="tab-subscriptions" class="tab-pane">
         <div class="page-header">
           <h1 class="page-title">Active <em>Retainers</em></h1>
           <p class="page-subtitle">Manage your ongoing strategic partnerships and recurring advisory services.</p>
@@ -261,7 +381,7 @@
       </section>
 
       <!-- Courses Tab -->
-      <section id="tab-courses" class="tab-pane u-display-none">
+      <section id="tab-courses" class="tab-pane">
         <div class="page-header">
           <h1 class="page-title">Executive <em>Learning</em></h1>
           <p class="page-subtitle">Pick up where you left off in your certification programs and professional development modules.</p>
@@ -276,15 +396,16 @@
       </section>
 
       <!-- Profile Tab -->
-      <section id="tab-profile" class="tab-pane u-display-none">
+      <section id="tab-profile" class="tab-pane">
         <div class="page-header">
           <h1 class="page-title">Account <em>Profile</em></h1>
           <p class="page-subtitle">Manage your personal credentials and organization details.</p>
         </div>
-        <div class="profile-card anim">
+        
+        <div class="profile-card">
           <div id="profile-display-mode">
             <div class="profile-item">
-              <span class="profile-label">Identity</span>
+              <span class="profile-label">Full Name</span>
               <span class="profile-value" id="profile-name">—</span>
             </div>
             <div class="profile-item">
@@ -300,11 +421,11 @@
               <span class="profile-value" id="profile-phone">—</span>
             </div>
             <div class="u-margin-top-lg u-flex-gap-1">
-              <button class="btn btn-outline" onclick="toggleProfileEdit(true)">Edit Profile</button>
+              <button class="btn btn-gold" onclick="toggleProfileEdit(true)">Update Profile</button>
             </div>
           </div>
           
-          <form id="profile-edit-form" class="u-display-none" onsubmit="handleProfileUpdate(event)">
+          <form id="profile-edit-form" style="display: none;" onsubmit="handleProfileUpdate(event)">
             <div class="form-row">
               <div class="form-field">
                 <label for="edit-first-name">First Name</label>
@@ -325,33 +446,35 @@
             </div>
             <div id="profile-edit-msg" class="u-margin-bottom-1"></div>
             <div class="u-flex-gap-1 u-margin-top-1">
-              <button type="button" class="btn btn-outline" onclick="toggleProfileEdit(false)">Cancel</button>
               <button type="submit" class="btn btn-gold" id="profile-save-btn">Save Changes</button>
+              <button type="button" class="btn btn-outline" onclick="toggleProfileEdit(false)">Cancel</button>
             </div>
           </form>
         </div>
       </section>
 
       <!-- Support Tab -->
-      <section id="tab-support" class="tab-pane u-display-none">
+      <section id="tab-support" class="tab-pane">
         <div class="page-header">
           <h1 class="page-title">Client <em>Support</em></h1>
           <p class="page-subtitle">Need help with a template, course, or billing? We're here for you.</p>
         </div>
         <div class="product-grid">
-          <div class="profile-card anim" style="grid-column: 1 / -1; max-width: none;">
-            <h3 class="u-font-display u-margin-bottom-1">Contact Us</h3>
-            <p class="u-text-dim u-margin-bottom-2">Our support team is available Monday through Friday, 9am - 6pm EST.</p>
+          <div class="profile-card" style="grid-column: 1 / -1; max-width: none;">
+            <h3 class="page-title" style="font-size: 2rem;">Contact Us</h3>
+            <p class="page-subtitle" style="margin-bottom: 3rem;">Our support team is available Monday through Friday, 9am - 6pm EST.</p>
+            
             <div class="profile-item">
               <span class="profile-label">Email Support</span>
-              <span class="profile-value"><a href="mailto:support@nlcfirm.com" class="u-text-gold u-text-decoration-none">support@nlcfirm.com</a></span>
+              <span class="profile-value"><a href="mailto:support@nlcfirm.com" style="color: var(--gold); text-decoration: none;">support@nlcfirm.com</a></span>
             </div>
             <div class="profile-item">
               <span class="profile-label">Phone</span>
-              <span class="profile-value"><a href="tel:+17864084243" class="u-text-gold u-text-decoration-none">786-408-4243</a></span>
+              <span class="profile-value"><a href="tel:+17864084243" style="color: var(--gold); text-decoration: none;">786-408-4243</a></span>
             </div>
+            
             <div class="u-margin-top-lg">
-              <p class="u-text-sm u-text-muted">For urgent consulting inquiries, please call the number above directly.</p>
+              <p style="font-size: 0.85rem; color: var(--text-muted); padding-top: 2rem; border-top: 1px solid var(--glass-border);">For urgent consulting inquiries, please call the number above directly.</p>
             </div>
           </div>
         </div>
@@ -363,16 +486,38 @@
   <script src="/assets/js/portal.js"></script>
   <script>
     function showTab(tabId, el) {
+      // Hide all tabs
       document.querySelectorAll('.tab-pane').forEach(pane => {
-        pane.classList.remove('u-display-block');
-        pane.classList.add('u-display-none');
+        pane.classList.remove('active');
       });
-      document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
+      // Remove active from links
+      document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.classList.remove('active');
+      });
+      
+      // Show clicked tab
       const activeTab = document.getElementById('tab-' + tabId);
-      activeTab.classList.remove('u-display-none');
-      activeTab.classList.add('u-display-block');
-      el.classList.add('active');
+      if (activeTab) activeTab.classList.add('active');
+      
+      // Set active link
+      if (el) el.classList.add('active');
+      
+      // Update hash in URL
+      window.history.pushState(null, null, '#' + tabId);
     }
+    
+    // Check hash on load
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.substring(1);
+      if (hash) {
+        const targetLink = document.querySelector(`.sidebar-link[onclick*="showTab('${hash}'"]`);
+        if (targetLink) {
+          showTab(hash, targetLink);
+        } else if (document.getElementById('tab-' + hash)) {
+          showTab(hash, document.querySelector('.sidebar-link')); // Fallback active link
+        }
+      }
+    });
   </script>
 </body>
 </html>
