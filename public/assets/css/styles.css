@@ -3444,6 +3444,16 @@ body.chatbot-open .sticky-cta {
   box-shadow: 0 24px 60px rgba(0,0,0,0.55);
   z-index: 500;
 }
+/* Bridge the gap to prevent disappearing on hover */
+.nav-mega::before {
+  content: "";
+  position: absolute;
+  top: -15px;
+  left: 0;
+  right: 0;
+  height: 15px;
+  background: transparent;
+}
 .nav-has-mega:hover .nav-mega,
 .nav-has-mega:focus-within .nav-mega {
   opacity: 1;
@@ -4328,4 +4338,15 @@ body.chatbot-open .sticky-cta {
   .catalog-stats { gap: 1.5rem; }
   .detail-hero-grid { gap: 1.5rem; }
 }
+
+/* ── TOOLS PROMO (resources pages cross-sell) ─────────── */
+.tools-promo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 1.5rem; }
+.tool-promo-card { background: var(--bg-glass); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; text-align: center; transition: all 0.3s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+.tool-promo-card:hover { border-color: var(--gold); transform: translateY(-3px); box-shadow: 0 8px 30px rgba(201,168,76,0.1); }
+.tool-promo-icon { font-size: 2rem; margin-bottom: 0.6rem; }
+.tool-promo-name { font-size: 0.88rem; font-weight: 600; margin-bottom: 0.2rem; line-height: 1.4; }
+.tool-promo-price { font-size: 0.75rem; color: var(--gold); font-weight: 600; margin-top: 0.4rem; }
+.tool-promo-desc { font-size: 0.72rem; color: var(--text-dim); margin-top: 0.3rem; line-height: 1.5; }
+@media (max-width: 960px) { .tools-promo { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 500px) { .tools-promo { grid-template-columns: 1fr; } }
 

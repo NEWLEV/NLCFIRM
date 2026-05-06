@@ -6,11 +6,37 @@
   <title id="page-title">Product Detail | NLC Firm</title>
   <meta name="description" id="page-meta-desc" content="NLC Firm self-guided consulting product."/>
   <meta name="robots" content="index, follow"/>
+  <link rel="canonical" id="page-canonical" href="https://nlcfirm.com/products/detail.html"/>
+  <script type="application/ld+json" id="product-schema">{"@context":"https://schema.org","@type":"Product","name":"","description":"","offers":{"@type":"Offer","priceCurrency":"USD","price":"0","availability":"https://schema.org/InStock","seller":{"@type":"Organization","name":"New Level Consultants"}}}</script>
   <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="/assets/css/styles.css"/>
+  <style>
+    .detail-404 { padding: 8rem 4rem; text-align: center; }
+    .detail-404-h2 { font-family: var(--font-display); color: var(--text); margin-bottom: 1rem; }
+    .detail-404-p { color: var(--text-dim); margin-bottom: 2rem; }
+    .checkout-footer-text { font-size: 0.72rem; color: var(--text-muted); text-align: center; margin-top: 1rem; line-height: 1.7; }
+    
+    /* JS Generated Classes */
+    .detail-upsell-link { color: var(--gold); font-size: 0.78rem; text-decoration: none; }
+    .detail-upsell-link:hover { text-decoration: underline; }
+    .u-mt-1 { margin-top: 1rem; }
+    .detail-related-section { margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--border); }
+    .detail-related-title { font-family: var(--font-display); font-size: 1.1rem; color: var(--text); margin-bottom: 1.2rem; }
+    .detail-related-title em { color: var(--gold); font-style: italic; }
+    .detail-related-grid { display: flex; flex-direction: column; gap: 0.8rem; }
+    .detail-related-card { 
+      display: flex; justify-content: space-between; align-items: center; 
+      padding: 0.8rem; background: var(--bg-card); border: 1px solid var(--border); 
+      border-radius: var(--radius); text-decoration: none; color: var(--text); 
+      transition: border-color 0.2s; 
+    }
+    .detail-related-card:hover { border-color: var(--border-strong); }
+    .detail-related-name { font-size: 0.82rem; font-weight: 600; }
+    .detail-related-price { font-size: 0.88rem; color: var(--gold); font-weight: 700; font-family: var(--font-display); flex-shrink: 0; margin-left: 1rem; }
+  </style>
 </head>
 <body>
 
@@ -97,9 +123,9 @@
   </div>
 
   <!-- 404 STATE -->
-  <div id="detail-404" class="u-display-none" style="padding:8rem 4rem;text-align:center;">
-    <h2 style="font-family:var(--font-display);color:var(--text);margin-bottom:1rem;">Product not found.</h2>
-    <p style="color:var(--text-dim);margin-bottom:2rem;">That SKU doesn't exist in our catalog.</p>
+  <div id="detail-404" class="u-display-none detail-404">
+    <h2 class="detail-404-h2">Product not found.</h2>
+    <p class="detail-404-p">That SKU doesn't exist in our catalog.</p>
     <a href="/products/" class="btn btn-gold">Browse All Products</a>
   </div>
 
@@ -149,7 +175,7 @@
       <div class="checkout-box-title" id="checkout-product-name">Product</div>
       <div class="checkout-box-price" id="checkout-product-price">$0</div>
       <div id="paypal-button-container"></div>
-      <p style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:1rem;line-height:1.7;">Secure checkout via PayPal.<br>After payment, your portal account is created automatically and your download link is emailed within minutes.</p>
+      <p class="checkout-footer-text">Secure checkout via PayPal.<br>After payment, your portal account is created automatically and your download link is emailed within minutes.</p>
     </div>
   </div>
 
@@ -217,6 +243,22 @@
         /* Meta */
         document.getElementById('page-title').textContent = product.metaTitle;
         document.getElementById('page-meta-desc').setAttribute('content', product.metaDescription);
+        document.getElementById('page-canonical').setAttribute('href', 'https://nlcfirm.com/products/detail.html?sku=' + product.sku);
+        var schema = document.getElementById('product-schema');
+        schema.textContent = JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'Product',
+          name: product.name,
+          description: product.metaDescription,
+          brand: { '@type': 'Organization', name: 'New Level Consultants' },
+          offers: {
+            '@type': 'Offer',
+            priceCurrency: 'USD',
+            price: String(product.price),
+            availability: 'https://schema.org/InStock',
+            seller: { '@type': 'Organization', name: 'New Level Consultants', url: 'https://nlcfirm.com' }
+          }
+        });
 
         /* Breadcrumb */
         document.getElementById('detail-breadcrumb').innerHTML =
@@ -247,7 +289,7 @@
             '<ul class="detail-sidebar-deliverables">' + delivList + '</ul>' +
             '<button class="detail-buy-btn" onclick="openCheckoutModal(\'' + product.sku + '\',\'' + product.name.replace(/'/g, "\\'") + '\',' + product.price + ')">Buy Now — $' + product.price + '</button>' +
             '<p class="detail-sidebar-meta">Secure checkout via PayPal<br>Download delivered to your email<br>30-day satisfaction guarantee</p>' +
-            '<div class="detail-sidebar-upsell"><strong>Solving a bigger problem?</strong><br>' + product.upsellTrigger + '<br><br><a href="#" onclick="openModal(\'consult\');return false;" style="color:var(--gold);font-size:0.78rem;">Book a Free Strategy Call →</a></div>' +
+            '<div class="detail-sidebar-upsell"><strong>Solving a bigger problem?</strong><br>' + product.upsellTrigger + '<br><br><a href="#" onclick="openModal(\'consult\');return false;" class="detail-upsell-link">Book a Free Strategy Call →</a></div>' +
           '</div>';
 
         /* Main body */
@@ -295,7 +337,7 @@
               '<span class="detail-upsell-scope">' + product.upsellScope + '</span>' +
               '<span class="detail-upsell-price">' + product.upsellPrice + '</span>' +
             '</div>' +
-            '<div style="margin-top:1rem;">' +
+            '<div class="u-mt-1">' +
               '<a href="#" onclick="openModal(\'consult\');return false;" class="btn btn-outline btn-sm">Book a Free Strategy Call</a>' +
             '</div>' +
           '</div>';
@@ -315,13 +357,13 @@
           return p.sector === product.sector && p.sku !== product.sku;
         }).slice(0, 3);
         if (related.length > 0) {
-          var relHTML = '<div style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border)">' +
-            '<h3 style="font-family:var(--font-display);font-size:1.1rem;color:var(--text);margin-bottom:1.2rem;">More from <em style=\'color:var(--gold);font-style:italic\'>' + sector.name + '</em></h3>' +
-            '<div style="display:flex;flex-direction:column;gap:0.8rem;">' +
+          var relHTML = '<div class="detail-related-section">' +
+            '<h3 class="detail-related-title">More from <em>' + sector.name + '</em></h3>' +
+            '<div class="detail-related-grid">' +
             related.map(function(r) {
-              return '<a href="/products/detail.html?sku=' + r.sku + '" style="display:flex;justify-content:space-between;align-items:center;padding:0.8rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;color:var(--text);transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'var(--border-strong)\'" onmouseout="this.style.borderColor=\'var(--border)\'">' +
-                '<span style="font-size:0.82rem;font-weight:600;">' + r.name + '</span>' +
-                '<span style="font-size:0.88rem;color:var(--gold);font-weight:700;font-family:var(--font-display);flex-shrink:0;margin-left:1rem;">$' + r.price + '</span>' +
+              return '<a href="/products/detail.html?sku=' + r.sku + '" class="detail-related-card">' +
+                '<span class="detail-related-name">' + r.name + '</span>' +
+                '<span class="detail-related-price">$' + r.price + '</span>' +
               '</a>';
             }).join('') +
             '</div></div>';

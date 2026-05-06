@@ -84,7 +84,39 @@
   <ul class="nav-links">
     <li><a href="/#services">Services</a></li>
     <li><a href="/#plans">Plans</a></li>
-    <li><a href="/#products">Instant Tools</a></li>
+    <li class="nav-has-mega"><a href="/products/">Products &#9662;</a>
+        <div class="nav-mega">
+          <div class="nav-mega-header">Browse by Sector</div>
+          <div class="nav-mega-grid">
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Healthcare &amp; Legal</span>
+              <a href="/products/healthcare/">&#127973; Healthcare</a>
+              <a href="/products/legal/">&#9878;&#65039; Legal &amp; Law Firms</a>
+              <a href="/products/financial-services/">&#128176; Financial Services</a>
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Operations</span>
+              <a href="/products/construction/">&#128296; Construction &amp; Trades</a>
+              <a href="/products/manufacturing/">&#127981; Manufacturing</a>
+              <a href="/products/restaurants/">&#127869;&#65039; Restaurants</a>
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Business &amp; Services</span>
+              <a href="/products/professional-services/">&#128188; Professional Services</a>
+              <a href="/products/real-estate/">&#127976;&#65039; Real Estate</a>
+              <a href="/products/retail/">&#128717;&#65039; Retail &amp; E-Commerce</a>
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Growth &amp; Impact</span>
+              <a href="/products/technology/">&#128187; Technology &amp; SaaS</a>
+              <a href="/products/education/">&#128218; Education</a>
+              <a href="/products/nonprofit/">&#129309; Non-Profit</a>
+              <a href="/products/government-contracting/">&#127963;&#65039; Gov Contracting</a>
+              <a href="/products/" class="nav-mega-all">Browse All Products &#8594;</a>
+            </div>
+          </div>
+        </div>
+      </li>
     <li><a href="/about.html">About</a></li>
     <li><a href="/case-studies.html">Results</a></li>
     <li><a href="/resources.html" class="active">Resources</a></li>
@@ -98,7 +130,8 @@
 <div class="mobile-drawer" id="mobile-drawer">
   <a href="/#services" onclick="toggleDrawer()">Services</a>
   <a href="/#plans" onclick="toggleDrawer()">Plans</a>
-  <a href="/about.html" onclick="toggleDrawer()">About</a>
+  <a href="/products/" onclick="toggleDrawer()">Products</a>
+    <a href="/about.html" onclick="toggleDrawer()">About</a>
   <a href="/case-studies.html" onclick="toggleDrawer()">Results</a>
   <a href="/resources.html" onclick="toggleDrawer()">Resources</a>
   <a href="/portal-login.html" onclick="toggleDrawer()" class="u-text-gold">Login</a>
@@ -241,38 +274,41 @@
   </div>
 </section>
 
-<!-- INSTANT TOOLS PROMO -->
+<!-- PAID PRODUCT CATALOG -->
 <section class="section section-warm">
   <div class="section-header anim u-text-center">
-    <div class="section-tag section-tag-center">Premium Tools</div>
-    <h2 class="section-title section-title-center">Need More Than Free? <em>Start for Under $100</em></h2>
-    <p class="section-body u-margin-auto">Our productized tools deliver consultant-grade deliverables at a fraction of the cost — with instant or 24-hour delivery. No call required.</p>
+    <div class="section-tag section-tag-center">Paid Products</div>
+    <h2 class="section-title section-title-center">Ready to Go Deeper? <em>Start for Under $200</em></h2>
+    <p class="section-body u-margin-auto">Our paid diagnostic frameworks deliver consultant-grade analysis at a fraction of retainer cost — sector-specific models, scored assessments, and action plans. No call required.</p>
   </div>
   <div class="tools-promo anim">
-    <a href="/#products" class="tool-promo-card">
-      <div class="tool-promo-icon">📊</div>
-      <div class="tool-promo-name">Business Health Assessment</div>
-      <div class="tool-promo-price">$97</div>
-      <div class="tool-promo-desc">Scored assessment with branded PDF report</div>
+    <a href="/products/detail.html?sku=NLC-HC-001" class="tool-promo-card">
+      <div class="tool-promo-icon">🏥</div>
+      <div class="tool-promo-name">Medical Practice 90-Day Revenue Recovery Plan</div>
+      <div class="tool-promo-price">$197</div>
+      <div class="tool-promo-desc">Excel workbook + PDF guide for healthcare practices</div>
     </a>
-    <a href="/#products" class="tool-promo-card">
+    <a href="/products/detail.html?sku=NLC-HC-002" class="tool-promo-card">
       <div class="tool-promo-icon">🔒</div>
-      <div class="tool-promo-name">HIPAA Compliance Checklist</div>
-      <div class="tool-promo-price">$67</div>
-      <div class="tool-promo-desc">120+ action items with templates</div>
+      <div class="tool-promo-name">HIPAA Compliance Gap Assessment</div>
+      <div class="tool-promo-price">$127</div>
+      <div class="tool-promo-desc">Scored gap analysis with remediation roadmap</div>
     </a>
-    <a href="/#products" class="tool-promo-card">
-      <div class="tool-promo-icon">📋</div>
-      <div class="tool-promo-name">SOP Template Bundle</div>
+    <a href="/products/detail.html?sku=NLC-NP-002" class="tool-promo-card">
+      <div class="tool-promo-icon">🤝</div>
+      <div class="tool-promo-name">Grant Readiness Self-Assessment</div>
       <div class="tool-promo-price">$97</div>
-      <div class="tool-promo-desc">15 ready-to-use templates (Word/Docs)</div>
+      <div class="tool-promo-desc">PDF assessment for nonprofits seeking grants</div>
     </a>
-    <a href="/#products" class="tool-promo-card">
-      <div class="tool-promo-icon">🌐</div>
-      <div class="tool-promo-name">SEO Audit Report</div>
-      <div class="tool-promo-price">$147</div>
-      <div class="tool-promo-desc">Technical SEO + competitor analysis</div>
+    <a href="/products/detail.html?sku=NLC-PS-002" class="tool-promo-card">
+      <div class="tool-promo-icon">💼</div>
+      <div class="tool-promo-name">Agency Pricing &amp; Scope Toolkit</div>
+      <div class="tool-promo-price">$127</div>
+      <div class="tool-promo-desc">Excel workbook + Word SOW template for agencies</div>
     </a>
+  </div>
+  <div class="anim u-flex-center u-margin-top-md">
+    <a href="/products/" class="btn btn-gold">Browse All 30+ Products — 13 Sectors &#8594;</a>
   </div>
 </section>
 
