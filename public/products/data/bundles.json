@@ -1,0 +1,52 @@
+{
+  "bundles": [
+    {
+      "id": "healthcare-starter",
+      "name": "Healthcare Operations Starter",
+      "description": "HIPAA gap assessment plus the 90-day revenue recovery plan — the two highest-impact audits for any medical practice.",
+      "included": ["NLC-HC-002", "NLC-HC-001"],
+      "includedNames": ["HIPAA Compliance Gap Assessment", "Medical Practice 90-Day Revenue Recovery Plan"],
+      "price": 247,
+      "individualTotal": 294,
+      "savings": 47,
+      "sector": "healthcare",
+      "ctaText": "Get the Healthcare Starter Bundle"
+    },
+    {
+      "id": "legal-ops-kit",
+      "name": "Legal Firm Operations Kit",
+      "description": "Profitability diagnostic, client onboarding system, and vendor audit toolkit — the operational foundation of a profitable law firm.",
+      "included": ["NLC-LG-001", "NLC-PS-001", "NLC-LG-002"],
+      "includedNames": ["Law Firm Profitability Diagnostic", "CPA Firm Client Onboarding System", "Legal Department Vendor Audit Toolkit"],
+      "price": 347,
+      "individualTotal": 451,
+      "savings": 104,
+      "sector": "legal",
+      "ctaText": "Get the Legal Ops Kit"
+    },
+    {
+      "id": "construction-bundle",
+      "name": "Construction Business Bundle",
+      "description": "Project profitability tracker plus the growth blueprint — the tools trades owners need to manage jobs and scale the business simultaneously.",
+      "included": ["NLC-CN-001", "NLC-CN-002"],
+      "includedNames": ["Construction Project Profitability Tracker", "Trades Business Owner's Growth Blueprint"],
+      "price": 227,
+      "individualTotal": 274,
+      "savings": 47,
+      "sector": "construction",
+      "ctaText": "Get the Construction Bundle"
+    },
+    {
+      "id": "govcon-launch-pack",
+      "name": "Gov Contracting Launch Pack",
+      "description": "Bid readiness assessment, CPSR prep toolkit, and proposal framework — everything a small contractor needs to compete and win.",
+      "included": ["NLC-GC-001", "NLC-GC-002", "NLC-GC-003"],
+      "includedNames": ["Government Contract Bid Readiness Assessment", "CPSR / Compliance Audit Prep Toolkit", "Proposal Writing Framework & Win Theme Builder"],
+      "price": 397,
+      "individualTotal": 491,
+      "savings": 94,
+      "sector": "government-contracting",
+      "ctaText": "Get the GovCon Launch Pack"
+    }
+  ]
+}

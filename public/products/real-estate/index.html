@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title id="page-title">Products | NLC Firm</title>
+  <meta name="description" id="page-meta-desc" content="NLC Firm self-guided consulting products."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/styles.css"/>
+</head>
+<body>
+  <nav id="nav">
+    <a href="/" class="nav-logo" aria-label="New Level Consultants Home">
+      <img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants" width="180" height="40">
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/#plans">Plans</a></li>
+      <li class="nav-has-mega"><a href="/products/">Products &#9662;</a>
+        <div class="nav-mega">
+          <div class="nav-mega-header">Browse by Sector</div>
+          <div class="nav-mega-grid">
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Healthcare &amp; Legal</span>
+              <a href="/products/healthcare/">&#127973; Healthcare</a>
+              <a href="/products/legal/">&#9878;&#65039; Legal &amp; Law Firms</a>
+              <a href="/products/financial-services/">&#128176; Financial Services</a>
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Operations</span>
+              <a href="/products/construction/">&#128296; Construction &amp; Trades</a>
+              <a href="/products/manufacturing/">&#127981; Manufacturing</a>
+              <a href="/products/restaurants/">&#127869;&#65039; Restaurants</a>
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Business &amp; Services</span>
+              <a href="/products/professional-services/">&#128188; Professional Services</a>
+              <a href="/products/real-estate/">&#127976;&#65039; Real Estate</a>
+              <a href="/products/retail/">&#128717;&#65039; Retail &amp; E-Commerce</a>
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Growth &amp; Impact</span>
+              <a href="/products/technology/">&#128187; Technology &amp; SaaS</a>
+              <a href="/products/education/">&#128218; Education</a>
+              <a href="/products/nonprofit/">&#129309; Non-Profit</a>
+              <a href="/products/government-contracting/">&#127963;&#65039; Gov Contracting</a>
+              <a href="/products/" class="nav-mega-all">Browse All Products &#8594;</a>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/case-studies.html">Results</a></li>
+      <li><a href="/resources.html">Resources</a></li>
+      <li><a href="tel:+17864084243" class="nav-phone">&#128222; 786-408-4243</a></li>
+      <li><a href="/portal-login.html" class="nav-login">Login</a></li>
+      <li><a href="#" class="nav-cta" onclick="openModal('consult');return false;">Get Started Free</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div id="drawer-overlay" class="drawer-overlay" onclick="toggleDrawer()"></div>
+  <div id="mobile-drawer" class="mobile-drawer">
+    <a href="/#services" onclick="toggleDrawer()">Services</a>
+    <a href="/#plans" onclick="toggleDrawer()">Plans</a>
+    <a href="/products/" onclick="toggleDrawer()">Products</a>
+    <a href="/about.html" onclick="toggleDrawer()">About</a>
+    <a href="/case-studies.html" onclick="toggleDrawer()">Results</a>
+    <a href="/resources.html" onclick="toggleDrawer()">Resources</a>
+    <a href="/portal-login.html" onclick="toggleDrawer()" class="u-text-gold">Login</a>
+    <a href="#" onclick="openModal('consult');toggleDrawer();return false;" class="nav-cta">Get Started Free &#8594;</a>
+  </div>
+
+  <section class="sector-hero" id="sector-hero">
+    <div class="sector-hero-inner" id="sector-hero-inner"></div>
+  </section>
+
+  <div class="catalog-filters-bar">
+    <div class="catalog-filters-inner">
+      <span class="catalog-filter-label">Format</span>
+      <div class="catalog-filter-group">
+        <button class="filter-chip active" data-filter="format" data-value="all" onclick="setFormatFilter('all',this)">All</button>
+        <button class="filter-chip" data-filter="format" data-value="Workbook" onclick="setFormatFilter('Workbook',this)">Workbook</button>
+        <button class="filter-chip" data-filter="format" data-value="Tracker" onclick="setFormatFilter('Tracker',this)">Tracker</button>
+        <button class="filter-chip" data-filter="format" data-value="Assessment" onclick="setFormatFilter('Assessment',this)">Assessment</button>
+        <button class="filter-chip" data-filter="format" data-value="SOP Bundle" onclick="setFormatFilter('SOP Bundle',this)">SOP Bundle</button>
+      </div>
+      <div class="catalog-filter-divider"></div>
+      <span class="catalog-filter-label">Price</span>
+      <div class="catalog-filter-group">
+        <button class="filter-chip active" data-filter="tier" data-value="all" onclick="setTierFilter('all',this)">All</button>
+        <button class="filter-chip" data-filter="tier" data-value="entry" onclick="setTierFilter('entry',this)">Under $97</button>
+        <button class="filter-chip" data-filter="tier" data-value="core" onclick="setTierFilter('core',this)">$97&ndash;$127</button>
+        <button class="filter-chip" data-filter="tier" data-value="premium" onclick="setTierFilter('premium',this)">$147+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="catalog-body">
+    <div class="catalog-results-row">
+      <span class="catalog-results-count" id="results-count"></span>
+      <a href="/products/" style="font-size:0.78rem;color:var(--text-muted);text-decoration:none;">&#8592; Browse all sectors</a>
+    </div>
+    <div class="product-grid" id="product-grid"></div>
+    <div class="catalog-empty" id="catalog-empty">No products match your filters. <a href="#" onclick="resetFilters();return false;" style="color:var(--gold)">Clear filters</a></div>
+  </div>
+
+  <section class="section section-warm" style="padding:3rem 4rem;">
+    <div style="max-width:700px;margin:0 auto;text-align:center;">
+      <div class="section-tag section-tag-center">Ready for More?</div>
+      <h2 class="section-title section-title-center">Need a hands-on <em>partner</em>?</h2>
+      <p class="section-body section-body-center">Every product in this catalog represents a consulting scope NLC delivers as a retainer or project. When the workbook reveals a problem bigger than a template can solve, we&#8217;re one call away.</p>
+      <button class="btn btn-gold" onclick="openModal('consult')">Book a Free Strategy Call</button>
+    </div>
+  </section>
+
+  <footer class="footer-main">
+    <div class="footer-grid-4col">
+      <div>
+        <div class="footer-brand"><img src="/assets/images/logo-dark-bg.png" alt="NLC" width="120" height="28"></div>
+        <p class="footer-tagline">Healthcare and business consulting for organizations that refuse to stay at the same level.</p>
+      </div>
+      <div>
+        <h4 class="footer-heading-sm">Products</h4>
+        <ul class="footer-link-list">
+          <li class="footer-link-item"><a href="/products/" class="footer-link-a">Browse All</a></li>
+          <li class="footer-link-item"><a href="/products/healthcare/" class="footer-link-a">Healthcare</a></li>
+          <li class="footer-link-item"><a href="/products/construction/" class="footer-link-a">Construction</a></li>
+          <li class="footer-link-item"><a href="/products/government-contracting/" class="footer-link-a">Gov Contracting</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading-sm">Company</h4>
+        <ul class="footer-link-list">
+          <li class="footer-link-item"><a href="/about.html" class="footer-link-a">About Us</a></li>
+          <li class="footer-link-item"><a href="/#plans" class="footer-link-a">Pricing &amp; Plans</a></li>
+          <li class="footer-link-item"><a href="/resources.html" class="footer-link-a">Free Resources</a></li>
+          <li class="footer-link-item"><a href="/contact.html" class="footer-link-a">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading-sm">Contact</h4>
+        <p class="footer-contact-text">info@nlcfirm.com<br>786-408-4243</p>
+      </div>
+    </div>
+    <div class="footer-bottom-row">
+      <div>&copy; 2026 New Level Consultants. All rights reserved.</div>
+      <div class="footer-bottom-links">
+        <a href="/privacy.html" class="u-text-decoration-none">Privacy Policy</a>
+        <a href="/terms.html" class="u-text-decoration-none">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="modal" class="modal-overlay" onclick="closeModalOverlay(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title">Get in Touch</div>
+        <div class="modal-sub" id="modal-sub">We&#8217;ll be in touch within 1 business day.</div>
+      </div>
+      <div class="step-indicators"><div class="step-dot active"></div><div class="step-dot"></div><div class="step-dot"></div></div>
+      <div id="form-step-1" class="form-step active">
+        <div class="form-field"><label for="f-first">First Name *</label><input type="text" id="f-first" placeholder="Jane"></div>
+        <div class="form-field"><label for="f-last">Last Name *</label><input type="text" id="f-last" placeholder="Smith"></div>
+        <div class="form-field"><label for="f-email">Work Email *</label><input type="email" id="f-email" placeholder="jane@organization.com"></div>
+        <button class="btn btn-gold full-width u-mt-1" onclick="nextStep(2)">Continue</button>
+      </div>
+      <div id="form-step-2" class="form-step">
+        <div class="form-field"><label for="f-org">Organization Name</label><input type="text" id="f-org"></div>
+        <div class="form-field"><label for="f-size">Size</label><select id="f-size"><option>1-10</option><option>11-50</option><option>51-200</option><option>201+</option></select></div>
+        <div class="form-field"><label for="f-industry">Industry</label><select id="f-industry"><option>Healthcare</option><option>Legal</option><option>Other</option></select></div>
+        <div class="u-flex-gap-1 u-mt-1"><button class="btn btn-outline full-width" onclick="nextStep(1)">Back</button><button class="btn btn-gold full-width" onclick="nextStep(3)">Continue</button></div>
+      </div>
+      <div id="form-step-3" class="form-step">
+        <div class="form-field"><label for="f-contact">Preferred Contact</label><select id="f-contact"><option>Email</option><option>Phone</option><option>Video Call</option></select></div>
+        <div class="form-field"><label for="f-msg">How can we help?</label><textarea id="f-msg" rows="3"></textarea></div>
+        <div class="u-flex-gap-1 u-mt-1"><button class="btn btn-outline full-width" onclick="nextStep(2)">Back</button><button class="btn btn-gold full-width" onclick="submitModal()">Get Started</button></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/assets/js/main.js"></script>
+  <script src="/products/data/products-data.js"></script>
+  <script>
+    var SECTOR_ID = 'real-estate';
+    var activeFormat = 'all';
+    var activeTier = 'all';
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var sector = NLC_CATALOG.sectors.find(function(s) { return s.id === SECTOR_ID; });
+      if (!sector) return;
+
+      document.getElementById('page-title').textContent = sector.name + ' Consulting Tools & Frameworks | NLC Firm';
+      document.getElementById('page-meta-desc').setAttribute('content', sector.heroProblem + ' Self-guided products for ' + sector.name + ' professionals — NLC Firm.');
+
+      document.getElementById('sector-hero-inner').innerHTML =
+        '<a href="/products/" class="sector-breadcrumb">&#8592; All Products</a>' +
+        '<div class="sector-hero-badge">' + sector.icon + ' ' + sector.name + '</div>' +
+        '<h1>Tools built for <em>' + sector.name.split(' ')[0] + '</em> professionals.</h1>' +
+        '<p class="sector-hero-desc">' + sector.heroProblem + ' NLC self-guided products give you the exact framework — without the consulting invoice.</p>' +
+        '<div class="sector-hero-actions">' +
+          '<button class="btn btn-gold" onclick="document.getElementById('product-grid').scrollIntoView({behavior:'smooth'})">Browse Products</button>' +
+          '<a href="#" onclick="openModal('consult');return false;" class="btn btn-outline">Book a Free Call</a>' +
+        '</div>';
+
+      renderGrid();
+    });
+
+    function renderGrid() {
+      var products = NLC_CATALOG.products.filter(function(p) { return p.sector === SECTOR_ID; });
+      if (activeFormat !== 'all') products = products.filter(function(p) { return (p.format || []).includes(activeFormat); });
+      if (activeTier !== 'all') products = products.filter(function(p) { return p.tier === activeTier; });
+      products.sort(function(a, b) { return a.priority - b.priority; });
+
+      var grid = document.getElementById('product-grid');
+      var empty = document.getElementById('catalog-empty');
+      document.getElementById('results-count').textContent = products.length + ' product' + (products.length !== 1 ? 's' : '') + ' in this sector';
+
+      if (products.length === 0) { grid.innerHTML = ''; empty.classList.add('visible'); return; }
+      empty.classList.remove('visible');
+      grid.innerHTML = products.map(function(p) {
+        var formats = (p.format || []).map(function(f) { return '<span class="product-format-tag">' + f + '</span>'; }).join('');
+        return '<a href="/products/detail.html?sku=' + p.sku + '" class="product-card">' +
+          (p.priority === 1 ? '<span class="product-priority-star" title="Top pick"></span>' : '') +
+          '<div class="product-card-top"><span class="product-sector-badge">' + p.tier + '</span><span class="product-tier-badge">$' + p.price + '</span></div>' +
+          '<div class="product-card-name">' + p.name + '</div>' +
+          '<div class="product-card-desc">' + p.problem.substring(0, 130) + '&#8230;</div>' +
+          '<div class="product-card-formats">' + formats + '</div>' +
+          '<div class="product-card-footer"><span class="product-card-price">$' + p.price + '</span><span class="product-card-cta">View Details &#8594;</span></div>' +
+        '</a>';
+      }).join('');
+    }
+
+    function setFormatFilter(val, btn) {
+      activeFormat = val;
+      document.querySelectorAll('[data-filter="format"]').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-value') === val); });
+      renderGrid();
+    }
+    function setTierFilter(val, btn) {
+      activeTier = val;
+      document.querySelectorAll('[data-filter="tier"]').forEach(function(b) { b.classList.toggle('active', b.getAttribute('data-value') === val); });
+      renderGrid();
+    }
+    function resetFilters() { setFormatFilter('all'); setTierFilter('all'); }
+  </script>
+</body>
+</html>

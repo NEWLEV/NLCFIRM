@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title id="page-title">Product Detail | NLC Firm</title>
+  <meta name="description" id="page-meta-desc" content="NLC Firm self-guided consulting product."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="icon" type="image/png" href="/assets/images/logo-stacked.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/assets/css/styles.css"/>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="/" class="nav-logo" aria-label="New Level Consultants Home">
+      <img src="/assets/images/logo-dark-bg.png" alt="New Level Consultants" width="180" height="40">
+    </a>
+    <ul class="nav-links">
+      <li><a href="/#services">Services</a></li>
+      <li><a href="/#plans">Plans</a></li>
+      <li class="nav-has-mega"><a href="/products/">Products ▾</a>
+        <div class="nav-mega">
+          <div class="nav-mega-header">Browse by Sector</div>
+          <div class="nav-mega-grid">
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Healthcare &amp; Legal</span>
+              <a href="/products/healthcare/">🏥 Healthcare</a>
+              <a href="/products/legal/">⚖️ Legal &amp; Law Firms</a>
+              <a href="/products/financial-services/">💰 Financial Services</a>
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Operations</span>
+              <a href="/products/construction/">🔨 Construction &amp; Trades</a>
+              <a href="/products/manufacturing/">🏭 Manufacturing</a>
+              <a href="/products/restaurants/">🍽️ Restaurants</a>
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Business &amp; Services</span>
+              <a href="/products/professional-services/">💼 Professional Services</a>
+              <a href="/products/real-estate/">🏘️ Real Estate</a>
+              <a href="/products/retail/">🛍️ Retail &amp; E-Commerce</a>
+            </div>
+            <div class="nav-mega-col">
+              <span class="nav-mega-col-title">Growth &amp; Impact</span>
+              <a href="/products/technology/">💻 Technology &amp; SaaS</a>
+              <a href="/products/education/">📚 Education</a>
+              <a href="/products/nonprofit/">🤝 Non-Profit</a>
+              <a href="/products/government-contracting/">🏛️ Gov Contracting</a>
+              <a href="/products/" class="nav-mega-all">Browse All Products →</a>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/case-studies.html">Results</a></li>
+      <li><a href="/resources.html">Resources</a></li>
+      <li><a href="tel:+17864084243" class="nav-phone" aria-label="Call us">📞 786-408-4243</a></li>
+      <li><a href="/portal-login.html" class="nav-login">Login</a></li>
+      <li><a href="#" class="nav-cta" onclick="openModal('consult');return false;">Get Started Free</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" onclick="toggleDrawer()" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div id="drawer-overlay" class="drawer-overlay" onclick="toggleDrawer()"></div>
+  <div id="mobile-drawer" class="mobile-drawer">
+    <a href="/#services" onclick="toggleDrawer()">Services</a>
+    <a href="/#plans" onclick="toggleDrawer()">Plans</a>
+    <a href="/products/" onclick="toggleDrawer()">Products</a>
+    <a href="/about.html" onclick="toggleDrawer()">About</a>
+    <a href="/case-studies.html" onclick="toggleDrawer()">Results</a>
+    <a href="/resources.html" onclick="toggleDrawer()">Resources</a>
+    <a href="/portal-login.html" onclick="toggleDrawer()" class="u-text-gold">Login</a>
+    <a href="#" onclick="openModal('consult');toggleDrawer();return false;" class="nav-cta">Get Started Free →</a>
+  </div>
+
+  <!-- PRODUCT HERO (populated by JS) -->
+  <section class="detail-hero" id="detail-hero">
+    <div class="detail-hero-inner">
+      <div class="detail-breadcrumb" id="detail-breadcrumb"></div>
+      <div class="detail-hero-grid">
+        <div id="detail-hero-left"></div>
+        <div id="detail-sidebar-hero"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT BODY (populated by JS) -->
+  <div class="detail-body" id="detail-body">
+    <div class="detail-main" id="detail-main"></div>
+    <div id="detail-sidebar-body"></div>
+  </div>
+
+  <!-- 404 STATE -->
+  <div id="detail-404" class="u-display-none" style="padding:8rem 4rem;text-align:center;">
+    <h2 style="font-family:var(--font-display);color:var(--text);margin-bottom:1rem;">Product not found.</h2>
+    <p style="color:var(--text-dim);margin-bottom:2rem;">That SKU doesn't exist in our catalog.</p>
+    <a href="/products/" class="btn btn-gold">Browse All Products</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer-main">
+    <div class="footer-grid-4col">
+      <div>
+        <div class="footer-brand"><img src="/assets/images/logo-dark-bg.png" alt="NLC" width="120" height="28"></div>
+        <p class="footer-tagline">Healthcare and business consulting for organizations that refuse to stay at the same level.</p>
+      </div>
+      <div>
+        <h4 class="footer-heading-sm">Products</h4>
+        <ul class="footer-link-list">
+          <li class="footer-link-item"><a href="/products/" class="footer-link-a">Browse All</a></li>
+          <li class="footer-link-item"><a href="/products/healthcare/" class="footer-link-a">Healthcare</a></li>
+          <li class="footer-link-item"><a href="/products/construction/" class="footer-link-a">Construction</a></li>
+          <li class="footer-link-item"><a href="/products/government-contracting/" class="footer-link-a">Gov Contracting</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading-sm">Company</h4>
+        <ul class="footer-link-list">
+          <li class="footer-link-item"><a href="/about.html" class="footer-link-a">About Us</a></li>
+          <li class="footer-link-item"><a href="/#plans" class="footer-link-a">Pricing &amp; Plans</a></li>
+          <li class="footer-link-item"><a href="/resources.html" class="footer-link-a">Free Resources</a></li>
+          <li class="footer-link-item"><a href="/contact.html" class="footer-link-a">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading-sm">Contact</h4>
+        <p class="footer-contact-text">info@nlcfirm.com<br>786-408-4243</p>
+      </div>
+    </div>
+    <div class="footer-bottom-row">
+      <div>&copy; 2026 New Level Consultants. All rights reserved.</div>
+      <div class="footer-bottom-links">
+        <a href="/privacy.html" class="u-text-decoration-none">Privacy Policy</a>
+        <a href="/terms.html" class="u-text-decoration-none">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CHECKOUT MODAL -->
+  <div id="checkout-modal" onclick="if(event.target===this)closeCheckoutModal()">
+    <div class="checkout-box">
+      <button class="checkout-box-close" onclick="closeCheckoutModal()">&times;</button>
+      <div class="checkout-box-title" id="checkout-product-name">Product</div>
+      <div class="checkout-box-price" id="checkout-product-price">$0</div>
+      <div id="paypal-button-container"></div>
+      <p style="font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:1rem;line-height:1.7;">Secure checkout via PayPal.<br>After payment, your portal account is created automatically and your download link is emailed within minutes.</p>
+    </div>
+  </div>
+
+  <!-- CONSULT MODAL -->
+  <div id="modal" class="modal-overlay" onclick="closeModalOverlay(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title">Get in Touch</div>
+        <div class="modal-sub" id="modal-sub">We'll be in touch within 1 business day.</div>
+      </div>
+      <div class="step-indicators">
+        <div class="step-dot active"></div>
+        <div class="step-dot"></div>
+        <div class="step-dot"></div>
+      </div>
+      <div id="form-step-1" class="form-step active">
+        <div class="form-field"><label for="f-first">First Name *</label><input type="text" id="f-first" placeholder="Jane"></div>
+        <div class="form-field"><label for="f-last">Last Name *</label><input type="text" id="f-last" placeholder="Smith"></div>
+        <div class="form-field"><label for="f-email">Work Email *</label><input type="email" id="f-email" placeholder="jane@organization.com"></div>
+        <button class="btn btn-gold full-width u-mt-1" onclick="nextStep(2)">Continue</button>
+      </div>
+      <div id="form-step-2" class="form-step">
+        <div class="form-field"><label for="f-org">Organization Name</label><input type="text" id="f-org" placeholder="Acme Health"></div>
+        <div class="form-field"><label for="f-size">Organization Size</label>
+          <select id="f-size"><option value="1-10">1-10 employees</option><option value="11-50">11-50 employees</option><option value="51-200">51-200 employees</option><option value="201+">201+ employees</option></select>
+        </div>
+        <div class="form-field"><label for="f-industry">Industry</label>
+          <select id="f-industry"><option value="healthcare">Healthcare / Medical Practice</option><option value="nonprofit">Nonprofit / NGO</option><option value="tech">Technology / Startup</option><option value="other">Other Business</option></select>
+        </div>
+        <div class="u-flex-gap-1 u-mt-1">
+          <button class="btn btn-outline full-width" onclick="nextStep(1)">Back</button>
+          <button class="btn btn-gold full-width" onclick="nextStep(3)">Continue</button>
+        </div>
+      </div>
+      <div id="form-step-3" class="form-step">
+        <div class="form-field"><label for="f-contact">Preferred Contact Method</label>
+          <select id="f-contact"><option value="email">Email</option><option value="phone">Phone Call</option><option value="zoom">Video Call (Zoom)</option></select>
+        </div>
+        <div class="form-field"><label for="f-msg">How can we help? (Optional)</label><textarea id="f-msg" rows="4" placeholder="Briefly describe your current challenges…"></textarea></div>
+        <div class="u-flex-gap-1 u-mt-1">
+          <button class="btn btn-outline full-width" onclick="nextStep(2)">Back</button>
+          <button class="btn btn-gold full-width" onclick="submitModal()">Get Started Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PayPal SDK — replace YOUR_MERCHANT_ID with live client-id -->
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+  <script src="/assets/js/checkout.js"></script>
+  <script src="/assets/js/main.js"></script>
+  <script src="/products/data/products-data.js"></script>
+  <script>
+    (function() {
+      var sku = new URLSearchParams(window.location.search).get('sku');
+      if (!sku) { show404(); return; }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var product = NLC_CATALOG.products.find(function(p) { return p.sku === sku; });
+        if (!product) { show404(); return; }
+
+        var sector = NLC_CATALOG.sectors.find(function(s) { return s.id === product.sector; }) || { icon: '', name: product.sector, slug: product.sector };
+
+        /* Meta */
+        document.getElementById('page-title').textContent = product.metaTitle;
+        document.getElementById('page-meta-desc').setAttribute('content', product.metaDescription);
+
+        /* Breadcrumb */
+        document.getElementById('detail-breadcrumb').innerHTML =
+          '<a href="/products/">Products</a>' +
+          '<span class="detail-breadcrumb-sep">›</span>' +
+          '<a href="/products/' + sector.slug + '/">' + sector.name + '</a>' +
+          '<span class="detail-breadcrumb-sep">›</span>' +
+          '<span>' + product.name + '</span>';
+
+        /* Hero left */
+        var buyerChips = (product.buyerRoles || []).map(function(r) {
+          return '<span class="detail-buyer-chip">' + r + '</span>';
+        }).join('');
+        document.getElementById('detail-hero-left').innerHTML =
+          '<div class="detail-sector-badge">' + sector.icon + ' ' + sector.name + '</div>' +
+          '<h1>' + product.name + '</h1>' +
+          '<p class="detail-hero-tagline">' + product.tagline + '</p>' +
+          '<div class="detail-hero-buyers">' + buyerChips + '</div>';
+
+        /* Sidebar hero */
+        var delivList = (product.deliverables || []).map(function(d) {
+          return '<li>' + d + '</li>';
+        }).join('');
+        document.getElementById('detail-sidebar-hero').innerHTML =
+          '<div class="detail-sidebar">' +
+            '<div class="detail-sidebar-price">$' + product.price + '</div>' +
+            '<div class="detail-sidebar-label">One-time · Instant access</div>' +
+            '<ul class="detail-sidebar-deliverables">' + delivList + '</ul>' +
+            '<button class="detail-buy-btn" onclick="openCheckoutModal(\'' + product.sku + '\',\'' + product.name.replace(/'/g, "\\'") + '\',' + product.price + ')">Buy Now — $' + product.price + '</button>' +
+            '<p class="detail-sidebar-meta">Secure checkout via PayPal<br>Download delivered to your email<br>30-day satisfaction guarantee</p>' +
+            '<div class="detail-sidebar-upsell"><strong>Solving a bigger problem?</strong><br>' + product.upsellTrigger + '<br><br><a href="#" onclick="openModal(\'consult\');return false;" style="color:var(--gold);font-size:0.78rem;">Book a Free Strategy Call →</a></div>' +
+          '</div>';
+
+        /* Main body */
+        var sectionsHTML = (product.sections || []).map(function(s) {
+          return '<li class="detail-sections-item">' +
+            '<div class="detail-sections-item-title">' + s.title + '</div>' +
+            '<div class="detail-sections-item-desc">' + s.desc + '</div>' +
+          '</li>';
+        }).join('');
+
+        var forList = (product.buyerRoles || []).map(function(r) {
+          return '<li>' + r + '</li>';
+        }).join('');
+
+        var faqHTML = (product.faq || []).map(function(f, i) {
+          return '<div class="detail-faq-item">' +
+            '<div class="detail-faq-q" aria-expanded="false" onclick="toggleFaq(this)">' +
+              f.q +
+              '<span class="detail-faq-q-icon">▾</span>' +
+            '</div>' +
+            '<div class="detail-faq-a">' + f.a + '</div>' +
+          '</div>';
+        }).join('');
+
+        document.getElementById('detail-main').innerHTML =
+          '<div class="detail-section">' +
+            '<h2 class="detail-section-title">The <em>problem</em> this solves</h2>' +
+            '<p class="detail-problem-text">' + product.problem + '</p>' +
+          '</div>' +
+          '<div class="detail-section">' +
+            '<h2 class="detail-section-title">What\'s <em>inside</em></h2>' +
+            '<ul class="detail-sections-list">' + sectionsHTML + '</ul>' +
+          '</div>' +
+          '<div class="detail-section">' +
+            '<h2 class="detail-section-title">Who this is <em>for</em></h2>' +
+            '<ul class="detail-for-list">' + forList + '</ul>' +
+            (product.notFor ? '<div class="detail-not-for">Not the right fit if: ' + product.notFor + '</div>' : '') +
+          '</div>' +
+          (faqHTML ? '<div class="detail-section"><h2 class="detail-section-title">Common <em>questions</em></h2>' + faqHTML + '</div>' : '') +
+          '<div class="detail-upsell-box">' +
+            '<div class="detail-upsell-label">When You\'re Ready for the Next Level</div>' +
+            '<h3 class="detail-upsell-title">From self-guided to supported.</h3>' +
+            '<p class="detail-upsell-trigger">' + product.upsellTrigger + '</p>' +
+            '<div class="detail-upsell-row">' +
+              '<span class="detail-upsell-scope">' + product.upsellScope + '</span>' +
+              '<span class="detail-upsell-price">' + product.upsellPrice + '</span>' +
+            '</div>' +
+            '<div style="margin-top:1rem;">' +
+              '<a href="#" onclick="openModal(\'consult\');return false;" class="btn btn-outline btn-sm">Book a Free Strategy Call</a>' +
+            '</div>' +
+          '</div>';
+
+        /* Sidebar body (sticky buy box) */
+        document.getElementById('detail-sidebar-body').innerHTML =
+          '<div class="detail-sidebar">' +
+            '<div class="detail-sidebar-price">$' + product.price + '</div>' +
+            '<div class="detail-sidebar-label">One-time · Instant access</div>' +
+            '<ul class="detail-sidebar-deliverables">' + delivList + '</ul>' +
+            '<button class="detail-buy-btn" onclick="openCheckoutModal(\'' + product.sku + '\',\'' + product.name.replace(/'/g, "\\'") + '\',' + product.price + ')">Buy Now — $' + product.price + '</button>' +
+            '<p class="detail-sidebar-meta">Secure checkout via PayPal<br>Download delivered to your email<br>30-day satisfaction guarantee</p>' +
+          '</div>';
+
+        /* Related products */
+        var related = NLC_CATALOG.products.filter(function(p) {
+          return p.sector === product.sector && p.sku !== product.sku;
+        }).slice(0, 3);
+        if (related.length > 0) {
+          var relHTML = '<div style="margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border)">' +
+            '<h3 style="font-family:var(--font-display);font-size:1.1rem;color:var(--text);margin-bottom:1.2rem;">More from <em style=\'color:var(--gold);font-style:italic\'>' + sector.name + '</em></h3>' +
+            '<div style="display:flex;flex-direction:column;gap:0.8rem;">' +
+            related.map(function(r) {
+              return '<a href="/products/detail.html?sku=' + r.sku + '" style="display:flex;justify-content:space-between;align-items:center;padding:0.8rem;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);text-decoration:none;color:var(--text);transition:border-color 0.2s;" onmouseover="this.style.borderColor=\'var(--border-strong)\'" onmouseout="this.style.borderColor=\'var(--border)\'">' +
+                '<span style="font-size:0.82rem;font-weight:600;">' + r.name + '</span>' +
+                '<span style="font-size:0.88rem;color:var(--gold);font-weight:700;font-family:var(--font-display);flex-shrink:0;margin-left:1rem;">$' + r.price + '</span>' +
+              '</a>';
+            }).join('') +
+            '</div></div>';
+          document.getElementById('detail-sidebar-body').innerHTML += relHTML;
+        }
+      });
+
+      function show404() {
+        document.getElementById('detail-hero').classList.add('u-display-none');
+        document.getElementById('detail-body').classList.add('u-display-none');
+        document.getElementById('detail-404').classList.remove('u-display-none');
+      }
+
+      window.toggleFaq = function(el) {
+        var expanded = el.getAttribute('aria-expanded') === 'true';
+        el.setAttribute('aria-expanded', String(!expanded));
+        var answer = el.nextElementSibling;
+        answer.classList.toggle('open', !expanded);
+      };
+    })();
+  </script>
+</body>
+</html>
